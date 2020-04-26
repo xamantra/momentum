@@ -1,0 +1,5 @@
+{
+  "editor.wordWrap": "on",
+  "dart.allowAnalytics": false,
+  "dart.lineLength": 1000
+}
