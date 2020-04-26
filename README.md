@@ -18,6 +18,8 @@ Jump to sections:
   - [`model.update(...)` method](#modelupdate-method)
   - [`snapshot<T>()` builder method](#snapshott-builder-method)
   - [`reset()` method](#reset-method)
+  - [`backward()` time-travel method.](#backward-time-travel-method)
+  - [`forward()` time-travel method.](#forward-time-travel-method)
 
 The basic idea is that everything can be easily accessed and manipulated. If you are familiar with `BLoC` package the functions are written in the `Bloc` class (ex. _LoginBloc_). In momentum, you write the functions in your `MomentumController` class (ex. _LoginController_). One big difference with BLoC package is that **_there is no "default and easy" way to call another `Bloc` class_**, with momentum it's very easy to call another Controller class, like this:
 
@@ -304,6 +306,22 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
       ...
     }
   ```
+
+### `backward()` time-travel method.
+- A `MomentumController` method. Sets the state one step behind from the current model state. Example:
+  ```Dart
+  loginController.backward();
+  ```
+- If you are currently in the vey first model state (init), this method will do nothing.
+- You can also call this anywhere like `reset()` method.
+
+### `forward()` time-travel method.
+- A `MomentumController` method. Sets the state one step ahead from the current model state. Example:
+  ```Dart
+  loginController.forward();
+  ```
+- If you are currently in the latest model state, this method will do nothing.
+- You can also call this anywhere like `reset()` method.
 
 Additional note: The library doesn't have any dependencies, except flutter sdk of course.
 
