@@ -177,7 +177,6 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
       ...
     );
     
-
     MomentumBuilder(
       ...
       controllers: [LoginController], // "bootstrap()" method will be called.
