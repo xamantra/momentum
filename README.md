@@ -13,9 +13,11 @@ Jump to sections:
   - [`MomentumBuilder` - widget class](#momentumbuilder---widget-class)
 - [Managing State](#managing-state)
   - [`init()` method](#init-method)
+  - [`bootstrap()` method](#bootstrap-method)
   - [`Momentum.of<T>(context)` method](#momentumoftcontext-method)
   - [`model.update(...)` method](#modelupdate-method)
-  - [`snapshot<T>()` method](#snapshott-method)
+  - [`snapshot<T>()` builder method](#snapshott-builder-method)
+  - [`reset()` method](#reset-method)
 
 The basic idea is that everything can be easily accessed and manipulated. If you are familiar with `BLoC` package the functions are written in the `Bloc` class (ex. _LoginBloc_). In momentum, you write the functions in your `MomentumController` class (ex. _LoginController_). One big difference with BLoC package is that **_there is no "default and easy" way to call another `Bloc` class_**, with momentum it's very easy to call another Controller class, like this:
 
@@ -143,7 +145,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 ## Managing State
 
 ### `init()` method
-- `MomentumController` requires this method to be implemented, but the library will call it for you. This will only be called once.
+- `MomentumController` requires this method to be implemented, but the library will call it for you. This will only be called once. Also, you should NOT put any logic in here, use <a href="#bootstrap-method">`bootstrap()`</a> method instead.
   ```Dart
     class LoginController extends MomentumController<LoginModel> {
 
@@ -153,6 +155,25 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
           this, // inject this controller itself (required by the library).
           username: '',
           password: '',
+        );
+      }
+    }
+  ```
+
+### `bootstrap()` method
+- A `MomentumController` method. Called after `init()`. This is an optional virtual method. If you override this, the library will call it for you. This is where you put initialization logic instead of `init()`.
+  ```Dart
+    class LoginController extends MomentumController<LoginModel> {
+
+      @override
+      void bootstrap() async {
+        model.update(loadingData: true); // you can use "loadingData" property to display loading indicator in your widget.
+        var myProfile = async apiService.getMyProfile(model.userId);
+        var friendsList = async apiService.getFriendsList(model.userId); // assuming you actually have friends.
+        model.update(
+          loadingData: false, // the loading widget will now be hidden :)
+          myProfile: myProfile,
+          friendsList: friendsList,
         );
       }
     }
@@ -221,7 +242,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Also, if you are familiar with `copyWith` method, this method does not accept **null** values. If it's string just set it as `''`, if it's integer set it to `0`, and you get the idea...
 
-### `snapshot<T>()` method
+### `snapshot<T>()` builder method
 
 - This method is use inside `MomentumBuilder`'s _builder_ method.
 
@@ -247,6 +268,42 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   ```
 
 - Of course you can rename the `snapshot<T>()` method here to even something shorter like `use<T>` or `consume<T>`.
+
+### `reset()` method
+- Reset the model to its initial state. This re-calls `init()` method. You can also call this anywhere.
+- Call inside the controller itself:
+  ```Dart
+    class LoginController ... {
+      ...
+
+      /// clears the user input for username and password.
+      void clearInput() {
+        reset();
+      }
+
+      ...
+    }
+  ```
+- Call inside a widget:
+  ```Dart
+    loginController = Momentum.of<LoginController>(context);
+    ...
+    loginController.reset();
+  ```
+- Call inside another controller
+  ```Dart
+    class HomeController ... {
+      ...
+
+      /// clears the user session.
+      void clearSession() {
+        var sessionController = dependOn<SessionController>();
+        sessionController.reset();
+      }
+
+      ...
+    }
+  ```
 
 Additional note: The library doesn't have any dependencies, except flutter sdk of course.
 
