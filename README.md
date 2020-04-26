@@ -374,5 +374,3 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 Additional note: The library doesn't have any dependencies, except flutter sdk of course.
 
 **THE END**
-
-I am still writing additional content for this readme like explaning about the `config(...)` method, mentioning methods like `bootstrap()` etc...
