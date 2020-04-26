@@ -14,3 +14,7 @@
 ## 1.0.3
 
 - updated readme, now most parts are covered.
+
+## 1.0.4
+
+- updated example project to link the correct `momentum` version from `pub.dev`.
