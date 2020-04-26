@@ -6,11 +6,15 @@
 
 Jump to sections:
 
-- [Classes](#classes)
+- [Concept](#concept)
   - [`Momentum` - setup class](#momentum---setup-class)
   - [`MomentumModel` - view-model class](#momentummodel---view-model-class)
   - [`MomentumController` - logic class](#momentumcontroller---logic-class)
   - [`MomentumBuilder` - widget class](#momentumbuilder---widget-class)
+- [Configuration](#configuration)
+  - [`enableLogging` property](#enablelogging-property)
+  - [`lazy` property](#lazy-property)
+  - [`maxTimeTravelSteps` property](#maxtimetravelsteps-property)
 - [Managing State](#managing-state)
   - [`init()` method](#init-method)
   - [`bootstrap()` method](#bootstrap-method)
@@ -45,7 +49,7 @@ class LoginController extends MomentumController<LoginModel> {
 
 Now, you might be asking where the heck `SessionController` is instantiated. The answer is right below this section.
 
-## Classes
+## Concept
 
 ### `Momentum` - setup class
 
@@ -66,11 +70,11 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
           CounterController(),
           LoginController(),
           SessionController(),
-          UserProfileController..config(enableLogging: true),
+          UserProfileController..config(enableLogging: true), // enable logging and override the global setting.
           RegisterController()..config(maxTimeTravelSteps: 200),
           DashboardController()..config(lazy: true),
         ],
-        enableLogging: false,
+        enableLogging: false, // global setting, all controllers will have logging disabled.
         child: MyApp(),
       ),
     );
@@ -144,6 +148,49 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   )
   ```
 
+## Configuration
+
+### `enableLogging` property
+- This setting is nothing really important. It only shows logs of a specific controller (number of listeners, if the model is update etc...). Uncaught exceptions are not affected by this setting.
+- Both the `Momentum` root widget and `MomentumController` has this config property. Defaults to true.
+- `MomentumController` overrides `Momentum`'s setting.
+- If this is `false` from `Momentum` class but `true` in `MomentumController` class, the accepted value will be `true`.
+  ```Dart
+    Momentum(
+      controller: [
+        LoginController()..config(enableLogging: true),
+      ]
+      enableLogging: false,
+      ...
+    );
+  ```
+
+### `lazy` property
+- Sets when the `bootstrap()` method will be called. No matter this setting's value, `init()` method always get called first though.
+- Both the `Momentum` root widget and `MomentumController` has this config property. Defaults to `true`.
+- If this is `true`, the `bootstrap()` method will be called when the very first `MomentumBuilder` that listens to a specific controller will be loaded.
+  ```Dart
+    Momentum(
+      controller: [
+        LoginController()..config(lazy: true),
+      ]
+      ...
+    );
+    
+
+    MomentumBuilder(
+      ...
+      controllers: [LoginController], // "bootstrap()" method will be called.
+      ...
+    );
+  ```
+- If this is `false`, the `bootstrap()` method will be called right when the app starts.
+
+### `maxTimeTravelSteps` property
+- If the value is greater than `1`, time travel methods will be enabled.
+- Both the `Momentum` root widget and `MomentumController` has this config property. Defaults to `1`, means time travel methods are disabled by default.
+- The value is clamped between `1` and `250`.
+
 ## Managing State
 
 ### `init()` method
@@ -164,6 +211,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 ### `bootstrap()` method
 - A `MomentumController` method. Called after `init()`. This is an optional virtual method. If you override this, the library will call it for you. This is where you put initialization logic instead of `init()`.
+- This is only called once too.
   ```Dart
     class LoginController extends MomentumController<LoginModel> {
 
