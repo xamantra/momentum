@@ -11,6 +11,7 @@ Jump to sections:
   - [`MomentumModel` - view-model class](#momentummodel---view-model-class)
   - [`MomentumController` - logic class](#momentumcontroller---logic-class)
   - [`MomentumBuilder` - widget class](#momentumbuilder---widget-class)
+  - [`MomentumState` - listener class](#momentumstate---listener-class)
 - [Configuration](#configuration)
   - [`enableLogging` property](#enablelogging-property)
   - [`lazy` property](#lazy-property)
@@ -147,6 +148,33 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
     },
   )
   ```
+
+### `MomentumState` - listener class
+- A replacement for `State` class if you want to add a listener for your model state and react to it (showing dialogs, snackbars, toast, navigation and many more...)
+  ```Dart
+  class Login extends StatefulWidget {
+    ...
+  }
+
+  class _LoginState extends MomentumState<Login> {
+
+    LoginController loginController;
+
+    @override
+    void initMomentumState() {
+      loginController = Momentum.of<LoginController>(context);
+      // "addListener" is a built-in method from MomentumController.
+      loginController.addListener(
+        state: this,
+        invole: (model, isTimeTravel) {
+          // do anything here...show dialogs, snackbars, toast, navigation and or just print data.
+          // "isTimeTravel" tells if this model change is made from time travel method (backward/forward) or not.
+        }
+      );
+    }
+  }
+  ```
+- `initMomentumState` is part of `MomentumState`.
 
 ## Configuration
 
@@ -359,7 +387,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   ```Dart
   loginController.backward();
   ```
-- If you are currently in the vey first model state (init), this method will do nothing.
+- If you are currently in the very first model state (init), this method will do nothing.
 - You can also call this anywhere like `reset()` method.
 
 ### `forward()` time-travel method.

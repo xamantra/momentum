@@ -22,3 +22,7 @@
 ## 1.0.5
 
 - fix readme not properly displaying in pub.dev
+
+## 1.0.6
+
+- updated readme, added MomentumState listener section. and also fix typos.
