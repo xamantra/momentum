@@ -12,6 +12,7 @@ Jump to sections:
   - [`MomentumController` - logic class](#momentumcontroller---logic-class)
   - [`MomentumBuilder` - widget class](#momentumbuilder---widget-class)
 - [Managing State](#managing-state)
+  - [`init()` method](#init-method)
   - [`Momentum.of<T>(context)` method](#momentumoftcontext-method)
   - [`model.update(...)` method](#modelupdate-method)
   - [`snapshot<T>()` method](#snapshott-method)
@@ -140,6 +141,22 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   ```
 
 ## Managing State
+
+### `init()` method
+- `MomentumController` requires this method to be implemented, but the library will call it for you. This will only be called once.
+  ```Dart
+    class LoginController extends MomentumController<LoginModel> {
+
+      @override
+      LoginModel init() {
+        return LoginModel(
+          this, // inject this controller itself (required by the library).
+          username: '',
+          password: '',
+        );
+      }
+    }
+  ```
 
 ### `Momentum.of<T>(context)` method
 - Get a specific controller to call needed functions.
