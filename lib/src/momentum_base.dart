@@ -61,7 +61,6 @@ abstract class MomentumController<M> {
   /// Get an instance of a controller of type [T]. Useful if you want to access other controllers and manipulate their models.
   ///
   /// This uses the method [Momentum.of] behind the scenes which the `context` is provided internally by [_MomentumRoot].
-  @nonVirtual
   @protected
   T dependOn<T extends MomentumController>() {
     if (this is T) {
