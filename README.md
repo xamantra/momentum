@@ -11,7 +11,8 @@ Jump to sections:
   - [`MomentumModel` - view-model class](#momentummodel---view-model-class)
   - [`MomentumController` - logic class](#momentumcontroller---logic-class)
   - [`MomentumBuilder` - widget class](#momentumbuilder---widget-class)
-- [Updating State](#updating-state)
+- [Managing State](#managing-state)
+  - [`Momentum.of<T>(context)` method](#momentumoftcontext-method)
   - [`model.update(...)` method](#modelupdate-method)
   - [`snapshot<T>()` method](#snapshott-method)
 
@@ -138,7 +139,40 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   )
   ```
 
-## Updating State
+## Managing State
+
+### `Momentum.of<T>(context)` method
+- Get a specific controller to call needed functions.
+  ```Dart
+    class Login extends StatefulWidget { 
+      ...
+    }
+
+    class _LoginState extends State<Login> {
+
+      LoginController loginController;
+
+      @override
+      didChangeDependencies() {
+        loginController = Momentum.of<LoginController>(context); // you can also call this on build but that's dirty, it's up to you.
+        super.didChangeDependencies();
+      }
+
+      @override
+      Widget build(BuildContext context) {
+        return Scaffold(
+          body: Container(
+            child: FlatButton(
+              child: Text('Submit'),
+              onPressed: () {
+                loginController.login(); // call any function you defined in your controller.
+              }
+            ),
+          ),
+        );
+      }
+    }
+  ```
 
 ### `model.update(...)` method
 
