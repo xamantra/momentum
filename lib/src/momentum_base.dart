@@ -461,14 +461,8 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     if (updateState) {
       try {
         setState(_);
-
-        /// The reason why I wrapped this with try-catch is:
-        /// First, MomentumModel.update notify MomentumBuilder/s.
-        /// Second, When MomentumBuilder is notified of changes, this method will be called which is calling setState.
-        /// Third, In short calling MomentumModel.update basically calls setState too.
-        /// Lastly, There are some of places where setState cannot be called.
       } catch (e) {
-        print('[$Momentum] -> $_updateModel: $e');
+        print('[$Momentum] -> $_updateModel: $e\nDon\t worry about this exception, your app still runs fine. This error is catched by the library. This likely happens when you call "model.update(...)" from one of this widget\'s descendants while the widget tree is still building.');
         if (controller._momentumLogging) {
           print(StackTrace.current);
         }
