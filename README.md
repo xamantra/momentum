@@ -166,7 +166,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
       // "addListener" is a built-in method from MomentumController.
       loginController.addListener(
         state: this,
-        invole: (model, isTimeTravel) {
+        invoke: (model, isTimeTravel) {
           // do anything here...show dialogs, snackbars, toast, navigation and or just print data.
           // "isTimeTravel" tells if this model change is made from time travel method (backward/forward) or not.
         }
@@ -245,8 +245,8 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
       @override
       void bootstrap() async {
         model.update(loadingData: true); // you can use "loadingData" property to display loading indicator in your widget.
-        var myProfile = async apiService.getMyProfile(model.userId);
-        var friendsList = async apiService.getFriendsList(model.userId); // assuming you actually have friends.
+        var myProfile = await apiService.getMyProfile(model.userId);
+        var friendsList = await apiService.getFriendsList(model.userId); // assuming you actually have friends.
         model.update(
           loadingData: false, // the loading widget will now be hidden :)
           myProfile: myProfile,

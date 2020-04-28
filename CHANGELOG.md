@@ -26,3 +26,7 @@
 ## 1.0.6
 
 - updated readme, added MomentumState listener section. and also fix typos.
+
+## 1.0.7
+
+- fixed typos on readme.
