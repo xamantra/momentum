@@ -21,3 +21,5 @@ typedef MomentumSnapshot<T> = T Function<T extends MomentumModel>();
 
 /// The build strategy used by this momentum builder. This is where you actually define your widget.
 typedef MomentumBuilderFunction = Widget Function(BuildContext, MomentumSnapshot);
+
+typedef ResetAll = void Function(BuildContext, void Function(BuildContext) resetAll);

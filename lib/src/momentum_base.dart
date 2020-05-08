@@ -529,7 +529,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
 
 @sealed
 class Momentum extends InheritedWidget {
-  const Momentum._internal({Key key, @required Widget child, List<MomentumController> controllers, void Function(BuildContext) onResetAll})
+  const Momentum._internal({Key key, @required Widget child, List<MomentumController> controllers, ResetAll onResetAll})
       : this._controllers = controllers ?? const [],
         this._onResetAll = onResetAll,
         super(key: key, child: child);
@@ -548,15 +548,10 @@ class Momentum extends InheritedWidget {
   /// ```
   ///
   /// It is important to set this widget as your app's root widget or main entry point.
-  ///
-  /// **Parameters**
-  ///
-  /// `maxTimeTravelSteps` - The maximum number of steps the time travel methods [backward] and [forward] can take.
-  ///  Defaults to `50`. Clamped between `1` - `250`.
   factory Momentum({
     @required Widget child,
     @required List<MomentumController> controllers,
-    void Function(BuildContext) onResetAll,
+    ResetAll onResetAll,
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
@@ -601,7 +596,7 @@ class Momentum extends InheritedWidget {
   final List<MomentumController> _controllers;
 
   /// The custom callback function for [Momentum.resetAll] method.
-  final void Function(BuildContext) _onResetAll;
+  final ResetAll _onResetAll;
 
   /// Used internally in the [Momentum.of] method to grab a controller that is initialized in the `controllers` parameter.
   T _getController<T extends MomentumController>([bool isInternal = false]) {
@@ -625,15 +620,20 @@ class Momentum extends InheritedWidget {
     return (context.inheritFromWidgetOfExactType(Momentum) as Momentum);
   }
 
+  static void _resetAll(BuildContext context) {
+    var m = _getMomentumInstance(context);
+    for (var controller in m._controllers) {
+      controller?.reset();
+    }
+  }
+
   /// Reset all controllers. Optionally you can override this function using [Momentum]'s `onResetAll` parameter. If the parameter is not specified.
-  static void resetAll<T extends MomentumController>(BuildContext context) {
+  static void resetAll(BuildContext context) {
     var m = _getMomentumInstance(context);
     if (m._onResetAll != null) {
-      m._onResetAll(context);
+      m._onResetAll(context, _resetAll);
     } else {
-      for (var controller in m._controllers) {
-        controller?.reset();
-      }
+      _resetAll(context);
     }
   }
 

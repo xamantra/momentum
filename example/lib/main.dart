@@ -22,6 +22,47 @@ void main() {
       ],
       enableLogging: false,
       child: MyApp(),
+      onResetAll: (context, resetAll) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Dialog(
+                child: Container(
+                  height: 200,
+                  width: 300,
+                  color: Colors.transparent,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Are you are you want to reset all the state?',
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.pop(context); // close this dialog
+                        },
+                        child: Text('No'),
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          resetAll(context); // call the provided resetAll method.
+                          Navigator.pop(context); // close this dialog
+                        },
+                        child: Text('Yes'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     ),
   );
 }

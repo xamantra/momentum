@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:momentum/momentum.dart';
 import '../../../src/widgets/home/widgets/item-card.dart';
 
 import 'modules.dart';
@@ -11,7 +12,26 @@ class Home extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.all(18),
         color: Colors.white,
-        child: _buildRows(modules),
+        child: Column(
+          children: [
+            Expanded(child: _buildRows(modules)),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 64,
+              child: FlatButton(
+                onPressed: () {
+                  Momentum.resetAll(context);
+                },
+                padding: EdgeInsets.zero,
+                color: Colors.red,
+                child: Text(
+                  'Reset All',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
