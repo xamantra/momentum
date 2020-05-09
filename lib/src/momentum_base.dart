@@ -3,6 +3,15 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'momentum_types.dart';
 
+T trycatch<T>(T Function() body, [T defaultValue]) {
+  try {
+    var result = body();
+    return result ?? defaultValue;
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
 /// This class is used internally for notifying the [MomentumBuilder] for model updates and performing rebuilds.
 ///
 /// The parameter [_state] is used internally by [MomentumController] to remove all listeners whose [State] is no longer mounted in the tree.
@@ -91,6 +100,11 @@ abstract class MomentumController<M> {
   /// The variable for the latest value of your [MomentumModel] set by [MomentumModel.update]. This gets updated when you call [MomentumModel.update]. You can use the getter [model] to grab the value of this aside from [MomentumBuilder]'s builder function.
   M _currentActiveModel;
 
+  M _prevModel;
+  M _nextModel;
+  M get prevModel => _prevModel;
+  M get nextModel => _nextModel;
+
   /// The getter for the current active snapshot of your [MomentumModel] which returns [_currentActiveModel]. You can also call this directly inside your controller class.
   M get model => _currentActiveModel;
 
@@ -159,6 +173,9 @@ abstract class MomentumController<M> {
       _currentActiveModel = model;
       _latestMomentumModel = _currentActiveModel;
       _momentumModelHistory.add(_currentActiveModel);
+
+      _nextModel = null;
+      _prevModel = trycatch(() => _momentumModelHistory[_momentumModelHistory.length - 2]);
     }
     _cleanupListeners();
     for (var listener in _momentumListeners) {
@@ -182,8 +199,10 @@ abstract class MomentumController<M> {
   void backward() {
     if (_currentActiveModel != _initialMomentumModel) {
       var latestModel = _momentumModelHistory.last;
+      _nextModel = latestModel;
       _momentumModelHistory.removeWhere((x) => x == latestModel);
       _momentumModelHistory.insert(0, latestModel);
+      _prevModel = trycatch(() => _momentumModelHistory[_momentumModelHistory.length - 2]);
       _setMomentum(null, backward: true);
     }
   }
@@ -194,6 +213,11 @@ abstract class MomentumController<M> {
       var firstModel = _momentumModelHistory.first;
       _momentumModelHistory.removeWhere((x) => x == firstModel);
       _momentumModelHistory.add(firstModel);
+      _prevModel = trycatch(() => _momentumModelHistory[_momentumModelHistory.length - 2]);
+      _nextModel = trycatch(() => _momentumModelHistory[0]);
+      if (_nextModel == _initialMomentumModel) {
+        _nextModel = null;
+      }
       _setMomentum(null, forward: true);
     }
   }
@@ -334,6 +358,8 @@ class MomentumBuilder extends StatefulWidget {
   @protected
   final List<Type> controllers;
 
+  final bool Function(T Function<T extends MomentumController>()) dontRebuildIf;
+
   /// The build strategy used by this momentum builder. This is where you actually define your widget.
   @protected
   final MomentumBuilderFunction builder;
@@ -350,6 +376,7 @@ class MomentumBuilder extends StatefulWidget {
     @required this.controllers,
     @required this.builder,
     this.ignoreTimeTravel,
+    this.dontRebuildIf,
   }) : super(key: key);
 
   @protected
@@ -382,7 +409,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   @override
   Widget build(BuildContext context) {
     if (widget.builder == null) throw Exception('$_logHeader The parameter "builder" for ${widget.runtimeType} widget must not be null.');
-    return widget.builder(context, _useMomentumModelOfType);
+    return widget.builder(context, _modelSnapshotOfType);
   }
 
   /// This method is used internally to process all the [controllers] to support multiple models in the [builder] function.
@@ -414,7 +441,11 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
             state: this,
             invoke: (data, isTimeTravel) {
               if (ignoreTimeTravel && isTimeTravel) return;
-              if (mounted) {
+              var dontRebuild = false;
+              if (widget.dontRebuildIf != null) {
+                dontRebuild = widget.dontRebuildIf(_getController);
+              }
+              if (mounted && !dontRebuild) {
                 _updateModel(i, data, ctrls[i]);
               }
             },
@@ -444,7 +475,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   ///   return ProfileWidget(username: employee.fullName);
   /// }
   /// ```
-  T _useMomentumModelOfType<T extends MomentumModel>() {
+  T _modelSnapshotOfType<T extends MomentumModel>() {
     if (widget.controllers == null) throw Exception('$_logHeader The parameter "controllers" for ${widget.runtimeType} widget must not be null.');
     var controller = ctrls?.firstWhere((x) => x?.model is T, orElse: () => null);
     if (controller == null) throw Exception('$_logHeader The controller for the model of type "$T" is either not injected in this ${widget.runtimeType} or not initialized in the Momentum root widget or can be both.\nPossible solutions:\n\t1. Check if you initialized the controller attached to this model on the Momentum root widget.\n\t2. Check the controller attached to this model if it is injected into this ${widget.runtimeType}');
@@ -452,6 +483,13 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     if (model == null) throw Exception(controller._formatMomentumLog('$_logHeader An attempt to grab an instance of "$T" failed inside ${widget.runtimeType}\'s "builder" function.'));
 
     return model as T;
+  }
+
+  T _getController<T extends MomentumController>() {
+    if (widget.controllers == null) throw Exception('$_logHeader The parameter "controllers" for ${widget.runtimeType} widget must not be null.');
+    var controller = ctrls?.firstWhere((x) => x is T, orElse: () => null);
+    if (controller == null) throw Exception('$_logHeader The controller for the model of type "$T" is either not injected in this ${widget.runtimeType} or not initialized in the Momentum root widget or can be both.\nPossible solutions:\n\t1. Check if you initialized the controller attached to this model on the Momentum root widget.\n\t2. Check the controller attached to this model if it is injected into this ${widget.runtimeType}');
+    return controller as T;
   }
 
   /// When any of the [controllers]'s associated model is updated, [MomentumBuilder] will trigger a rebuild with the updated models.
