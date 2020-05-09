@@ -358,14 +358,11 @@ class MomentumBuilder extends StatefulWidget {
   @protected
   final List<Type> controllers;
 
-  final bool Function(T Function<T extends MomentumController>()) dontRebuildIf;
+  final bool Function(T Function<T extends MomentumController>(), bool isTimeTravel) dontRebuildIf;
 
   /// The build strategy used by this momentum builder. This is where you actually define your widget.
   @protected
   final MomentumBuilderFunction builder;
-
-  // Optionally configure this builder if time travel should trigger rebuild or not.
-  final bool ignoreTimeTravel;
 
   /// Creates a new [MomentumBuilder] that builds itself based on the latest snapshot of interaction with the injected [controllers] and whose build strategy is given by [builder].
   ///
@@ -375,7 +372,6 @@ class MomentumBuilder extends StatefulWidget {
     this.owner,
     @required this.controllers,
     @required this.builder,
-    this.ignoreTimeTravel,
     this.dontRebuildIf,
   }) : super(key: key);
 
@@ -419,7 +415,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   /// This method is called in [initState].
   void _init() {
     ctrls = <MomentumController>[];
-    var ignoreTimeTravel = widget.ignoreTimeTravel ?? false;
     for (var t in (widget.controllers ?? <Type>[])) {
       var c = Momentum._ofType(context, t);
       if (c != null) {
@@ -440,13 +435,12 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           _MomentumListener(
             state: this,
             invoke: (data, isTimeTravel) {
-              if (ignoreTimeTravel && isTimeTravel) return;
-              var dontRebuild = false;
-              if (widget.dontRebuildIf != null) {
-                dontRebuild = widget.dontRebuildIf(_getController);
-              }
-              if (mounted && !dontRebuild) {
-                _updateModel(i, data, ctrls[i]);
+              if (mounted) {
+                var dontRebuild = false;
+                if (widget.dontRebuildIf != null) {
+                  dontRebuild = widget.dontRebuildIf(_getController, isTimeTravel);
+                }
+                _updateModel(i, data, ctrls[i], !dontRebuild);
               }
             },
           ),
@@ -488,7 +482,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   T _getController<T extends MomentumController>() {
     if (widget.controllers == null) throw Exception('$_logHeader The parameter "controllers" for ${widget.runtimeType} widget must not be null.');
     var controller = ctrls?.firstWhere((x) => x is T, orElse: () => null);
-    if (controller == null) throw Exception('$_logHeader The controller for the model of type "$T" is either not injected in this ${widget.runtimeType} or not initialized in the Momentum root widget or can be both.\nPossible solutions:\n\t1. Check if you initialized the controller attached to this model on the Momentum root widget.\n\t2. Check the controller attached to this model if it is injected into this ${widget.runtimeType}');
+    if (controller == null) throw Exception('$_logHeader A controller of type "$T" is either not injected in this ${widget.runtimeType} or not initialized in the Momentum root widget or can be both.\nPossible solutions:\n\t1. Check if you initialized "$T" on the Momentum root widget.\n\t2. Check "$T" if it is injected into this ${widget.runtimeType}');
     return controller as T;
   }
 
