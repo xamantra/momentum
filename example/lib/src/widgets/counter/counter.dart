@@ -31,7 +31,7 @@ class _CounterPageState extends State<CounterPage> {
                 var counter = snapshot<CounterModel>(); // simply grab a model using generic.
                 return Text(
                   '${counter.value}',
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.headline4,
                 );
               },
             ),

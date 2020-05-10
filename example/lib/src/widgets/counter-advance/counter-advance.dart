@@ -34,10 +34,7 @@ class _CounterAdvanceState extends State<CounterAdvance> {
               controllers: [CounterAdvanceController],
               builder: (context, snapshot) {
                 var counterAdvance = snapshot<CounterAdvanceModel>();
-                return Text(
-                  '${counterAdvance.value}',
-                  style: Theme.of(context).textTheme.display1,
-                );
+                return Text('${counterAdvance.value}', style: Theme.of(context).textTheme.headline4);
               },
             ),
           ],
