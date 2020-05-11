@@ -86,10 +86,10 @@ abstract class MomentumController<M> {
 
   /// Called only once. If `lazy` is *true* this will be called when this controller gets loaded by a [MomentumBuilder]. If `lazy` is *false* this will be called when the application starts.
   void bootstrap() {}
-  void _bootstrap() {
+  Future<void> _bootstrap() async {
     if (!_booted) {
       _booted = true;
-      bootstrap();
+      await bootstrap();
     }
   }
 
@@ -509,18 +509,22 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
 @sealed
 class _MomentumRoot extends StatefulWidget {
   final Widget child;
+  final Widget appLoader;
   final List<MomentumController> controllers;
   final bool enableLogging;
   final int maxTimeTravelSteps;
   final bool lazy;
+  final int minimumBootstrapTime;
 
   const _MomentumRoot({
     Key key,
     @required this.child,
+    this.appLoader,
     @required this.controllers,
     this.enableLogging,
     this.maxTimeTravelSteps,
     this.lazy,
+    this.minimumBootstrapTime,
   }) : super(key: key);
   @override
   _MomentumRootState createState() => _MomentumRootState();
@@ -530,6 +534,8 @@ class _MomentumRoot extends StatefulWidget {
 @sealed
 class _MomentumRootState extends State<_MomentumRoot> {
   bool _momentumRootStateInitialized = false;
+  bool _momentumControllersBootstrapped = false;
+  bool get _canStartApp => _momentumRootStateInitialized && _momentumControllersBootstrapped;
 
   @override
   @mustCallSuper
@@ -545,17 +551,52 @@ class _MomentumRootState extends State<_MomentumRoot> {
             lazy: widget.lazy,
           )
           .._initializeMomentumController();
-        if (!controller._lazy) controller._bootstrap();
       }
+      _bootstrapControllers(widget.controllers);
     }
     super.didChangeDependencies();
+  }
+
+  void _bootstrapControllers(List<MomentumController> controllers) async {
+    var started = DateTime.now().millisecondsSinceEpoch;
+    var nonLazyControllers = widget.controllers.where((e) => !e._lazy);
+    var futures = nonLazyControllers.map<Future>((e) => e._bootstrap());
+    await Future.wait(futures);
+    var finished = DateTime.now().millisecondsSinceEpoch;
+    var diff = finished - started;
+    var min = (widget.minimumBootstrapTime ?? 0).clamp(0, 9999999);
+    var waitTime = (min - diff).clamp(0, min);
+    await Future.delayed(Duration(milliseconds: waitTime));
+    setState(() {
+      _momentumControllersBootstrapped = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var error = Momentum._getMomentumInstance(context)._validateControllers(widget.controllers);
     if (error != null) throw Exception(error);
-    return widget.child;
+    if (_canStartApp) {
+      return widget.child;
+    } else {
+      return widget.appLoader ??
+          MaterialApp(
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              backgroundColor: Colors.white,
+              body: Center(
+                child: SizedBox(
+                  height: 36,
+                  width: 36,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          );
+    }
   }
 }
 
@@ -582,19 +623,23 @@ class Momentum extends InheritedWidget {
   /// It is important to set this widget as your app's root widget or main entry point.
   factory Momentum({
     @required Widget child,
+    Widget appLoader,
     @required List<MomentumController> controllers,
     ResetAll onResetAll,
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
+    int minimumBootstrapTime,
   }) {
     return Momentum._internal(
       child: _MomentumRoot(
         child: child,
+        appLoader: appLoader,
         controllers: controllers,
         enableLogging: enableLogging,
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,
+        minimumBootstrapTime: minimumBootstrapTime,
       ),
       controllers: controllers,
       onResetAll: onResetAll,
