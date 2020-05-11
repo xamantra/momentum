@@ -1,8 +1,15 @@
+## 1.1.0
+
+- Reformatted the whole readme, reduce number of headings.
+
 ## 1.0.9
+
 - New feature: `dontRebuildIf` parameter for `MomentumBuilder`.
+
   - This method will be called after `model.update(...)` right before the `builder`.
   - `isTimeTravel` is also provided that indicates if the model was updated by time travel methods `.backward()` or `.forward()`, returning it directly means you don't want to rebuild if an update was done with time travel method.
   - Two new properties was also added: `MomentumController.prevModel` and `MomentumController.nextModel` which are properties from model history and their meaning is quite obvious. The `prevModel` is the previous state and `nextModel` is the next state which will only have a value if you use `.backward()` method. If you are on latest snapshot of the model `nextModel` will be null.
+
     ```Dart
       MomentumBuilder(
         controllers: [ChatController, SessionController],
@@ -22,8 +29,10 @@
         builder: (context, snapshot) {...},
       )
     ```
+
   - The example code is quite long but you can basically do anything with it. You can access any controllers and their models means you can do any conditions for skipping rebuilds.
   - **WARNING:** This method is the same as any other `builder` of `build` methods, do not call `model.update(...)` or anything that calls `build` method, for example `setState(...)`. You'll get an infinite loop.
+
 ## 1.0.8
 
 - Major update:
