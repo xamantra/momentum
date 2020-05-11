@@ -13,7 +13,7 @@ void main() {
   runApp(
     Momentum(
       controllers: [
-        CounterController(),
+        CounterController()..config(lazy: false),
         CounterAdvanceController(),
         CounterExtremeController(),
         CounterInsaneController()..config(maxTimeTravelSteps: 200),
@@ -22,6 +22,7 @@ void main() {
       ],
       enableLogging: false,
       child: MyApp(),
+      appLoader: AppLoader(),
       onResetAll: (context, resetAll) {
         showDialog(
           context: context,
@@ -78,6 +79,30 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: Home(),
+    );
+  }
+}
+
+class AppLoader extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Momentum State Management Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: SizedBox(
+            height: 36,
+            width: 36,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
     );
   }
 }
