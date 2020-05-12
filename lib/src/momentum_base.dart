@@ -85,11 +85,15 @@ abstract class MomentumController<M> {
   bool _booted = false;
 
   /// Called only once. If `lazy` is *true* this will be called when this controller gets loaded by a [MomentumBuilder]. If `lazy` is *false* this will be called when the application starts.
-  void bootstrap() {}
+  bootstrap() {}
   Future<void> _bootstrap() async {
     if (!_booted) {
       _booted = true;
-      await bootstrap();
+      if (bootstrap is Future) {
+        await bootstrap();
+      } else {
+        bootstrap();
+      }
     }
   }
 
