@@ -18,6 +18,8 @@ In momentum a controller is called `MomentumController` and a model is called `M
 
 Take a look at this simple example which is a (as usual) counter app.
 
+**NOTE:** This code won't work out of the box. You need to setup something at your `main()` function. This is only a preview code on how momentum looks like. Please head to <a href="#/getting_started">Getting Started</a>.
+
 > counter.model.dart
 
 ```dart
@@ -116,5 +118,3 @@ class CounterWidget extends StatelessWidget {
   }
 }
 ```
-
-**NOTE:** You can directly copy paste this codes but don't forget the imports :)
