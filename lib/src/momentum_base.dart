@@ -83,15 +83,35 @@ abstract class MomentumController<M> {
   }
 
   bool _booted = false;
+  bool _bootedAsync = false;
 
   /// Called only once. If `lazy` is *true* this will be called when this controller gets loaded by a [MomentumBuilder]. If `lazy` is *false* this will be called when the application starts.
   void bootstrap() {}
-  Future<void> bootstrapAsync() async {}
-  Future<void> _bootstrap() async {
+  void _bootstrap() {
     if (!_booted) {
       _booted = true;
       bootstrap();
+      if (_momentumLogging) {
+        print(_formatMomentumLog('[$this] => bootstrap() called! { lazy: $_lazy }'));
+      }
+    }
+  }
+
+  /// Asynchronous support for [bootstrap]. Called only once. If `lazy` is *true* this will be called when this controller gets loaded by a [MomentumBuilder]. If `lazy` is *false* this will be called when the application starts.
+  Future<void> bootstrapAsync() async {}
+  Future<void> _bootstrapAsync() async {
+    if (!_bootedAsync) {
+      _bootedAsync = true;
+      if (_momentumLogging) {
+        print(_formatMomentumLog('[$this] => executing bootstrapAsync() { lazy: $_lazy } ...'));
+      }
+      var started = DateTime.now().millisecondsSinceEpoch;
       await bootstrapAsync();
+      var finished = DateTime.now().millisecondsSinceEpoch;
+      var diff = finished - started;
+      if (_momentumLogging) {
+        print(_formatMomentumLog('[$this] => bootstrapAsync() completed! { lazy: $_lazy, took: ${diff}ms }'));
+      }
     }
   }
 
@@ -431,7 +451,10 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     if (ctrls.isNotEmpty) {
       _models.addAll(ctrls.map((_) => null));
       for (int i = 0; i < ctrls.length; i++) {
-        if (ctrls[i]._lazy) ctrls[i]._bootstrap();
+        if (ctrls[i]._lazy) {
+          ctrls[i]._bootstrap();
+          ctrls[i]._bootstrapAsync();
+        }
         _updateModel(i, ctrls[i]?.model, ctrls[i], false);
         ctrls[i]?._addListenerInternal(
           _MomentumListener(
@@ -555,14 +578,22 @@ class _MomentumRootState extends State<_MomentumRoot> {
           .._initializeMomentumController();
       }
       _bootstrapControllers(widget.controllers);
+      _bootstrapControllersAsync(widget.controllers);
     }
     super.didChangeDependencies();
   }
 
-  void _bootstrapControllers(List<MomentumController> controllers) async {
+  void _bootstrapControllers(List<MomentumController> controllers) {
+    var lazyControllers = widget.controllers.where((e) => !e._lazy);
+    for (var lazyController in lazyControllers) {
+      lazyController._bootstrap();
+    }
+  }
+
+  void _bootstrapControllersAsync(List<MomentumController> controllers) async {
     var started = DateTime.now().millisecondsSinceEpoch;
     var nonLazyControllers = widget.controllers.where((e) => !e._lazy);
-    var futures = nonLazyControllers.map<Future>((e) => e._bootstrap());
+    var futures = nonLazyControllers.map<Future>((e) => e._bootstrapAsync());
     await Future.wait(futures);
     var finished = DateTime.now().millisecondsSinceEpoch;
     var diff = finished - started;
