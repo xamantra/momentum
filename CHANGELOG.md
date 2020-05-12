@@ -1,3 +1,9 @@
+## 1.1.2
+
+- Fixed health check: `Fix lib/src/momentum_base.dart. (-1 points)`
+
+<hr>
+
 ## 1.1.1
 
 - New feature: Asynchronous `bootstrap()` method now supports loading widget using `appLoader` parameter on `Momentum` root widget. If `appLoader` is not specified a default loading widget will be shown.
