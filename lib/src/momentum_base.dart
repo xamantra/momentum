@@ -34,7 +34,6 @@ class _MomentumListener<M> {
 @immutable
 abstract class MomentumModel<Controller extends MomentumController> {
   /// The controller that this model is attached to. Which is used for notifying [MomentumBuilder] for rebuilds.
-  @protected
   final Controller controller;
   const MomentumModel(this.controller);
 

@@ -14,3 +14,4 @@ doc/api/
 /.idea/discord.xml
 /.idea/libraries/Flutter_Plugins.xml
 /.idea/dictionaries/xamantra.xml
+example/lib/temp.dart
