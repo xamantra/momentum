@@ -15,7 +15,7 @@ class CounterController extends MomentumController<CounterModel> {
   }
 
   @override
-  void bootstrap() async {
+  Future<void> bootstrap() async {
     await Future.delayed(Duration(milliseconds: 5000));
   }
 

@@ -1,3 +1,12 @@
+## 1.1.3 - Breaking Changes
+
+- `bootstrap()` method is now synchronous only.
+- added `bootstrapAsync()` for separate asynchronous support.
+- For the execution order, `bootstrap()` gets called first then `bootstrapAsync()`.
+- added detailed logging for both `bootstrap()` and `bootstrapAsync()` so you can really see what gets executed first and the time it took.
+
+<hr>
+
 ## 1.1.2
 
 - Fixed health check: `Fix lib/src/momentum_base.dart. (-1 points)`
