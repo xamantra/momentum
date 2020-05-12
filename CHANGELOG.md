@@ -1,3 +1,9 @@
+## 1.1.4
+
+- exposed MomentumModel.controller property.
+
+<hr>
+
 ## 1.1.3 - Breaking Changes
 
 - `bootstrap()` method is now synchronous only.
