@@ -81,6 +81,18 @@ abstract class MomentumController<M> {
     return result;
   }
 
+  /// Get an instance of a service of type [T].
+  ///
+  /// This uses the method [Momentum.of] behind the scenes which the `context` is provided internally by [_MomentumRoot].
+  @protected
+  T getService<T extends MomentumService>() {
+    var result = Momentum.getService<T>(_momentumRootContext);
+    if (result == null) {
+      throw Exception(_formatMomentumLog('[$this]: called "dependOn<$T>()", but no service of type [$T] had been found.\nTry checking your "Momentum" root widget implementation if the service "$T" was instantiated there.'));
+    }
+    return result;
+  }
+
   bool _booted = false;
   bool _bootedAsync = false;
 
@@ -312,6 +324,8 @@ abstract class MomentumController<M> {
   }
 }
 
+abstract class MomentumService {}
+
 /// An abstract class that extends [State] that adds the [deactivated] property that indicates the visibility state of your widget.
 ///
 /// [_MomentumBuilderState] also extends this base class to be used internally by [_MomentumListener] which helps to filter listeners whose [State] is currently deactivated.
@@ -441,9 +455,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       if (c != null) {
         ctrls.add(c);
       } else {
-        if (!(t is MomentumController)) {
-          throw Exception('$_logHeader Attempted to inject "$t" as a controller failed because it\'s not a valid MomentumController. You can only inject a type that extend MomentumController');
-        }
         throw Exception('$_logHeader The controller of type "$t" is not initialized in the Momentum root widget.\nPossible solutions:\n\tCheck if you initialized the controller attached to this model on the Momentum root widget.');
       }
     }
@@ -634,9 +645,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
 
 @sealed
 class Momentum extends InheritedWidget {
-  const Momentum._internal({Key key, @required Widget child, List<MomentumController> controllers, ResetAll onResetAll})
+  const Momentum._internal({Key key, @required Widget child, List<MomentumController> controllers, List<MomentumService> services, ResetAll onResetAll})
       : this._controllers = controllers ?? const [],
         this._onResetAll = onResetAll,
+        this._services = services ?? const [],
         super(key: key, child: child);
 
   /// Momentum's root widget that efficiently propagate list of [MomentumController]s down the tree.
@@ -657,6 +669,7 @@ class Momentum extends InheritedWidget {
     @required Widget child,
     Widget appLoader,
     @required List<MomentumController> controllers,
+    List<MomentumService> services,
     ResetAll onResetAll,
     bool enableLogging,
     int maxTimeTravelSteps,
@@ -674,6 +687,7 @@ class Momentum extends InheritedWidget {
         minimumBootstrapTime: minimumBootstrapTime,
       ),
       controllers: controllers,
+      services: services,
       onResetAll: onResetAll,
     );
   }
@@ -704,6 +718,8 @@ class Momentum extends InheritedWidget {
   /// The list of controllers that was initialized in this [Momentum] instance.
   final List<MomentumController> _controllers;
 
+  final List<MomentumService> _services;
+
   /// The custom callback function for [Momentum.resetAll] method.
   final ResetAll _onResetAll;
 
@@ -714,6 +730,14 @@ class Momentum extends InheritedWidget {
       throw Exception('The controller of type "$T" doesn\'t exists or was not initialized from the "controllers" parameter in the Momentum constructor.');
     }
     return controller;
+  }
+
+  T _getService<T extends MomentumService>() {
+    var service = _services.firstWhere((c) => c is T, orElse: () => null);
+    if (service == null) {
+      throw Exception('The service class of type "$T" doesn\'t exists or was not initialized from the "services" parameter in the Momentum constructor.');
+    }
+    return service;
   }
 
   /// Used internally in the [Momentum.of] method to grab a controller that is initialized in the `controllers` parameter.
@@ -748,6 +772,8 @@ class Momentum extends InheritedWidget {
 
   /// Grab a specific [MomentumController] of a particular type from any build context.
   static T of<T extends MomentumController>(BuildContext context) => _getMomentumInstance(context)._getController<T>();
+
+  static T getService<T extends MomentumService>(BuildContext context) => _getMomentumInstance(context)._getService<T>();
 
   /// (internal) Grab a specific [MomentumController] of a particular type from any build context.
   static T _ofType<T extends MomentumController>(BuildContext context, Type t) => _getMomentumInstance(context)._getControllerOfType<T>(t, true);
