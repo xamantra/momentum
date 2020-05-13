@@ -18,14 +18,12 @@ In momentum a controller is called `MomentumController` and a model is called `M
 
 Take a look at this simple example which is a (as usual) counter app.
 
-**NOTE:** This code won't work out of the box. You need to setup something at your `main()` function. This is only a preview code on how momentum looks like. Please head to <a href="#/getting_started">Getting Started</a>.
+**NOTE:** This code won't work out of the box. You need to setup something at your `main()` function. This is only a preview code on how momentum looks like. Please head to **Getting Started**.
 
 > counter.model.dart
 
 ```dart
-// The code sure looks long for a counter app only. But there's nothing crazy going on here.
-// With model class you only have to define the properties you need.
-// The "value" property here is your own code the rest are boilerplate codes.
+import 'package:momentum/momentum.dart'; // import momentum
 
 class CounterModel extends MomentumModel<CounterController> {
   CounterModel(
@@ -50,6 +48,8 @@ class CounterModel extends MomentumModel<CounterController> {
 > counter.controller.dart
 
 ```dart
+import 'package:momentum/momentum.dart'; // import momentum
+
 class CounterController extends MomentumController<CounterModel> {
   @override
   CounterModel init() {
@@ -67,21 +67,17 @@ class CounterController extends MomentumController<CounterModel> {
 }
 ```
 
-> counter.dart
+> home.widget.dart
 
 ```dart
-// In this example widget, You can see that the text widget for
-// displaying the counter value and floatingActionButton is
-// wrapped in MomentumBuilder separately. It is highly recommended
-// to only wrap the widgets you need to rebuild. Especially when
-// your MomentumBuilder is listening to a lot of controllers.
+import 'package:momentum/momentum.dart'; // import momentum
 
-class CounterWidget extends StatelessWidget {
+class HomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Counter'),
+        title: Text('Momentum Counter'),
       ),
       body: Center(
         child: Column(
@@ -95,7 +91,7 @@ class CounterWidget extends StatelessWidget {
               builder: (context, snapshot) {
                 var counter = snapshot<CounterModel>();
                 return Text(
-                  '${counter.value}',
+                  '${counter.value}', // display the counter value
                   style: Theme.of(context).textTheme.headline4,
                 );
               },
@@ -106,7 +102,7 @@ class CounterWidget extends StatelessWidget {
       floatingActionButton: MomentumBuilder(
         controllers: [CounterController],
         builder: (context, snapshot) {
-          var controller = snapshot<CounterModel>().controller; // the circular reference.
+          var controller = snapshot<CounterModel>().controller; // circular reference.
           return FloatingActionButton(
             onPressed: controller.increment, // reference the `increment` method we defined above ^
             tooltip: 'Increment',

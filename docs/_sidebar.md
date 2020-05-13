@@ -1,2 +1,2 @@
-- [Home](/)
-- [Getting Started](getting_started.md "The greatest guide in the world")
+- [Home](/ "Momentum - State Management for Flutter")
+- [Getting Started](getting-started.md "Setup your project to work with momentum")
