@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
+import 'src/momentum/asynchronous/index.dart';
+import 'src/services/api.service.dart';
 import 'src/momentum/counter-advance/counter-advance.controller.dart';
 import 'src/momentum/counter-extreme/counter-extreme.controller.dart';
 import 'src/momentum/counter-insane/counter-insane.controller.dart';
@@ -18,7 +20,12 @@ void main() {
         CounterExtremeController(),
         CounterInsaneController()..config(maxTimeTravelSteps: 200),
         UndoRedoController()..config(maxTimeTravelSteps: 200),
-        TimerController()..config(lazy: true) // try changing the value of `lazy` to false and see the difference.
+        TimerController()..config(lazy: true, enableLogging: false) // try changing the value of `lazy` to false and see the difference.
+        ,
+        AsynchronousController(),
+      ],
+      services: [
+        ApiService(),
       ],
       enableLogging: false,
       child: MyApp(),

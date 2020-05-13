@@ -17,7 +17,7 @@ class TimerController extends MomentumController<TimerModel> {
   }
 
   @override
-  Future<void> bootstrap() async {
+  void bootstrap() {
     Timer.periodic(Duration(hours: 1), (value) {
       model.update(hours: (model.hours + 1) % 60);
     });
@@ -30,6 +30,7 @@ class TimerController extends MomentumController<TimerModel> {
     Timer.periodic(Duration(microseconds: 1), (value) {
       model.update(microseconds: (model.microseconds + 1) % 1000);
     });
+    return null;
   }
 
   String getLabel() {

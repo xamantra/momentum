@@ -552,9 +552,10 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 <h4>TODOs and Coming Soon features</h4>
 
-- Coming soon: `services` parameter for `Momentum` root widget
+- ✔ `(added on version 1.1.5)` Coming soon: `services` parameter for `Momentum` root widget
   - You can inject any type of non-widget objects here like service class that can be use globally in your app like api wrappers for example.
   - You can grab a specific service inside your controller only using: `getService<TypeHere>();` (this is the same way you call `dependOn<T>()` method.)
+  - ✔ Added on `1.1.5` and some ideas were changed during implementation.
 - I also created a vs code extension for [generating boilerplate code](#boilerplate-codes) but currently it's on my local environment only. I'm gonna upload it soon on the marketplace :)
 - I'm planning to add a feature for persisting the state using database or shared preference. Like `hydrated_bloc`. Another thing is that aside from state, I also want to persist the navigation state/history. For this, I think I need to create my own navigation/routing system that saves navigation history..._shruugs_. I'm not sure if I will/~~can~~ actually do it or not :)
 

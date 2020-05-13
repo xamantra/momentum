@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../src/widgets/asynchronous/asynchronous.dart';
 import '../../../src/widgets/counter-advance/counter-advance.dart';
 import '../../../src/widgets/counter-extreme/counter-extreme.dart';
 import '../../../src/widgets/counter-insane/counter-insane.dart';
@@ -15,4 +16,5 @@ final modules = [
   ItemCard(text: 'Counter Insane', icon: Icons.add_to_photos, expand: true, module: CounterInsane()),
   ItemCard(text: 'Undo / Redo', icon: Icons.refresh, expand: true, module: UndoRedo()),
   ItemCard(text: 'Timer', icon: Icons.timer, expand: true, module: Timer()),
+  ItemCard(text: 'Asynchronous', icon: Icons.sync, expand: true, module: Asynchronous()),
 ];

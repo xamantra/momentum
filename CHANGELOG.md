@@ -1,3 +1,29 @@
+## 1.1.5
+
+- New feature added: **Services**.
+- Inject anything into momentum and use them down the tree inside _widgets_ or _controllers_.
+- Example code:
+
+  ```dart
+  // main.dart
+  Momentum(
+    controllers: [...],
+    services: [
+      ApiService(),
+    ],
+    child: MyApp(),
+    ...
+  )
+
+  // *.controller.dart
+  void loadUser() async {
+    model.update(loadingUser: true);
+    var apiService = getService<ApiService>();
+    var user = await apiService.getUser(); // load data from server. asynchronous
+    model.update(loadingUser: false, user: user);
+  }
+  ```
+
 ## 1.1.4
 
 - exposed MomentumModel.controller property.
