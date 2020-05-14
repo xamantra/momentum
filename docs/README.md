@@ -70,6 +70,7 @@ class CounterController extends MomentumController<CounterModel> {
 > home.widget.dart
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart'; // import momentum
 
 class HomeWidget extends StatelessWidget {
