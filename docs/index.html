@@ -27,6 +27,9 @@
         },
         themeColor: "#54C5F8",
       };
+      if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('sw.js')
+      }
     </script>
     <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/prismjs/components/prism-dart.min.js"></script>
