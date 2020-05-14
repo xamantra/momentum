@@ -37,26 +37,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Momentum State Management', // Add you own title here.
-      theme: ThemeData(
-        /* replace the theme if you want */
-        primarySwatch: Colors.blue
-      ),
+      title: 'Momentum State Management',
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: HomeWidget(), // we're gonna create this later...
     );
   }
 }
 ```
 
-You can now test this setup. See if the app runs fine. Enter `flutter run` or your IDE's run function.
-
 #### Now, lets make a counter app!
 
-Create the folder `lib/src/components/counter` on you project directory.
+Create the folder `lib/src/components/counter` on your project directory.
 
 ## CounterModel
 
-Inside the `counter` folder, create `counter.model.dart` file.
+Inside the `counter` folder, create `counter.model.dart` file. Pay attention to the `value` property only the rest of the code is boilerplate.
 
 ```dart
 import 'package:momentum/momentum.dart'; // import momentum
@@ -120,6 +115,7 @@ Now, this widget file will not be included inside `components/counter` folder be
 **NOTE: Don't forget to import the controller and model file.**
 
 ```dart
+import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart'; // import momentum
 
 class HomeWidget extends StatelessWidget {
@@ -137,6 +133,7 @@ class HomeWidget extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             MomentumBuilder(
+              /* make this widget listen to CounterController */
               controllers: [CounterController],
               builder: (context, snapshot) {
                 var counter = snapshot<CounterModel>();
@@ -162,6 +159,26 @@ class HomeWidget extends StatelessWidget {
       ),
     );
   }
+}
+```
+
+**NOTE: Don't forget to import this widget file into** `main.dart`.
+
+## Final Step
+
+Remember the empty `controllers: []` parameter earlier? Now we are going to put something in it to make our counter app works.
+
+```dart
+void main() {
+  runApp(
+    Momentum(
+      controllers: [
+        /* the controller class we created earlier needs to be instantiated here. */
+        CounterController(),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 ```
 
