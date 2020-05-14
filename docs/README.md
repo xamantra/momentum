@@ -14,7 +14,7 @@ One aim of **momentum** is to make widget classes **parameter-less**. I'm pretty
 
 In momentum a controller is called `MomentumController` and a model is called `MomentumModel`. Both are tied to each other. MomentumController has MomentumModel property and vice-versa. This circular reference will be explained more later in the docs. While this library has those common features of a state management, it also has a lot of features that doesn't exists in other popular state management. You are going to see them later. The class you use to actually display your model is `MomentumBuilder` widget. You can access multiple controllers and models in a single momentum builder widget and can even skip rebuilds with `dontRebuildIf` parameter which is really powerful.
 
-### Quick Preview
+### Code Preview
 
 Take a look at this simple example which is a (as usual) counter app.
 
