@@ -1,2 +1,0 @@
-- [Home](/ "Momentum - State Management for Flutter")
-- [Getting Started](getting-started.md "Setup your project to work with momentum")
