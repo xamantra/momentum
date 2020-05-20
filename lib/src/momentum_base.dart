@@ -770,6 +770,7 @@ class Momentum extends InheritedWidget {
     }
   }
 
+  /// Restart app with new [Momentum] instance.
   static void restart(BuildContext context, Momentum momentum) {
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => momentum), (r) => false);
   }

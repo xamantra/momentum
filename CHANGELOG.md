@@ -1,4 +1,49 @@
 ## 1.1.5
+- New function added: `Momentum.restart(...)`
+  - Restart the app with new momentum instance.
+  - To easily implement, in you `main.dart` create a method that returns `Momentum` instance.
+    ```dart
+    void main() {
+      runApp(momentum()); // call the method here instead of instantiating the Momentum.
+    }
+
+    Momentum momentum() {
+      return Momentum(
+        child: MyApp(),
+        controllers: [
+          LoginController(),
+          SessionController()..config(lazy: false, enableLogging: true),
+          TimerController()..config(maxTimeTravelSteps: 5),
+          TimeclockController(),
+          AppController()..config(lazy: false, enableLogging: true),
+          SettingsController()..config(lazy: false),
+        ],
+        services: [
+          Router([
+            Login(),
+            Home(),
+            Settings(),
+            LanguageSelection(),
+            FontScale(),
+          ]),
+        ],
+        enableLogging: false,
+        onResetAll: (context, resetAll) async {
+          await Momentum.of<SessionController>(context).clearSession();
+          resetAll(context);
+          Router.goto(context, Login);
+        },
+      );
+    }
+    ```
+  - You can then call `Momentum.restart(...)` down the tree:
+    ```dart
+    Momentum.restart(context, momentum()); // call momentum() which is a top level function.
+    ```
+
+<hr>
+
+## 1.1.5
 
 - New feature added: **Services**.
 - Inject anything into momentum and use them down the tree inside _widgets_ or _controllers_.
