@@ -770,6 +770,10 @@ class Momentum extends InheritedWidget {
     }
   }
 
+  static void restart(BuildContext context, Momentum momentum) {
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => momentum), (r) => false);
+  }
+
   /// Grab a specific [MomentumController] of a particular type from any build context.
   static T of<T extends MomentumController>(BuildContext context) => _getMomentumInstance(context)._getController<T>();
 
