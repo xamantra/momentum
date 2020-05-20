@@ -1,4 +1,4 @@
-## 1.1.5
+## 1.1.6
 - New function added: `Momentum.restart(...)`
   - Restart the app with new momentum instance.
   - To easily implement, in you `main.dart` create a method that returns `Momentum` instance.
