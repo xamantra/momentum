@@ -9,6 +9,8 @@
 #   rules:
 #     - camel_case_types
 
+include: package:effective_dart/analysis_options.1.2.0.yaml
+
 analyzer:
 #   exclude:
 #     - path/to/excluded/files/**
