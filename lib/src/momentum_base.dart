@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+
 import 'momentum_types.dart';
 
 T trycatch<T>(T Function() body, [T defaultValue]) {
@@ -750,6 +751,7 @@ class Momentum extends InheritedWidget {
   }
 
   static Momentum _getMomentumInstance(BuildContext context) {
+    // ignore: deprecated_member_use
     return (context.inheritFromWidgetOfExactType(Momentum) as Momentum);
   }
 
