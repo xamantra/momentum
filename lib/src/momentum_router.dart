@@ -36,7 +36,11 @@ class Router extends MomentumService {
 
   List<int> _history = [];
 
-  Future<void> _goto(BuildContext context, Type route) async {
+  Future<void> _goto(
+    BuildContext context,
+    Type route, {
+    Route Function(BuildContext, Widget) transition,
+  }) async {
     var findWidgetOfType = _pages.firstWhere(
       (e) => e.runtimeType == route,
       orElse: () => null,
@@ -54,13 +58,13 @@ class Router extends MomentumService {
       if (_history.isEmpty) {
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       } else {
-        await Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) => findWidgetOfType,
-          ),
-          (r) => false,
-        );
+        Route r;
+        if (transition != null) {
+          r = transition(context, findWidgetOfType);
+        } else {
+          r = MaterialPageRoute(builder: (_) => findWidgetOfType);
+        }
+        await Navigator.pushAndRemoveUntil(context, r, (r) => false);
       }
     } else {
       print('[$MomentumService -> $Router]: Unable to '
@@ -68,7 +72,10 @@ class Router extends MomentumService {
     }
   }
 
-  void _pop(BuildContext context) async {
+  void _pop(
+    BuildContext context, {
+    Route Function(BuildContext, Widget) transition,
+  }) async {
     trycatch(() => _history.removeLast());
     _persistSaver(
       _rootContext,
@@ -79,13 +86,13 @@ class Router extends MomentumService {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     } else {
       var activePage = _getActivePage();
-      await Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => activePage,
-        ),
-        (r) => false,
-      );
+      Route r;
+      if (transition != null) {
+        r = transition(context, activePage);
+      } else {
+        r = MaterialPageRoute(builder: (_) => activePage);
+      }
+      await Navigator.pushAndRemoveUntil(context, r, (r) => false);
     }
   }
 
@@ -128,18 +135,26 @@ class Router extends MomentumService {
   /// The function to navigate to a specific
   /// route. You specify the route using a type
   /// NOT a string route name or a [MaterialPageRoute].
-  static Future<void> goto(BuildContext context, Type route) async {
+  static Future<void> goto(
+    BuildContext context,
+    Type route, {
+    Route Function(BuildContext, Widget) transition,
+  }) async {
     var service = Momentum.getService<Router>(context);
     await service._goto(
       context,
       route,
+      transition: transition,
     );
   }
 
   /// Works like [Navigation.pop].
-  static void pop<T extends Object>(BuildContext context, [T result]) {
+  static void pop<T extends Object>(
+    BuildContext context, {
+    Route Function(BuildContext, Widget) transition,
+  }) {
     var service = Momentum.getService<Router>(context);
-    var routeResult = service._pop(context);
+    var routeResult = service._pop(context, transition: transition);
     return routeResult;
   }
 
