@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+import 'momentum_router.dart';
 
 import 'momentum_types.dart';
 
-T _trycatch<T>(T Function() body, [T defaultValue]) {
+///
+T trycatch<T>(T Function() body, [T defaultValue]) {
   try {
     var result = body();
     return result ?? defaultValue;
@@ -16,7 +18,8 @@ T _trycatch<T>(T Function() body, [T defaultValue]) {
   }
 }
 
-Future<T> _tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
+///
+Future<T> tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
   try {
     var result = await body();
     return result ?? defaultValue;
@@ -253,7 +256,7 @@ abstract class MomentumController<M> {
       if (_momentumModelHistory.length == _maxTimeTravelSteps) {
         _momentumModelHistory.removeAt(0);
         var historyCount = _momentumModelHistory.length;
-        var firstItem = _trycatch(() => _momentumModelHistory[0]);
+        var firstItem = trycatch(() => _momentumModelHistory[0]);
         _initialMomentumModel = historyCount > 0 ? firstItem : model;
       }
       _currentActiveModel = model;
@@ -261,7 +264,7 @@ abstract class MomentumController<M> {
       _momentumModelHistory.add(_currentActiveModel);
 
       _nextModel = null;
-      _prevModel = _trycatch(
+      _prevModel = trycatch(
         () => _momentumModelHistory[_momentumModelHistory.length - 2],
       );
     }
@@ -296,8 +299,8 @@ abstract class MomentumController<M> {
 
   Future<void> _persistModel(M model) async {
     var momentum = Momentum._getMomentumInstance(_momentumRootContext);
-    var json = _trycatch(() => (model as MomentumModel).toJson());
-    var modelRawJson = _trycatch(() => jsonEncode(json));
+    var json = trycatch(() => (model as MomentumModel).toJson());
+    var modelRawJson = trycatch(() => jsonEncode(json));
     if (momentum._persistSave != null) {
       if (modelRawJson == null || modelRawJson.isEmpty) {
         print(_formatMomentumLog('[$this] "persistSave" is specified '
@@ -325,7 +328,7 @@ abstract class MomentumController<M> {
     var momentum = Momentum._getMomentumInstance(_momentumRootContext);
     if (momentum._persistGet != null) {
       var key = '[$this {$M}]';
-      var modelRawJson = await _tryasync(
+      var modelRawJson = await tryasync(
         () => momentum._persistGet(_momentumRootContext, key),
       );
       if (modelRawJson == null || modelRawJson.isEmpty) {
@@ -333,13 +336,13 @@ abstract class MomentumController<M> {
             'value using "persistGet". There might not be a data yet '
             'or there\'s something wrong with your implementation.'));
       } else {
-        var json = _trycatch(() => jsonDecode(modelRawJson));
+        var json = trycatch(() => jsonDecode(modelRawJson));
         if (json == null) {
           print(_formatMomentumLog('[$this] unable to parse persisted'
               'value using "jsonDecode" into a map. '
               'The raw json value is ```$modelRawJson```.'));
         } else {
-          result = _trycatch(
+          result = trycatch(
             () => (model as MomentumModel).fromJson(json),
           ) as M;
           if (result == null) {
@@ -361,7 +364,7 @@ abstract class MomentumController<M> {
       _nextModel = latestModel;
       _momentumModelHistory.removeWhere((x) => x == latestModel);
       _momentumModelHistory.insert(0, latestModel);
-      _prevModel = _trycatch(
+      _prevModel = trycatch(
         () => _momentumModelHistory[_momentumModelHistory.length - 2],
       );
       _setMomentum(null, backward: true);
@@ -379,10 +382,10 @@ abstract class MomentumController<M> {
       var firstModel = _momentumModelHistory.first;
       _momentumModelHistory.removeWhere((x) => x == firstModel);
       _momentumModelHistory.add(firstModel);
-      _prevModel = _trycatch(
+      _prevModel = trycatch(
         () => _momentumModelHistory[_momentumModelHistory.length - 2],
       );
-      _nextModel = _trycatch(() => _momentumModelHistory[0]);
+      _nextModel = trycatch(() => _momentumModelHistory[0]);
       if (_nextModel == _initialMomentumModel) {
         _nextModel = null;
       }
@@ -715,6 +718,7 @@ class _MomentumRoot extends StatefulWidget {
   final Widget child;
   final Widget appLoader;
   final List<MomentumController> controllers;
+  final List<MomentumService> services;
   final bool enableLogging;
   final int maxTimeTravelSteps;
   final bool lazy;
@@ -725,6 +729,7 @@ class _MomentumRoot extends StatefulWidget {
     @required this.child,
     this.appLoader,
     @required this.controllers,
+    @required this.services,
     this.enableLogging,
     this.maxTimeTravelSteps,
     this.lazy,
@@ -739,8 +744,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
   bool _rootStateInitialized = false;
   bool _controllersBootstrapped = false;
   bool _persisted = false;
+  bool _servicesInitialized = false;
   bool get _canStartApp {
-    return _rootStateInitialized && _controllersBootstrapped && _persisted;
+    // ignore: lines_longer_than_80_chars
+    return _rootStateInitialized && _controllersBootstrapped && _persisted && _servicesInitialized;
   }
 
   @override
@@ -760,6 +767,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       _getPersistedModels(widget.controllers);
       _bootstrapControllers(widget.controllers);
       _bootstrapControllersAsync(widget.controllers);
+      _initServices(widget.services);
     }
     super.didChangeDependencies();
   }
@@ -773,6 +781,23 @@ class _MomentumRootState extends State<_MomentumRoot> {
     }
     setState(() {
       _persisted = true;
+    });
+  }
+
+  void _initServices(List<MomentumService> services) async {
+    var momentum = Momentum._getMomentumInstance(context);
+    for (var service in services) {
+      if (service is Router) {
+        service.setFunctions(
+          context,
+          momentum._persistSave,
+          momentum._persistGet,
+        );
+        await service.init();
+      }
+    }
+    setState(() {
+      _servicesInitialized = true;
     });
   }
 
@@ -837,17 +862,8 @@ class Momentum extends InheritedWidget {
     List<MomentumController> controllers,
     List<MomentumService> services,
     ResetAll onResetAll,
-    Future<bool> Function(
-      BuildContext context,
-      String key,
-      String value,
-    )
-        persistSave,
-    Future<String> Function(
-      BuildContext context,
-      String key,
-    )
-        persistGet,
+    PersistSaver persistSave,
+    PersistGet persistGet,
   })  : _controllers = controllers ?? const [],
         _onResetAll = onResetAll,
         _services = services ?? const [],
@@ -866,23 +882,15 @@ class Momentum extends InheritedWidget {
     int maxTimeTravelSteps,
     bool lazy,
     int minimumBootstrapTime,
-    Future<bool> Function(
-      BuildContext context,
-      String key,
-      String value,
-    )
-        persistSave,
-    Future<String> Function(
-      BuildContext context,
-      String key,
-    )
-        persistGet,
+    PersistSaver persistSave,
+    PersistGet persistGet,
   }) {
     return Momentum._internal(
       child: _MomentumRoot(
         child: child,
         appLoader: appLoader,
         controllers: controllers,
+        services: services,
         enableLogging: enableLogging,
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,
@@ -933,15 +941,8 @@ class Momentum extends InheritedWidget {
 
   final ResetAll _onResetAll;
 
-  final Future<bool> Function(
-    BuildContext context,
-    String key,
-    String value,
-  ) _persistSave;
-  final Future<String> Function(
-    BuildContext context,
-    String key,
-  ) _persistGet;
+  final PersistSaver _persistSave;
+  final PersistGet _persistGet;
 
   T _getController<T extends MomentumController>([bool isInternal = false]) {
     var controller = _controllers.firstWhere((c) => c is T, orElse: () => null);

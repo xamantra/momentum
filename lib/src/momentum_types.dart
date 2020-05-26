@@ -18,3 +18,14 @@ typedef BuildSkipper = bool Function(
   T Function<T extends MomentumController>(),
   bool isTimeTravel,
 );
+
+typedef PersistSaver = Future<bool> Function(
+  BuildContext context,
+  String key,
+  String value,
+);
+
+typedef PersistGet = Future<String> Function(
+  BuildContext context,
+  String key,
+);
