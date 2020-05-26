@@ -211,7 +211,7 @@ abstract class MomentumController<M> {
     return model;
   }
 
-  /// Initial the model of this controller.
+  /// Initialize the model of this controller.
   /// Required to be implemented.
   @protected
   @required
@@ -400,6 +400,8 @@ abstract class MomentumController<M> {
   /// Add a listener for this controller.
   /// Requires [MomentumState].
   /// Example uses is for displaying dialogs, snackbars, and navigation.
+  /// It is highly recommended to only call this
+  /// inside [MomentumState.initMomentumState].
   void addListener({
     @required MomentumState state,
     void Function(M, bool) invoke,
@@ -519,7 +521,7 @@ abstract class MomentumState<T extends StatefulWidget> extends State<T> {
   void initMomentumState() {}
 }
 
-/// The widget class for display your model properties.
+/// The widget class for displaying your model properties.
 @sealed
 class MomentumBuilder extends StatefulWidget {
   /// Optional used for detailed error logs.
