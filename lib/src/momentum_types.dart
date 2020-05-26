@@ -4,8 +4,17 @@ import 'momentum_base.dart';
 
 typedef MomentumSnapshot<T> = T Function<T extends MomentumModel>();
 
-typedef MomentumBuilderFunction = Widget Function(BuildContext, MomentumSnapshot);
+typedef MomentumBuilderFunction = Widget Function(
+  BuildContext,
+  MomentumSnapshot,
+);
 
-typedef ResetAll = void Function(BuildContext, void Function(BuildContext) resetAll);
+typedef ResetAll = void Function(
+  BuildContext,
+  void Function(BuildContext) resetAll,
+);
 
-typedef BuildSkipper = bool Function(T Function<T extends MomentumController>(), bool isTimeTravel);
+typedef BuildSkipper = bool Function(
+  T Function<T extends MomentumController>(),
+  bool isTimeTravel,
+);
