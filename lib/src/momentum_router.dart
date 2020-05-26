@@ -12,7 +12,8 @@ const _MOMENTUM_ROUTER_HISTORY = 'MOMENTUM_ROUTER_HISTORY';
 class Router extends MomentumService {
   /// Create an instance of [Router]
   /// that can be injected to momentum
-  /// as a service.
+  /// as a service. Takes a list of
+  /// widgets as routes.
   Router(List<Widget> pages) : _pages = pages;
   final List<Widget> _pages;
 
@@ -50,9 +51,7 @@ class Router extends MomentumService {
         _MOMENTUM_ROUTER_HISTORY,
         jsonEncode(_history),
       );
-      // _sharedPreferences.setString(P_ROUTER_HISTORY, jsonEncode(_history));
       if (_history.isEmpty) {
-        // Navigator.pop(context);
         SystemChannels.platform.invokeMethod('SystemNavigator.pop');
       } else {
         await Navigator.pushAndRemoveUntil(
@@ -76,9 +75,7 @@ class Router extends MomentumService {
       _MOMENTUM_ROUTER_HISTORY,
       jsonEncode(_history),
     );
-    // _sharedPreferences.setString(P_ROUTER_HISTORY, jsonEncode(_history));
     if (_history.isEmpty) {
-      // Navigator.pop(context);
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     } else {
       var activePage = _getActivePage();
@@ -96,15 +93,10 @@ class Router extends MomentumService {
   /// This is automatically called by the
   /// library.
   Future<void> init() async {
-    // _sharedPreferences = await SharedPreferences.getInstance();
     var historyJson = await tryasync(
       () => _persistGet(_rootContext, _MOMENTUM_ROUTER_HISTORY),
       '[]',
     );
-    // var historyJson = trycatch(
-    //   () => _sharedPreferences.getString(P_ROUTER_HISTORY),
-    //   '[]',
-    // );
     var result = jsonDecode(historyJson);
     _history = (result as List).map<int>((e) => e as int).toList();
     if (_history.isEmpty) {
@@ -131,8 +123,6 @@ class Router extends MomentumService {
       _MOMENTUM_ROUTER_HISTORY,
       jsonEncode(_history),
     );
-    // await _sharedPreferences.setString
-    // (P_ROUTER_HISTORY, jsonEncode(_history));
   }
 
   /// The function to navigate to a specific
@@ -163,15 +153,22 @@ class Router extends MomentumService {
   }
 }
 
-///
+/// Wrap your screen widget with this
+/// to properly implement popping
+/// with system back button.
 class RouterPage extends StatelessWidget {
-  ///
+  /// This is mostly the screen widget or
+  /// a page type widget like Scaffold.
   final Widget child;
 
-  ///
+  /// Just like [WillPopScope], you can
+  /// also override the popping behaviour
+  /// for system back button.
   final Future<bool> Function() onWillPop;
 
-  ///
+  /// Wrap your screen widget with this
+  /// to properly implement popping
+  /// with system back button.
   const RouterPage({
     Key key,
     @required this.child,
