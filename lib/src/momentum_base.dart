@@ -258,6 +258,7 @@ abstract class MomentumController<M> {
     if (isTimeTravel) {
       _currentActiveModel = _momentumModelHistory.last;
     } else {
+      // equatable check, do not update model if values are the same.
       if (_currentActiveModel == model) {
         return;
       }
@@ -424,10 +425,10 @@ abstract class MomentumController<M> {
   /// An `undo` function for states.
   /// This method will set the model state one step behind.
   void backward() {
-    if (_currentActiveModel != _initialMomentumModel) {
+    if (!identical(_currentActiveModel, _initialMomentumModel)) {
       var latestModel = _momentumModelHistory.last;
       _nextModel = latestModel;
-      _momentumModelHistory.removeWhere((x) => x == latestModel);
+      _momentumModelHistory.removeWhere((x) => identical(x, latestModel));
       _momentumModelHistory.insert(0, latestModel);
       _prevModel = trycatch(
         () => _momentumModelHistory[_momentumModelHistory.length - 2],
@@ -442,16 +443,19 @@ abstract class MomentumController<M> {
   /// set the model state one step ahead.
   void forward() {
     var latestNotNull = _latestMomentumModel != null;
-    var currentNotLatest = _currentActiveModel != _latestMomentumModel;
+    var currentNotLatest = !identical(
+      _currentActiveModel,
+      _latestMomentumModel,
+    );
     if (latestNotNull && currentNotLatest) {
       var firstModel = _momentumModelHistory.first;
-      _momentumModelHistory.removeWhere((x) => x == firstModel);
+      _momentumModelHistory.removeWhere((x) => identical(x, firstModel));
       _momentumModelHistory.add(firstModel);
       _prevModel = trycatch(
         () => _momentumModelHistory[_momentumModelHistory.length - 2],
       );
       _nextModel = trycatch(() => _momentumModelHistory[0]);
-      if (_nextModel == _initialMomentumModel) {
+      if (identical(_nextModel, _initialMomentumModel)) {
         _nextModel = null;
       }
       _setMomentum(null, forward: true);
