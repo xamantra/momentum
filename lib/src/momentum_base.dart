@@ -193,14 +193,19 @@ abstract class MomentumController<M> {
 
   bool _momentumControllerInitialized = false;
 
-  M _initializeMomentumController() {
+  Future<void> _initializeMomentumController() async {
     _checkInitImplementation();
     if (!_momentumControllerInitialized) {
+      _persistenceConfigured(true);
       _momentumControllerInitialized = true;
       _momentumListeners ??= [];
       _externalMomentumListeners ??= [];
       _momentumModelHistory ??= [];
       _currentActiveModel = init();
+      var persistedModel = await _getPersistedModel();
+      if (persistedModel != null) {
+        _currentActiveModel = persistedModel;
+      }
       _momentumModelHistory.add(_currentActiveModel);
       _initialMomentumModel ??= _momentumModelHistory[0];
       if (_momentumLogging) {
@@ -253,6 +258,9 @@ abstract class MomentumController<M> {
     if (isTimeTravel) {
       _currentActiveModel = _momentumModelHistory.last;
     } else {
+      if (_currentActiveModel == model) {
+        return;
+      }
       if (_momentumModelHistory.length == _maxTimeTravelSteps) {
         _momentumModelHistory.removeAt(0);
         var historyCount = _momentumModelHistory.length;
@@ -297,24 +305,78 @@ abstract class MomentumController<M> {
     }
   }
 
-  Future<void> _persistModel(M model) async {
+  /// You can use this method to
+  /// enable/disable persistence
+  /// for this controller.
+  /// Returns `false` by default.
+  /// Because this is asynchronous,
+  /// you can do any asynchronous code.
+  Future<bool> skipPersist() async {
+    return false;
+  }
+
+  bool _persistenceConfigured([bool printLog = false]) {
     var momentum = Momentum._getMomentumInstance(_momentumRootContext);
-    var json = trycatch(() => (model as MomentumModel).toJson());
-    var modelRawJson = trycatch(() => jsonEncode(json));
+    var hasSaver = momentum._persistSave != null;
+    var hasGet = momentum._persistGet != null;
+    if (hasSaver && !hasGet) {
+      if (_momentumLogging && printLog) {
+        print(_formatMomentumLog('[$this] "persistSave" is '
+            'specified but "persistGet" is not. These two functions must '
+            'be present to enable persistence state.'));
+      }
+    }
+    if (!hasSaver == null && hasGet) {
+      if (_momentumLogging && printLog) {
+        print(_formatMomentumLog('[$this] "persistGet" is '
+            'specified but "persistSave" is not. These two functions must '
+            'be present to enable persistence state.'));
+      }
+    }
+    var configured = hasSaver && hasGet;
+    if (configured && _momentumLogging && printLog) {
+      print(
+        '[$Momentum] Persistence state ready with key "$persistenceKey"',
+      );
+    }
+    return configured;
+  }
+
+  String _persistenceKey;
+
+  /// The key used internally by momentum
+  /// for persistence with this controller.
+  /// You can also use this to clear the data
+  /// or even override the persisted json value
+  /// (**use with caution**).
+  String get persistenceKey {
+    if (_persistenceKey == null) {
+      _persistenceKey = '$Momentum[$this<$M>]'.replaceAll('\'', '');
+    }
+    return _persistenceKey;
+  }
+
+  Future<void> _persistModel(M model) async {
+    var skip = await skipPersist();
+    if (skip || !_persistenceConfigured()) return;
+    var momentum = Momentum._getMomentumInstance(_momentumRootContext);
     if (momentum._persistSave != null) {
+      var json = trycatch(() => (model as MomentumModel).toJson());
+      var modelRawJson = trycatch(() => jsonEncode(json));
       if (modelRawJson == null || modelRawJson.isEmpty) {
-        print(_formatMomentumLog('[$this] "persistSave" is specified '
-            'but the $M\'s "toJson" implementation returns '
-            'a null or empty string when "jsonEncode(...)" '
-            'was called. Try to check the implementation.'));
+        if (_momentumLogging) {
+          print(_formatMomentumLog('[$this] "persistSave" is specified '
+              'but the $M\'s "toJson" implementation returns '
+              'a null or empty string when "jsonEncode(...)" '
+              'was called. Try to check the implementation.'));
+        }
       } else {
-        var key = '[$this {$M}]';
         var isSaved = await momentum._persistSave(
           _momentumRootContext,
-          key,
+          persistenceKey,
           modelRawJson,
         );
-        if (!isSaved) {
+        if (!isSaved && _momentumLogging) {
           print(_formatMomentumLog('[$this] wasn\'t able '
               'to save your model state using "persistSave". '
               'Try to check your code.'));
@@ -324,20 +386,23 @@ abstract class MomentumController<M> {
   }
 
   Future<M> _getPersistedModel() async {
+    var skip = await skipPersist();
+    if (skip || !_persistenceConfigured()) return null;
     M result;
     var momentum = Momentum._getMomentumInstance(_momentumRootContext);
     if (momentum._persistGet != null) {
-      var key = '[$this {$M}]';
       var modelRawJson = await tryasync(
-        () => momentum._persistGet(_momentumRootContext, key),
+        () => momentum._persistGet(_momentumRootContext, persistenceKey),
       );
       if (modelRawJson == null || modelRawJson.isEmpty) {
-        print(_formatMomentumLog('[$this] unable to get persisted'
-            'value using "persistGet". There might not be a data yet '
-            'or there\'s something wrong with your implementation.'));
+        if (_momentumLogging) {
+          print(_formatMomentumLog('[$this] unable to get persisted'
+              'value using "persistGet". There might not be a data yet '
+              'or there\'s something wrong with your implementation.'));
+        }
       } else {
         var json = trycatch(() => jsonDecode(modelRawJson));
-        if (json == null) {
+        if (json == null && _momentumLogging) {
           print(_formatMomentumLog('[$this] unable to parse persisted'
               'value using "jsonDecode" into a map. '
               'The raw json value is ```$modelRawJson```.'));
@@ -345,7 +410,7 @@ abstract class MomentumController<M> {
           result = trycatch(
             () => (model as MomentumModel).fromJson(json),
           ) as M;
-          if (result == null) {
+          if (result == null && _momentumLogging) {
             print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
                 'Try to check your "$M.fromJson()" implementation.'));
           }
@@ -743,13 +808,13 @@ class _MomentumRoot extends StatefulWidget {
 
 @sealed
 class _MomentumRootState extends State<_MomentumRoot> {
+  bool _modelsInitialized = false;
   bool _rootStateInitialized = false;
   bool _controllersBootstrapped = false;
-  bool _persisted = false;
   bool _servicesInitialized = false;
   bool get _canStartApp {
     // ignore: lines_longer_than_80_chars
-    return _rootStateInitialized && _controllersBootstrapped && _persisted && _servicesInitialized;
+    return _rootStateInitialized && _controllersBootstrapped && _modelsInitialized && _servicesInitialized;
   }
 
   @override
@@ -757,32 +822,32 @@ class _MomentumRootState extends State<_MomentumRoot> {
   void didChangeDependencies() {
     if (!_rootStateInitialized) {
       _rootStateInitialized = true;
-      for (var controller in widget.controllers) {
-        (controller.._setMomentumRootContext = context)
-          .._configInternal(
-            enableLogging: widget.enableLogging,
-            maxTimeTravelSteps: widget.maxTimeTravelSteps,
-            lazy: widget.lazy,
-          )
-          .._initializeMomentumController();
-      }
-      _getPersistedModels(widget.controllers);
-      _bootstrapControllers(widget.controllers);
-      _bootstrapControllersAsync(widget.controllers);
-      _initServices(widget.services);
+      _init();
     }
     super.didChangeDependencies();
   }
 
-  void _getPersistedModels(List<MomentumController> controllers) async {
+  Future<void> _init() async {
+    await _initControllerModel(widget.controllers);
+    _bootstrapControllers(widget.controllers);
+    _bootstrapControllersAsync(widget.controllers);
+    _initServices(widget.services);
+  }
+
+  Future<void> _initControllerModel(
+    List<MomentumController> controllers,
+  ) async {
     for (var controller in controllers) {
-      var result = await controller._getPersistedModel();
-      if (result != null) {
-        controller._setMomentum(result);
-      }
+      controller._setMomentumRootContext = context;
+      controller._configInternal(
+        enableLogging: widget.enableLogging,
+        maxTimeTravelSteps: widget.maxTimeTravelSteps,
+        lazy: widget.lazy,
+      );
+      await controller._initializeMomentumController();
     }
     setState(() {
-      _persisted = true;
+      _modelsInitialized = true;
     });
   }
 

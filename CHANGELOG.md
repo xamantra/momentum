@@ -1,3 +1,12 @@
+## 1.1.7 (Coming on _pub.dev_ Soon!)
+- Persistent state.
+- Persistent navigation/routing.
+- Equatable support.
+
+**NOTE: All these new features are optional and your existing projects with momentum should still work fine.**
+
+<hr>
+
 ## 1.1.6
 - New function added: `Momentum.restart(...)`
   - Restart the app with new momentum instance.
