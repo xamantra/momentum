@@ -489,13 +489,23 @@ abstract class MomentumController<M> {
   /// Reset the model of this controller.
   /// The implementation of `init()` is used.
   ///
-  /// NOTE: The model history is not cleared
-  /// so you can still use time-travel methods
-  /// `backward()` and `forward()`.
-  void reset() {
+  /// UPDATE: You can now optionally clear the
+  /// state history with `clearHistory` parameter.
+  /// Please note that it would also reset your
+  /// undo/redo state.
+  void reset({bool clearHistory}) {
     _checkInitImplementation();
-    _currentActiveModel = init();
-    _setMomentum(_currentActiveModel);
+    if (clearHistory ?? false) {
+      _momentumModelHistory.clear();
+      _currentActiveModel = init();
+      _momentumModelHistory.add(_currentActiveModel);
+      _initialMomentumModel = _momentumModelHistory[0];
+      _latestMomentumModel = _momentumModelHistory[0];
+      _setMomentum(null, backward: true);
+    } else {
+      _currentActiveModel = init();
+      _setMomentum(_currentActiveModel);
+    }
     if (_momentumLogging) {
       print(_formatMomentumLog('[$this] has been reset.'));
     }
