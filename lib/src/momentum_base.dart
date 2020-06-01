@@ -1109,14 +1109,34 @@ class Momentum extends InheritedWidget {
   /// The static method for getting controllers inside widget.
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
+  ///
+  /// **NOTE:** Please use `Momentum.controller<T>` for consistency.
+  /// `Momentum.of<T>` will be deprecated in the future.
   static T of<T extends MomentumController>(BuildContext context) {
+    return _getMomentumInstance(context)._getController<T>();
+  }
+
+  /// The static method for getting controllers inside widget.
+  /// It uses deprecated method `inheritFromWidgetOfExactType`
+  /// to support older versions of flutter.
+  static T controller<T extends MomentumController>(BuildContext context) {
     return _getMomentumInstance(context)._getController<T>();
   }
 
   /// The static method for getting services inside a widget.
   /// The service must be marked with [MomentumService] and
   /// injected into [Momentum] root widget.
+  ///
+  /// **NOTE:** Please use `Momentum.service<T>` for consistency.
+  /// `Momentum.getService<T>` will be deprecated in the future.
   static T getService<T extends MomentumService>(BuildContext context) {
+    return _getMomentumInstance(context)._getService<T>();
+  }
+
+  /// The static method for getting services inside a widget.
+  /// The service must be marked with [MomentumService] and
+  /// injected into [Momentum] root widget.
+  static T service<T extends MomentumService>(BuildContext context) {
     return _getMomentumInstance(context)._getService<T>();
   }
 
