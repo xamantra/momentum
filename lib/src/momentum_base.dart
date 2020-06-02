@@ -799,14 +799,10 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
         setState(_);
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
-        print('[$Momentum] -> $_updateModel: $e\nDon\t worry about '
-            'this exception, your app still runs fine. This error '
-            'is catched by the library. This likely happens when '
-            'you call "model.update(...)" from one of this widget\'s '
-            'descendants while the widget tree is still building.');
-        if (controller._momentumLogging) {
-          print(StackTrace.current);
-        }
+        // ignore the setState error because
+        // it is allowed to call "model.update(...)"
+        // inside initState or when the widget tree is
+        // not finish building yet.
       }
     }
   }
