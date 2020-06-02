@@ -372,8 +372,15 @@ abstract class MomentumController<M> {
     if (skip || !_persistenceConfigured()) return;
     var momentum = Momentum._getMomentumInstance(_momentumRootContext);
     if (momentum._persistSave != null) {
-      var json = trycatch(() => (model as MomentumModel).toJson());
-      var modelRawJson = trycatch(() => jsonEncode(json));
+      Map<String, dynamic> json;
+      String modelRawJson;
+      try {
+        json = (model as MomentumModel).toJson();
+        modelRawJson = jsonEncode(json);
+      } on dynamic catch (e, stackStrace) {
+        print(e);
+        print(stackStrace);
+      }
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
           print(_formatMomentumLog('[$this] "persistSave" is specified '
@@ -418,9 +425,12 @@ abstract class MomentumController<M> {
               'value using "jsonDecode" into a map. '
               'The raw json value is ```$modelRawJson```.'));
         } else {
-          result = trycatch(
-            () => (model as MomentumModel).fromJson(json),
-          ) as M;
+          try {
+            result = (model as MomentumModel).fromJson(json) as M;
+          } on dynamic catch (e, stackStrace) {
+            print(e);
+            print(stackStrace);
+          }
           if (result == null && _momentumLogging) {
             print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
                 'Try to check your "$M.fromJson()" implementation.'));
