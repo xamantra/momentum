@@ -558,7 +558,7 @@ abstract class MomentumController<M> {
     int maxTimeTravelSteps,
     bool lazy,
   }) {
-    _momentumLogging ??= enableLogging ?? true;
+    _momentumLogging ??= enableLogging ?? false;
     _maxTimeTravelSteps ??= (maxTimeTravelSteps ?? 1).clamp(1, 250);
     _lazy ??= lazy ?? true;
   }
