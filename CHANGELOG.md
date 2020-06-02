@@ -1,7 +1,13 @@
 ## 1.1.7 (Coming on _pub.dev_ Soon!)
+Major changes:
 - Persistent state.
 - Persistent navigation/routing.
 - Equatable support.
+
+Minor changes:
+  - `Momentum.controller<T>` is now the recommended way of getting a controller using context instead of `Momentum.of<T>`.
+  - `Momentum.service<T>` is now the recommended way of getting a service using context instead of `Momentum.getService<T>`.
+  - `enableLogging` is now default to `false`.
 
 **NOTE: All these new features are optional and your existing projects with momentum should still work fine.**
 
