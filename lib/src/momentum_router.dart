@@ -118,11 +118,19 @@ class Router extends MomentumService {
     return findWidgetByIndex;
   }
 
-  /// If you called [Momentum.restart],
-  /// you may also want to call this to
-  /// optionally go to a specific route
-  /// right after when the app restarts.
-  void restart<T extends Widget>() async {
+  /// Clear navigation history.
+  Future<void> clearHistory() async {
+    _history.clear();
+    _history = [];
+    await _persistSaver(
+      _rootContext,
+      _MOMENTUM_ROUTER_HISTORY,
+      jsonEncode(_history),
+    );
+  }
+
+  /// Clear navigation history and set an initial page.
+  void reset<T extends Widget>() async {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
     await _persistSaver(
@@ -165,6 +173,20 @@ class Router extends MomentumService {
     var service = Momentum.getService<Router>(context);
     var page = service._getActivePage();
     return page;
+  }
+
+  /// Clear navigation history using context.
+  static Future<void> clearHistoryWithContext(BuildContext context) async {
+    var service = Momentum.getService<Router>(context);
+    await service.clearHistory();
+  }
+
+  /// Clear navigation history using context and set an initial page.
+  static Future<void> resetWithContext<T extends Widget>(
+    BuildContext context,
+  ) async {
+    var service = Momentum.getService<Router>(context);
+    await service.reset<T>();
   }
 }
 
