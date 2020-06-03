@@ -63,8 +63,8 @@ abstract class MomentumModel<Controller extends MomentumController> {
   /// A method which must be explicitly called
   /// inside your `update()` implementation.
   @protected
-  void updateMomentum({bool skipRebuild}) {
-    controller._setMomentum(this, skipRebuild: skipRebuild);
+  void updateMomentum() {
+    controller._setMomentum(this);
   }
 
   /// This is different from the usual factory `fromJson` method.
@@ -254,9 +254,7 @@ abstract class MomentumController<M> {
     M model, {
     bool backward = false,
     bool forward = false,
-    bool skipRebuild,
   }) {
-    var skip = skipRebuild ?? false;
     var isTimeTravel = backward || forward;
     if (isTimeTravel) {
       _currentActiveModel = _momentumModelHistory.last;
@@ -265,34 +263,31 @@ abstract class MomentumController<M> {
       if (_currentActiveModel == model) {
         return;
       }
-      if (!skip) {
-        if (_momentumModelHistory.length == _maxTimeTravelSteps) {
-          _momentumModelHistory.removeAt(0);
-          var historyCount = _momentumModelHistory.length;
-          var firstItem = trycatch(() => _momentumModelHistory[0]);
-          _initialMomentumModel = historyCount > 0 ? firstItem : model;
-        }
 
-        _currentActiveModel = model;
-        _latestMomentumModel = _currentActiveModel;
-        _momentumModelHistory.add(_currentActiveModel);
-
-        _nextModel = null;
-        _prevModel = trycatch(
-          () => _momentumModelHistory[_momentumModelHistory.length - 2],
-        );
+      if (_momentumModelHistory.length == _maxTimeTravelSteps) {
+        _momentumModelHistory.removeAt(0);
+        var historyCount = _momentumModelHistory.length;
+        var firstItem = trycatch(() => _momentumModelHistory[0]);
+        _initialMomentumModel = historyCount > 0 ? firstItem : model;
       }
+
+      _currentActiveModel = model;
+      _latestMomentumModel = _currentActiveModel;
+      _momentumModelHistory.add(_currentActiveModel);
+
+      _nextModel = null;
+      _prevModel = trycatch(
+        () => _momentumModelHistory[_momentumModelHistory.length - 2],
+      );
     }
 
     _persistModel(_currentActiveModel);
 
     _cleanupListeners();
 
-    if (!skip) {
-      for (var listener in _momentumListeners) {
-        if (listener.state.mounted && !listener.state.deactivated) {
-          listener.invoke(_currentActiveModel, isTimeTravel);
-        }
+    for (var listener in _momentumListeners) {
+      if (listener.state.mounted && !listener.state.deactivated) {
+        listener.invoke(_currentActiveModel, isTimeTravel);
       }
     }
 
@@ -300,12 +295,11 @@ abstract class MomentumController<M> {
       var isMounted = externalListener.state.mounted;
       var isDeactivated = externalListener.state.deactivated;
       if (isMounted && !isDeactivated) {
-        var data = skip ? model : _currentActiveModel;
-        externalListener.invoke(data, isTimeTravel);
+        externalListener.invoke(_currentActiveModel, isTimeTravel);
       }
     }
 
-    if (_momentumLogging && !skip) {
+    if (_momentumLogging) {
       var inActiveListeners = _momentumListeners.where(
         (l) => l.state.deactivated,
       );
