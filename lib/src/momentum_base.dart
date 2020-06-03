@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+import 'momentum_event.dart';
 import 'momentum_router.dart';
 
 import 'momentum_types.dart';
@@ -165,6 +166,7 @@ abstract class MomentumController<M> {
 
   List<_MomentumListener> _momentumListeners = [];
   List<_MomentumListener<M>> _externalMomentumListeners = [];
+  final List<MomentumEvent> _eventHandlers = List.from([], growable: true);
 
   M _currentActiveModel;
 
@@ -486,9 +488,12 @@ abstract class MomentumController<M> {
     _momentumListeners.add(_momentumListener);
   }
 
+  /// **UPDATE NOTE:** For showing dialogs/snackbars/toast/alerts/etc or navigation
+  /// , use the new [MomentumController.listen] instead for better flow.
+  ///
   /// Add a listener for this controller.
   /// Requires [MomentumState].
-  /// Example uses is for displaying dialogs, snackbars, and navigation.
+  /// Example uses is manipulating your text fields for undo/redo function.
   /// It is highly recommended to only call this
   /// inside [MomentumState.initMomentumState].
   void addListener({
@@ -499,6 +504,37 @@ abstract class MomentumController<M> {
       state: state,
       invoke: invoke,
     ));
+  }
+
+  /// **NEW FEATURE**
+  ///
+  /// Listen for the event of type `T`.
+  /// Requires [MomentumState].
+  /// Example uses is for displaying dialogs, snackbars, and navigation.
+  /// It is highly recommended to only call this
+  /// inside [MomentumState.initMomentumState].
+  ///
+  /// **NOTE:** For dialogs/snackbars/toast/etc, this is better than
+  /// [addListener] because [addListener] only reacts to `model.update(...)`
+  /// which forces you to update your state where showing dialogs/snackbars/toast/etc
+  /// doesn't actually need it. With [listen], You can send any kinds of data
+  /// to the widgets.
+  void listen<T>({
+    @required MomentumState state,
+    @required void Function(T data) invoke,
+  }) {
+    _eventHandlers.add(state._eventHandler..add<T>().listen(invoke));
+  }
+
+  /// Send event data to all listeners of data type `T`.
+  /// Listeners are created using [MomentumController.listen].
+  /// This should be used for notifying the widgets to show
+  /// dialogs/snackbars/toast/alerts/etc.
+  void sendEvent<T>(T data) {
+    _eventHandlers.removeWhere((x) => x.streamController.isClosed);
+    for (var event in _eventHandlers) {
+      event.trigger(data);
+    }
   }
 
   void _cleanupListeners() {
@@ -577,6 +613,7 @@ abstract class MomentumService {}
 /// A [State] class with additional properties.
 /// Also allows you to add listeners for controllers.
 abstract class MomentumState<T extends StatefulWidget> extends State<T> {
+  final MomentumEvent _eventHandler = MomentumEvent();
   bool _stateDeactivated = false;
 
   /// A property that indicates if the [StatefulWidget] for this [State]
