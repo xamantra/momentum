@@ -1,1 +1,0 @@
-The reason i'm ripping off the libraries instead of putting them in pubspec.yaml is that I want the example app to be ready out of the box without needing to download packages specified in pubspec.yaml (except for momentum package itself).
