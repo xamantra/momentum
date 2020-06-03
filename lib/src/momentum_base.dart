@@ -632,6 +632,12 @@ abstract class MomentumState<T extends StatefulWidget> extends State<T> {
     _stateDeactivated = false;
   }
 
+  @override
+  void dispose() {
+    _eventHandler.destroy();
+    super.dispose();
+  }
+
   bool ___momentumInitialized = false;
 
   @override
