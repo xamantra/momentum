@@ -143,13 +143,13 @@ class Router extends MomentumService {
   /// The function to navigate to a specific
   /// route. You specify the route using a type
   /// NOT a string route name or a [MaterialPageRoute].
-  static Future<void> goto(
+  static void goto(
     BuildContext context,
     Type route, {
     Route Function(BuildContext, Widget) transition,
-  }) async {
+  }) {
     var service = Momentum.getService<Router>(context);
-    await service._goto(
+    service._goto(
       context,
       route,
       transition: transition,
