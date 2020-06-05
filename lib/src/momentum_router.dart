@@ -130,7 +130,7 @@ class Router extends MomentumService {
   }
 
   /// Clear navigation history and set an initial page.
-  void reset<T extends Widget>() async {
+  Future<void> reset<T extends Widget>() async {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
     await _persistSaver(
