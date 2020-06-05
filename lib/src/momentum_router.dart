@@ -157,7 +157,7 @@ class Router extends MomentumService {
   }
 
   /// Works like [Navigation.pop].
-  static void pop<T extends Object>(
+  static void pop(
     BuildContext context, {
     Route Function(BuildContext, Widget) transition,
   }) {
