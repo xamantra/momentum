@@ -135,7 +135,7 @@ Inside `main()` method `Momentum` is set as the root widget of the app. The `Cou
 ## Boilerplate Code
 A pair of `MomentumController` and `MomentumModel` is called components. They both have very short boilerplate codes. Controller is the logic and Model is the state. A component is not tied to a single widget only, you can use a component in multiple pages/widgets across the app.
 
-This is the boilerplate code for controller:
+### This is the boilerplate code for controller:
 ```dart
 import 'package:momentum/momentum.dart';
 
@@ -152,7 +152,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 }
 ```
 
-This is the boilerplate code for model:
+### This is the boilerplate code for model:
 ```dart
 import 'package:momentum/momentum.dart';
 
