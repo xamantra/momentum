@@ -10,7 +10,7 @@
   - Time travel (`undo/redo`) support in one line of code out of the box.
   - Optional `Equatable` support. (*Improves time travel*).
   - `Immutable` states/models. There's only one way to rebuild widget.
-  - You can `reset a state` or all of your states.
+  - You can `reset a state` or all of the states.
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
   - Everything is in the widget tree.

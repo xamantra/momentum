@@ -27,7 +27,7 @@ void increment() {
   model.update(value: newValue); // update widgets
 }
 ```
-This is how you display your model/states.
+This is how you display the model/state.
 ```dart
 MomentumBuilder(
   controllers: [CounterController],
@@ -75,7 +75,7 @@ The method `updateMomentum()` needs to be explicitly called. A model is always a
 !> Head to boilerplate section if you want to see  [how blank model looks like](/quick-start?id=boilerplate-code)
 
 ## Writing Controller
-The logic of your momentum app resides in controllers. You write all your functions here. This is also the place where you can call `model.update(...)`.
+The logic of momentum app resides in controllers. You write all the functions here. This is also the place where you can call `model.update(...)`.
 ```dart
 import 'package:momentum/momentum.dart';
 
@@ -94,7 +94,7 @@ class ExampleController extends MomentumController<ExampleModel> {
   }
 }
 ```
-The `init()` method is your initial state it is called when the app starts. It's guaranteed that all these initial values will be available inside any functions you define. You can access the model properties you defined using `model.propertyName`. You can do anything inside controllers like calling and awaiting http request while displaying loading widget until the request is done.
+The `init()` method is the initial state, it is called when the app starts. It's guaranteed that all these initial values will be available inside any functions you define. You can access the model properties you defined using `model.propertyName`. You can do anything inside controllers like calling and awaiting http request while displaying loading widget until the request is done.
 
 !> Always remember to add the controllers you create in `Momentum`'s `controllers` parameter.
 
@@ -116,7 +116,7 @@ With momentum you can easily access almost everything. Take a look at these code
   var loginController = Momentum.controller<LoginController>(context);
   // you can also declare this as class wide variable and
   // call Momentum.controller<T> inside build or didChangeDependencies.
-  // in your widgets, for example a button's onPressed parameter
+  // in the widgets, for example a button's onPressed parameter
   // you can now call functions like "loginController.login()".
   ```
 - You can also access a controller inside `MomentumBuilder`:

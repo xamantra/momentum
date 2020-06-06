@@ -1,5 +1,5 @@
 # Persistence Support
-Implementing persistence with momentum is very easy. You just need to specify two parameters in root widget config and implement json serialization in your models. Anything else is done by the library automatically.
+Implementing persistence with momentum is very easy. You just need to specify two parameters in root widget config and implement json serialization in the models. Anything else is done by the library automatically.
 
 ## Configure
 You have to specify both `persistSave` and `persistGet` parameter on `Momentum` root widget.
