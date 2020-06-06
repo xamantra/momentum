@@ -4,3 +4,4 @@
 
     - [Quick Start](quickstart.md)
     - [The Basics](basics.md)
+    - [Persistence Support](persistence.md)
