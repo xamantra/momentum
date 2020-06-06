@@ -2,6 +2,6 @@
 
 - Getting started
 
-    - [Quick Start](quickstart.md)
+    - [Quick Start](quick-start.md)
     - [The Basics](basics.md)
     - [Persistence Support](persistence.md)

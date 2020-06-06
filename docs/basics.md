@@ -72,7 +72,7 @@ The method `updateMomentum()` needs to be explicitly called. A model is always a
 
 !> Refer to [this link](https://developer.school/dart-flutter-what-does-copywith-do/#:~:text=Although%20the%20notion%20of%20copyWith,arguments%20that%20overwrite%20settable%20values.) to understand what is `copyWith` method.
 
-!> Head to boilerplate section if you want to see  [how blank model looks like](/quickstart?id=boilerplate-code)
+!> Head to boilerplate section if you want to see  [how blank model looks like](/quick-start?id=boilerplate-code)
 
 ## Writing Controller
 The logic of your momentum app resides in controllers. You write all your functions here. This is also the place where you can call `model.update(...)`.
@@ -98,7 +98,7 @@ The `init()` method is your initial state it is called when the app starts. It's
 
 !> Always remember to add the controllers you create in `Momentum`'s `controllers` parameter.
 
-!> Head to boilerplate section if you want to see  [how blank controller looks like](/quickstart?id=boilerplate-code)
+!> Head to boilerplate section if you want to see  [how blank controller looks like](/quick-start?id=boilerplate-code)
 
 ## Dependency Injection
 With momentum you can easily access almost everything. Take a look at these codes:
