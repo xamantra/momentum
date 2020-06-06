@@ -1,4 +1,4 @@
-![logo](images/icon_large.png)
+![logo](images/logo.png)
 
 # momentum <small>1.1.7</small>
 
