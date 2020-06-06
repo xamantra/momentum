@@ -131,3 +131,45 @@ class HomeWidget extends StatelessWidget {
 }
 ```
 Inside `main()` method `Momentum` is set as the root widget of the app. The `CounterController` is instatiated in `controllers` parameter. Inside the `CounterController` there is an `increment()` method that updates the value. It calls the method `model.update(...)` which will rebuild the widget. The `CounterModel` is where the props are defined and currently has the `value` property. The `HomeWidget` uses `MomentumBuilder` which is used for displaying the model properties to the screen. You can call `model.update(...)` to rebuild this widget.
+
+## Boilerplate Code
+A pair of `MomentumController` and `MomentumModel` is called components. They both have very short boilerplate codes. Controller is the logic and Model is the state. A component is not tied to a single widget only, you can use a component in multiple pages/widgets across the app.
+
+This is the boilerplate code for controller:
+```dart
+import 'package:momentum/momentum.dart';
+
+import 'index.dart';
+
+class ExampleController extends MomentumController<ExampleModel> {
+  @override
+  ExampleModel init() {
+    return ExampleModel(
+      this,
+      // TODO: specify initial values here...
+    );
+  }
+}
+```
+
+This is the boilerplate code for model:
+```dart
+import 'package:momentum/momentum.dart';
+
+import 'index.dart';
+
+class ExampleModel extends MomentumModel<ExampleController> {
+  ExampleModel(ExampleController controller) : super(controller);
+
+  // TODO: add your final properties here...
+
+  @override
+  void update() {
+    ExampleModel(
+      controller,
+    ).updateMomentum();
+  }
+}
+```
+
+There is also a [vs code extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code) for generating these boilerplate codes in few clicks.
