@@ -25,7 +25,7 @@ To get started, `flutter create` an app. Name it however you want.
     You only have to import this one file alone and you'll be able to use all momentum api.
 
 ## Example
-Copy this example counter app code:
+Copy this example counter app code and run it:
 
 ```dart
 import 'package:flutter/material.dart';
