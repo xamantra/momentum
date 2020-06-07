@@ -18,7 +18,7 @@ void main() {
 The `controllers` parameter is a list of controller instances that can be reused down the tree multiple times. Let's say in a certain widget you wanted to access `CounterController` but it is not instantiated in controllers parameter of Momentum, you will get an error.
 
 ## Rebuilding Widgets
-There is only one way to update or rebuild widgets.
+There is only one way to update or rebuild widgets. That is using `model.update(...)`.
 
 Inside controller code:
 ```dart
