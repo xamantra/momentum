@@ -111,7 +111,7 @@ With momentum you can easily access almost everything. Take a look at these code
     // you can also call functions like "sessionController.createSession()".
   }
   ```
-- Access a controller inside a widget using `context:
+- Access a controller inside a widget using `context`:
   ```dart
   var loginController = Momentum.controller<LoginController>(context);
   // you can also declare this as class wide variable and
@@ -135,5 +135,22 @@ With momentum you can easily access almost everything. Take a look at these code
     }
   )
   ```
-
-!> **NOTE:** If you can access a controller you can access its model and vice-versa. They are in a circular reference.
+- Access a service inside a controller:
+  ```dart
+  void login() async {
+    // ...
+    var apiService = getService<ApiService>();
+    var result = await apiService.auth(
+      username: model.username,
+      password: model.password,
+    );
+    // ...
+  }
+  ```
+- Access a service inside a widget using `context`:
+  ```dart
+  var someService = Momentum.service<SomeService>(context);
+  // you can also declare this as class wide variable and
+  // call Momentum.someService<T> inside build or didChangeDependencies.
+  // in the widgets.
+  ```
