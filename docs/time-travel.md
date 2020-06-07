@@ -112,6 +112,10 @@ This will guide you on how to implement undo/redo with text fields. There are tw
         // ...
           child: TextFormField(
             controller: usernameController,
+            onChanged: (value) {
+              // update value in the model as the user types.
+              exampleController.setUsernameInput(username: value);
+            },
             // ...
           ),
         // ...
