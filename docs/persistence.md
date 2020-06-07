@@ -87,9 +87,64 @@ There are two differences. First, the `.fromJson` is an instance member not *sta
 
 !> `Momentum` will throw an error and stacktrace link if the json serializer fails. You can easily track them.
 
+## Persistent Navigation
+Momentum has a custom router system for persisting the app's navigation. But first, What is persistent navigation or routing?
+- When you terminate the app and reopen it again, you'll be back at the same page where you left off.
+- Navigation history is also saved.
+- If you pressed system back button, you'll be navigated to the correct previous page based on the navigation activity.
+- There is currently no library that does this out of the box. Momentum is first.
+- The featured example app for momentum implements this feature. See this [preview](/?id=preview).
+
+- #### Guide
+  1. You need to instantiate the built in service called `Router` in momentum root widget in `services` parameter. The `Router` class has a parameter which is a list of widgets and those widgets must be a screen or page type widgets:
+  ```dart
+    Momentum(
+      // ...
+      services: [
+        // ...
+        Router([
+          PageA(),
+          PageB(),
+          PageC(),
+          // and so on
+        ]),
+      ],
+      // ...
+    )
+  ```
+  2. Properly react to system back button using `RouterPage` widget. This widget is like `WillPopScope` which means you can override the pop behavior using `onWillPop` parameter:
+  ```dart
+    class PageB extends StatefulWidget { ... }
+
+    class _PageBState extends State<PageB> {
+
+      @override
+      Widget build(BuildContext context) {
+        return RouterPage(
+          // onWillPop: ...
+          child: Scaffold(
+            body: ...
+          ),
+        );
+      }
+    }
+  ```
+  3. Now you can navigate between pages using `Router.goto(...)` and `Router.pop(context)`:
+  ```dart
+    // "PageC". use type not an instance or string route name.
+    Router.goto(context, PageC);
+
+    // Go back to previous page
+    Router.pop(context);
+  ```
+- As you can see on the guide section above, you navigate between pages using *types* not instance or string route name. That is one of best part with momentum.
+
 ## How does it Work?
 - Everytime you call `model.update(...)`, `persistSave` will be called automatically *after*. So you might want to apply some optimization in here.
 - For `persistGet`, it will only be called when the app starts. If persisted model is available, the `init()` values inside controller will be overwritten.
 
 - `persistSave` will use the `.toJson()` serialization.
 - `persistGet` will use the `.fromJson(...)` serialization.
+
+- `Router` uses both `persistSave` and `persistGet`. So if you want to use it you need to implement those two function parameter.
+- Persistent router saves the `indexes` of the pages. If you added new page or reordered the items in the list inside `Router` constructor, it is recommended to clear the data of the app to avoid errors.
