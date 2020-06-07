@@ -2,7 +2,7 @@
   <img src="https://i.imgur.com/DAFGeAd.png">
 </p>
 
-<p align="center">A super powerful flutter state management library that focuses on ease of control inspired with MVC pattern.</p>
+<p align="center">A super powerful flutter state management library inspired with MVC pattern with a very flexible dependency injection.</p>
 
 **<h3>Features</h3>**
 
