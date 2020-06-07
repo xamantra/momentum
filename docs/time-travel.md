@@ -119,7 +119,7 @@ This will guide you on how to implement undo/redo with text fields. There are tw
     }
   }
 ```
-### Notes
+#### Notes
   - When you call `backward()` or `forward()`, both these options will react to it and rebuild the text fields appropriately.
   - The second option is kinda long and it's not actually easy to handle for multiple text fields. So you can forget about it :)
   - These long setup is for text fields only really, with the other widget types they can work out of the box with `MomentumBuilder` alone without those special parameters.
