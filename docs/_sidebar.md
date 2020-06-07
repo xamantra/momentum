@@ -9,6 +9,10 @@
     - [Time Travel (Undo/Redo)](time-travel.md)
     - [Equatable Support](equatable.md)
 
+- API Reference
+
+    - [Momentum](momentum.md)
+
 - Links
 
     - [Github](https://github.com/xamantra/momentum)
