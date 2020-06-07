@@ -4,5 +4,6 @@
 
     - [Quick Start](quick-start.md)
     - [The Basics](basics.md)
-    - [Persistence Support](persistence.md)
-    - [Time Travel Support](time-travel.md)
+    - [Persistence State](persistence.md)
+    - [Time Travel (Undo/Redo)](time-travel.md)
+    - [Equatable Support](equatable.md)
