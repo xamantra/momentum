@@ -4,9 +4,9 @@
 
 > Full featured flutter state management library.
 
-- Highly flexible dependency injection.
-- Persistence Support for state and routing.
-- Simple to complex states.
+- Very flexible dependency injection.
+- Persistence Support for states and routing.
+- No dependencies.
 
 [GitHub](https://github.com/xamantra/momentum)
 [Overview](/?id=features)

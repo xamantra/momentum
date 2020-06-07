@@ -14,6 +14,8 @@
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
   - Everything is in the widget tree.
+  - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
+  - Supports older versions of flutter.
 
 ## Preview
 In this image the process were like this:
