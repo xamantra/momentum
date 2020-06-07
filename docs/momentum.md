@@ -174,7 +174,7 @@ void main() {
 
 <hr>
 
-- `service<T>(...)` - Get a specific service of type `T`. It requires context so you can only call this insides widgets.
+- `.service<T>(...)` - Get a specific service of type `T`. It requires context so you can only call this insides widgets.
   ```dart
     @override
     Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ void main() {
 
 <hr>
 
-- `restart(...)` - Restart momentum app with new momentum instance. Context is required.
+- `.restart(...)` - Restart momentum app with new momentum instance. Context is required.
   ```dart
     @override
     Widget build(BuildContext context) {
@@ -201,7 +201,7 @@ void main() {
 
 <hr>
 
-- `resetAll(...)` - Reset all controllers and their models. This will set all the models back to their initial values.
+- `.resetAll(...)` - Reset all controllers and their models. This will set all the models back to their initial values.
   ```dart
     @override
     Widget build(BuildContext context) {
