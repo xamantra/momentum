@@ -13,6 +13,8 @@ void main() {
 }
 ```
 
+!> Whenever you do changes in `Momentum` root widget like changing parameters, always `hot restart` the app instead of *hot reload*.
+
 ## child
 - Category: `Constructor Parameter`
 - Type: `Widget`
@@ -93,15 +95,15 @@ Display custom loader widget that is used for awaiting all asynchronous initiali
 ## lazy
 - Category: `Constructor Parameter`
 - Type: `bool`
-- Default: `false`
+- Default: `true`
 - Required: `NO`
 
-If set to `true`, all controllers will be lazy loaded.
+If set to `false`, all controllers will be bootstrapped when the app starts.
   ```dart
     Momentum(
       // child: ...,
       // controllers: [...],
-      lazy: true,
+      lazy: false,
     ),
   ```
 
