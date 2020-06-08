@@ -1,5 +1,5 @@
 # Time Travel
-People love time machine. So time travel function was one of the first features added in momentum. It is for undoing or redoing the states.
+People love time machine. So time travel function was one of the first features added in momentum. It is for undoing or redoing state changes.
 
 - Configure in one line of code.
 - `Disabled` by default.
@@ -31,6 +31,7 @@ You can enable time travel per controller or enable all controllers. To enable t
         // ...
         ExampleControllerA(),
         ExampleControllerB(),
+        ExampleControllerC(maxTimeTravelSteps: 1), // disable in this controller.
         // ...
       ],
       maxTimeTravelSteps: 100,
@@ -39,10 +40,10 @@ You can enable time travel per controller or enable all controllers. To enable t
   ```
 
 ## Undo & Redo
-The method `.backward()` is for undo while `.forward()` for redo states.
+The method `.backward()` is for undo while `.forward()` is for redo states.
 
 ```dart
-class ExampleController ... {
+class ExampleController extends MomentumController<ExampleModel> {
   
   // ...
 
@@ -81,7 +82,12 @@ This will guide you on how to implement undo/redo with text fields. There are tw
     }
   )
 ```
-!> **NOTE:** Only `TextFormField` has *initialValue* property.
+  - Whenever you type into this textbox, the widget will not rebuild.
+  - We don't need to rebuild the textbox widget because what we type here is automatically rendered.
+  - We only want to rebuild when `.backward()` or `.forward()` method is called.
+  - Only `TextFormField` has *initialValue* property.
+
+<hr>
 
 - Second, using `MomentumState`, `TextEditingController` and `.addListener(...)` method. This is the long way :)
 ```dart
