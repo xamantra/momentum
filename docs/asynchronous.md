@@ -4,9 +4,9 @@ You want to call some http requests and show loading widget? Well, it can be any
 You might **NOT** need `FutureBuilder`. It is very easy to do that in momentum.
 
 #### Example Code
-Take a look in this sample code inside controller:
+The logic inside controller:
 ```dart
- class ExampleController ... {
+ class ExampleController extends MomentumController<ExampleModel> {
 
    // ...
 
@@ -19,7 +19,7 @@ Take a look in this sample code inside controller:
    // ...
  }
 ```
-Now for the widget:
+The UI code to display loading and data/result's widget:
 ```dart
 MomentumBuilder(
   controllers: [ExampleController],
