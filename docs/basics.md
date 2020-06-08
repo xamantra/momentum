@@ -19,15 +19,27 @@ The `controllers` parameter is a list of controller instances that can be reused
 
 ## Rebuilding Widgets
 There is only one way to update or rebuild widgets. That is using `model.update(...)`.
+- `model.update(...)` is like `setState(...)` but immutable and called inside logic class not inside the widgets.
+- It's not just for rebuilding widgets but also syncing values when something changes in the UI like user inputs.
 
-Inside controller code:
+#### The logic inside controller code:
 ```dart
-void increment() {
-  var newValue = model.value + 1;
-  model.update(value: newValue); // update widgets
+class CounterController extends MomentumController<CounterModel> {
+
+  // ...
+
+  void increment() {
+    var newValue = model.value + 1;
+    model.update(value: newValue); // update widgets
+  }
+
+  // ...
 }
 ```
-This is how you display the model/state.
+- You can access property values using `model.propertyName`.
+- Models are immutable so you can't do `model.propertyName = value;` to update the state.
+
+#### This is how you display the model/state:
 ```dart
 MomentumBuilder(
   controllers: [CounterController],
@@ -37,7 +49,8 @@ MomentumBuilder(
   }
 )
 ```
-`MomentumBuilder` is a widget means you can use it anywhere.
+- `MomentumBuilder` is a widget means you can use it anywhere.
+- `snapshot<T>` is a method use to grab a certain model that the controller is injected into `controllers` parameter.
 
 ## Writing Model
 Models in momentum must be immutable so all properties are final.
@@ -67,8 +80,9 @@ class ExampleModel extends MomentumModel<ExampleController> {
   }
 }
 ```
-As you can see, there is `update(...)` method here. It is required to be implemented. This method is similar to `copyWith` function.
-The method `updateMomentum()` needs to be explicitly called. A model is always attached to a specific controller so the `controller` parameter should be specified always (*which is very easy to do and is part of the boilerplate*).
+- As you can see, there is `update(...)` method here. It is required to be implemented. This method is similar to `copyWith` function.
+- The method `updateMomentum()` needs to be explicitly called. 
+- A model is always attached to a specific controller so the `controller` parameter should be specified always (*which is very easy to do and is part of the boilerplate*).
 
 !> Refer to [this link](https://developer.school/dart-flutter-what-does-copywith-do/#:~:text=Although%20the%20notion%20of%20copyWith,arguments%20that%20overwrite%20settable%20values.) to understand what is `copyWith` method.
 
@@ -94,7 +108,10 @@ class ExampleController extends MomentumController<ExampleModel> {
   }
 }
 ```
-The `init()` method is the initial state, it is called when the app starts. It's guaranteed that all these initial values will be available inside any functions you define. You can access the model properties you defined using `model.propertyName`. You can do anything inside controllers like calling and awaiting http request while displaying loading widget until the request is done.
+- The `init()` method is the initial state, it is called when the app starts.
+- It's guaranteed that all these initial values will be available inside any functions you define.
+- You can access the model properties you defined using `model.propertyName`.
+- You can do anything inside controllers like calling and awaiting http request while displaying loading widget until the request is done.
 
 !> Always remember to add the controllers you create in `Momentum`'s `controllers` parameter.
 
@@ -102,30 +119,41 @@ The `init()` method is the initial state, it is called when the app starts. It's
 
 ## Dependency Injection
 With momentum you can easily access almost everything. Take a look at these codes:
-- Access another controller inside a controller:
+- Access another controller inside a controller using `dependOn<T>()` method:
   ```dart
-  void login() {
-    var sessionController = dependOn<SessionController>();
-    // do anything with "sessionController" here.
-    // you can access "sessionController.model.propertyName".
-    // you can also call functions like "sessionController.createSession()".
+  class AuthController extends MomentumController<AuthModel> {
+
+    // ...
+
+    void login() {
+      var sessionController = dependOn<SessionController>();
+      // do anything with "sessionController" here.
+      // you can access "sessionController.model.propertyName".
+      // you can also call functions like "sessionController.createSession()".
+    }
+
+    // ...
+
   }
   ```
-- Access a controller inside a widget using `context`:
+- Access a controller inside a widget using `Momentum.controller<T>(context)`:
   ```dart
-  var loginController = Momentum.controller<LoginController>(context);
-  // you can also declare this as class wide variable and
-  // call Momentum.controller<T> inside build or didChangeDependencies.
-  // in the widgets, for example a button's onPressed parameter
-  // you can now call functions like "loginController.login()".
+  @override
+  Widget build(BuildContext context) {
+    var loginController = Momentum.controller<LoginController>(context);
+    // you can also declare this as class wide variable and
+    // call Momentum.controller<T> inside build or didChangeDependencies.
+    // in the widgets, for example a button's onPressed parameter
+    // you can now call functions like "loginController.login()".
+  }
   ```
 - You can also access a controller inside `MomentumBuilder`:
   ```dart
   MomentumBuilder(
     controllers: [CounterController],
     builder: (context, snapshot) {
-      var counter = snapshot<CounterModel>();
-      var counterController = counter.controller;
+      var counterModel = snapshot<CounterModel>();
+      var counterController = counterModel.controller;
       return FlatButton(
         onPressed: () {
           counterController.increment();
@@ -135,22 +163,30 @@ With momentum you can easily access almost everything. Take a look at these code
     }
   )
   ```
-- Access a service inside a controller:
+- Access a service inside a controller using `getService<T>()` method:
   ```dart
-  void login() async {
+  class AuthController extends MomentumController<AuthModel> {
+
     // ...
-    var apiService = getService<ApiService>();
-    var result = await apiService.auth(
-      username: model.username,
-      password: model.password,
-    );
+
+    void login() async {
+      var apiService = getService<ApiService>();
+      var result = await apiService.auth(
+        username: model.username,
+        password: model.password,
+      );
+    }
+
     // ...
+
   }
   ```
-- Access a service inside a widget using `context`:
+- Access a service inside a widget using `Momentum.service<T>(context)`:
   ```dart
-  var someService = Momentum.service<SomeService>(context);
-  // you can also declare this as class wide variable and
-  // call Momentum.someService<T> inside build or didChangeDependencies.
-  // in the widgets.
+  Widget build(BuildContext context) {
+    var someService = Momentum.service<SomeService>(context);
+    // you can also declare this as class wide variable and
+    // call Momentum.someService<T> inside build or didChangeDependencies.
+    // in the widgets.
+  }
   ```
