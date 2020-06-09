@@ -50,7 +50,7 @@ Configure this controller to set some custom behaviors.
 - Return Type: `MomentumModel`
 - Required: `YES`
 
-Initialize the model of this controller. Required to be implemented. This method will only be called once. Momentum will automatically call this method. The initial values provided here are guaranteed to be usable instantly down the code.
+Initialize the model of this controller. Required to be implemented. This method will only be called once. Momentum will automatically call this method. The initial values provided here are guaranteed to be used instantly down the code.
 ```dart
 class ExampleController extends MomentumController<ExampleModel> {
 
@@ -161,7 +161,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 - Category: `Method`
 - Return Type: `T` *where T extends MomentumController*
 
-A dependency injection method. Get a specific controller of type `T`. With this you can easily access other controllers and manipulate them.
+A dependency injection method. Get a specific controller of type `T`. With this, you can easily access other controllers and manipulate them.
 ```dart
 class ExampleController extends MomentumController<ExampleModel> {
 
@@ -184,7 +184,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 - Category: `Method`
 - Return Type: `void`
 
-Should be called inside stateful widgets. Used for listening to model updates and react to it. This requires `MomentumState` so that momentum can automatically dispose the listeners for you. When `model.update(...)` is called, the `invoke` function parameter will be executed.
+Should be called inside stateful widgets. Used for listening to model updates and react to it. This requires `MomentumState` so that momentum can automatically dispose of the listeners for you. When `model.update(...)` is called, the `invoke` function parameter will be executed.
 ```dart
 class _ExampleState extends MomentumState<ExampleWidget> {
 
@@ -211,7 +211,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
 - Category: `Method`
 - Return Type: `void`
 
-Can be use to send events to the widgets. It is highly recommended to use this for doing context actions like dialogs, alerts, snackbars/toast, or page navigation, etc. `T` is the event data and it can be anything.
+It can be used to send events to the widgets. It is highly recommended to use this for doing context actions like dialogs, alerts, snackbars/toast, or page navigation, etc. `T` is the event data and it can be anything.
 ```dart
 /// you can put this class in a separate file along with other event types.
 class LoginEvent {
@@ -249,7 +249,7 @@ class AuthController extends MomentumController<AuthModel> {
 - Category: `Method`
 - Return Type: `void`
 
-The partner of `sendEvent<T>(...)`. This method will react to every call of `sendEvent<T>()`. Similar to `addListener`, this requires `MomentumState` so that momentum can automatically dispose the listeners for you.
+The partner of `sendEvent<T>(...)`. This method will react to every call of `sendEvent<T>()`. Similar to `addListener`, this requires `MomentumState` so that momentum can automatically dispose of the listeners for you.
 ```dart
 class _ExampleState extends MomentumState<ExampleWidget> {
 
@@ -281,7 +281,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
 - Category: `Method`
 - Return Type: `void`
 
-Time travel method. `Undo` state update. Useful for input pages or reverting danger actions like delete. This will rebuild the widgets.
+Time travel method. `Undo` state update. Useful for input pages or reverting dangerous actions like delete. This will rebuild the widgets.
 ```dart
 FlatButton(
   // ...
@@ -415,7 +415,7 @@ class CounterController extends MomentumController<CounterModel> {
 - Category: `Readonly Property`
 - Type: `String`
 
-The key used internally by momentum for persistence. Exposed publicly so that you can optionally override this to create your own unique key.
+The key used internally by momentum for persistence. Exposed publicly so that you can optionally override this to create your unique key.
 ```dart
 class ExampleController extends MomentumController<ExampleModel> {
   
