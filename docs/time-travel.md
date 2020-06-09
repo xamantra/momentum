@@ -7,7 +7,7 @@ People love time machine. So time travel function was one of the first features 
 - Call time travel methods in one line of code.
 
 ## Configure
-You can enable time travel per controller or enable all controllers. To enable this, you need to specify the parameter `maxTimeTravelSteps`, if the value is greater than 1, it will be `enabled`, otherwise it will be `disabled`,
+You can enable time travel per controller or enable all controllers. To enable this, you need to specify the parameter `maxTimeTravelSteps`, if the value is greater than 1, it will be `enabled`, otherwise, it will be `disabled`,
 
 - Enable per controller:
   ```dart
@@ -131,6 +131,6 @@ This will guide you on how to implement undo/redo with text fields. There are tw
 ```
 #### Notes
   - When you call `backward()` or `forward()`, both these options will react to it and rebuild the text fields appropriately.
-  - The second option is kinda long and it's not actually easy to handle for multiple text fields. So you can forget about it :)
-  - These long setup is for text fields only really, with the other widget types they can work out of the box with `MomentumBuilder` alone without those special parameters.
+  - The second option is kinda long and it's not easy to handle for multiple text fields. So you can forget about it :)
+  - These long setup above is for text fields only really, with the other widget types they can work out of the box with `MomentumBuilder` alone without those special parameters.
   - If a certain widget doesn't work, try using flutter's `Key`.
