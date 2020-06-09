@@ -89,7 +89,7 @@ The reference to the controller instance that this model is attached to.
 - Category: `Readonly Property`
 - Type: `String`
 
-The name of the controller that this model is attached to. This is used internally by momentum for detailed logs. But it is also accessible publicly for your own debugging purposes.
+The name of the controller that this model is attached to. This is used internally by momentum for detailed logs. But it is also accessible publicly for your debugging purposes.
 ```dart
 print(model.controllerName);
 ```
@@ -100,7 +100,7 @@ print(model.controllerName);
 - Category: `Method`
 - Type: `Map<String, dynamic>`
 
-Method to generate map from this model. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
+Method to generate a map from this model. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
 ```dart
 class ExampleModel extends MomentumModel<ExampleController> {
   // ...
@@ -125,7 +125,7 @@ class ExampleModel extends MomentumModel<ExampleController> {
 - Category: `Method`
 - Type: `MomentumModel`
 
-The method to create an instance of this model from a json/map. This is different from the usual factory fromJson method. It's an instance member because you wouldn't be able to access the controller property otherwise. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
+The method to create an instance of this model from a JSON/map. This is different from the usual factory fromJson method. It's an instance member because you wouldn't be able to access the controller property otherwise. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
 ```dart
 class ExampleModel extends MomentumModel<ExampleController> {
   // ...
