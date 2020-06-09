@@ -1,5 +1,5 @@
 # Asynchronous
-You want to call some http requests and show loading widget? Well, it can be anything. Asynchronous code exists in every app and the UI should property display an appropriate indicator that the app is doing something.
+You want to call some HTTP requests and show a loading widget? Well, it can be anything. Asynchronous code exists in every app and the UI should property displays an appropriate indicator that the app is doing something.
 
 You might **NOT** need `FutureBuilder`. It is very easy to do that in momentum.
 
