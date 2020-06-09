@@ -10,9 +10,9 @@ To get started, `flutter create` an app. Name it however you want.
     dependencies:
       momentum: ^1.1.6
     ```
-    It is not recommended to use the one from github because the changes there are subject to breaking changes on future pushes to the repository.
+    It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 
-2. You can install this package from the *command line*:
+2. You can install this package from the *command-line*:
     ```bash
     flutter pub get
     ```
@@ -22,7 +22,7 @@ To get started, `flutter create` an app. Name it however you want.
     ```dart
     import 'package:momentum/momentum.dart';
     ```
-    You only have to import this one file alone and you'll be able to use all momentum api.
+    You only have to import this one file alone and you'll be able to use all momentum API.
 
 ## Example
 Copy this example counter app code and run it:
@@ -137,7 +137,7 @@ class HomeWidget extends StatelessWidget {
 - The `HomeWidget` uses `MomentumBuilder` which is used for displaying the model properties to the screen. You can call `model.update(...)` to rebuild this widget.
 
 ## Boilerplate Code
-A pair of `MomentumController` and `MomentumModel` is called components. They both have very short boilerplate codes. Controller is the logic and Model is the state. A component is not tied to a single widget only, you can use a component in multiple pages/widgets across the app.
+A pair of `MomentumController` and `MomentumModel` are called components. They both have very short boilerplate codes. The controller is the logic and the Model is the state. A component is not tied to a single widget only, you can use a component in multiple pages/widgets across the app.
 
 - This is the boilerplate code for `controller`:
 
