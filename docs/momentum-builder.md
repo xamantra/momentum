@@ -45,7 +45,6 @@ List of controllers to inject. You inject them using *type* not an instance. Mom
 - Required: `YES`
 
 The function parameter where you can access your model values and return a widget based on those values.
-
 ```dart
   MomentumBuilder(
     // ...,
@@ -68,7 +67,6 @@ The function parameter where you can access your model values and return a widge
 - Required: `NO`
 
 An optional callback. If provided, this will be called right before `builder`. If returns `true`, it will skip rebuild for this `MomentumBuilder`.
-
 ```dart
   MomentumBuilder(
     // ...,
