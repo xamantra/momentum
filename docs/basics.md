@@ -1,5 +1,5 @@
 # The Basics
-This covers the basic building blocks of momentum state management. Specifically on setup, rebuilding widgets, write models, write logic, access dependencies.
+This covers the basic building blocks of momentum state management. Specifically, on setup, rebuilding widgets, write models, write logic, access dependencies.
 
 ## Setup
 `Momentum` is a widget that should be in the root of the app.
@@ -49,8 +49,8 @@ MomentumBuilder(
   }
 )
 ```
-- `MomentumBuilder` is a widget means you can use it anywhere.
-- `snapshot<T>` is a method use to grab a certain model that the controller is injected into `controllers` parameter.
+- `MomentumBuilder` is a widget that means you can use it anywhere.
+- `snapshot<T>` is a method used to grab a certain model that the controller is injected into the `controllers` parameter.
 
 ## Writing Model
 Models in momentum must be immutable so all properties are final.
@@ -80,16 +80,16 @@ class ExampleModel extends MomentumModel<ExampleController> {
   }
 }
 ```
-- As you can see, there is `update(...)` method here. It is required to be implemented. This method is similar to `copyWith` function.
+- As you can see, there is an `update(...)` method here. It is required to be implemented. This method is similar to the `copyWith` function.
 - The method `updateMomentum()` needs to be explicitly called. 
 - A model is always attached to a specific controller so the `controller` parameter should be specified always (*which is very easy to do and is part of the boilerplate*).
 
 !> Refer to [this link](https://developer.school/dart-flutter-what-does-copywith-do/#:~:text=Although%20the%20notion%20of%20copyWith,arguments%20that%20overwrite%20settable%20values.) to understand what is `copyWith` method.
 
-!> Head to boilerplate section if you want to see  [how blank model looks like](/quick-start?id=boilerplate-code)
+!> Head to boilerplate section if you want to see  [how the blank model looks like](/quick-start?id=boilerplate-code)
 
 ## Writing Controller
-The logic of momentum app resides in controllers. You write all the functions here. This is also the place where you can call `model.update(...)`.
+The logic of the momentum app resides in controllers. You write all the functions here. This is also the place where you can call `model.update(...)`.
 ```dart
 import 'package:momentum/momentum.dart';
 
@@ -111,14 +111,14 @@ class ExampleController extends MomentumController<ExampleModel> {
 - The `init()` method is the initial state, it is called when the app starts.
 - It's guaranteed that all these initial values will be available inside any functions you define.
 - You can access the model properties you defined using `model.propertyName`.
-- You can do anything inside controllers like calling and awaiting http request while displaying loading widget until the request is done.
+- You can do anything inside controllers like calling and awaiting an HTTP request while displaying a loading widget until the request is done.
 
 !> Always remember to add the controllers you create in `Momentum`'s `controllers` parameter.
 
 !> Head to boilerplate section if you want to see  [how blank controller looks like](/quick-start?id=boilerplate-code)
 
 ## Dependency Injection
-With momentum you can easily access almost everything. Take a look at these codes:
+With momentum, you can easily access almost everything. Take a look at these codes:
 - Access another controller inside a controller using `dependOn<T>()` method:
   ```dart
   class AuthController extends MomentumController<AuthModel> {
