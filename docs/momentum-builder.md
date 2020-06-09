@@ -1,6 +1,6 @@
 # MomentumBuilder
 `MomentumBuilder` widget class is used for displaying your model/state values. It's a very small widget yet powerful which lets you easily inject any controllers and access their models using the provided generic snapshot callback. This widget will rebuild using the method `model.update(...)`.
-- Single and multiple controller have the same syntax so refactoring isn't a problem at all.
+- Single and multiple controllers have the same syntax so refactoring isn't a problem at all.
 - Single controller:
   ```dart
   MomentumBuilder(
@@ -28,7 +28,7 @@
 - Default: `[]` *// empty list*
 - Required: `YES`
 
-List of controllers to inject. You inject them using *type* not an instance. Momentum will automatically lookup the instance for the types you provided. Throws an error if one of controller types provided is not found.
+List of controllers to inject. You inject them using *type* not an instance. Momentum will automatically look up the instance for the types you provided. Throws an error if one of the controller types provided is not found.
   ```dart
     MomentumBuilder(
       // ...,
@@ -55,9 +55,9 @@ The function parameter where you can access your model values and return a widge
     // ...,
   )
 ```
-  - `context` is provided for flutter convention. It can be used for grabbing any context related variables like `Theme` or `MediaQuery`, etc..
+  - `context` is provided for the flutter convention. It can be used for grabbing any context related variables like `Theme` or `MediaQuery`, etc..
 
-  - `snapshot<T>` is a function that is used for grabbing specific type of model using generic type parameter `T`. The controller of the model type `T` should be in the `controllers` parameter.
+  - `snapshot<T>` is a function that is used for grabbing a specific type of model using generic type parameter `T`. The controller of the model type `T` should be in the `controllers` parameter.
 
 <hr>
 
@@ -66,7 +66,7 @@ The function parameter where you can access your model values and return a widge
 - Default: `null`
 - Required: `NO`
 
-An optional callback. If provided, this will be called right before `builder`. If returns `true`, it will skip rebuild for this `MomentumBuilder`.
+An optional callback. If provided, this will be called right before the `builder`. If returns `true`, it will skip rebuilding this `MomentumBuilder`.
 ```dart
   MomentumBuilder(
     // ...,
@@ -79,9 +79,9 @@ An optional callback. If provided, this will be called right before `builder`. I
     // ...,
   )
 ```
-  - `controller<T>` is a function that is used for grabbing specific type of controller using generic type parameter. It is similar to `snapshot<T>` but for controllers. The controller should be in `controllers` parameter for this to work.
+  - `controller<T>` is a function that is used for grabbing a specific type of controller using a generic type parameter. It is similar to `snapshot<T>` but for controllers. The controller should be in the `controllers` parameter for this to work.
 
-  - By grabbing a specific type of controllers, you can use them for complex condition to skip a rebuild for some reason.
+  - By grabbing a specific type of controllers, you can use them for a complex condition to skip a rebuild for some reason.
 
   - `isTimeTravel` is a `bool` that indicates whether the model update was done using time travel (undo/redo) methods.
 
