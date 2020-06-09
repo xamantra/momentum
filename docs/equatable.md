@@ -1,5 +1,5 @@
 # Equatable Support
-Momentum has an optional support for equatable. The app will still work fine without it. But it will improve the behavior of time travel feature. Because of value equality comparison instead of instance, we can avoid updating the model which has the same values from previous model/state. It also optimizes the app by not rebuilding the widgets of nothing actually changes.
+Momentum has optional support for equatable. The app will still work fine without it. But it will improve the behavior of the time travel feature. Because of value equality comparison instead of instance, we can avoid updating the model which has the same values from the previous model/state. It also optimizes the app by not rebuilding the widgets of nothing changes.
 
 #### MomentumModel
 Implementing equatable in `MomentumModel` needs the mixin `EquatableMixin` not the traditional equatable abstract base class.
