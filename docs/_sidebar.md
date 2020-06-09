@@ -12,6 +12,7 @@
 - API Reference
 
     - [Momentum](momentum.md)
+    - [MomentumBuilder](momentum-builder.md)
 
 - More
 
