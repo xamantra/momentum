@@ -9,7 +9,7 @@
   - `Persistence` support for states and routing. Use any storage provider.
   - Time travel (`undo/redo`) support in one line of code out of the box.
   - Optional `Equatable` support. (*Improves time travel*).
-  - `Immutable` states/models. There's only one way to rebuild widget.
+  - `Immutable` states/models. There's only one way to rebuild a widget.
   - You can `reset a state` or all of the states.
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
@@ -18,14 +18,14 @@
   - Supports older versions of flutter.
 
 ## Preview
-In this image the process were like this:
-- Open app (Home Page).
+In this image the process was like this:
+- Open the app (Home Page).
 - Go to *Add New List* page.
 - Input some data.
-- Close and Terminate on multitask view.
+- Close and Terminate on task view.
 - Reopen the app again.
 
-And magic happens! All the inputs were retained and not just that but also including the page where you left off. Navigation history is also persisted which means pressing system back button will navigate you to the correct previous page.
+And magic happens! All the inputs were retained and not just that but also including the page where you left off. Navigation history is also persisted which means pressing the system back button will navigate you to the correct previous page.
 
 ![persistent preview](./images/gallery/001.png)
 
