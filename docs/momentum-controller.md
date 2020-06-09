@@ -263,6 +263,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
         // "event" is of type "LoginEvent".
         if (event.success) {
           // go to home page for example.
+          Router.goto(context, Home);
         } else {
           showSnackbar(message: event.message, error: true);
         }
@@ -280,7 +281,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
 - Category: `Method`
 - Return Type: `void`
 
-Time travel method. `Undo` state update. Useful for input pages or reverting danger actions like delete. This rebuild the widgets.
+Time travel method. `Undo` state update. Useful for input pages or reverting danger actions like delete. This will rebuild the widgets.
 ```dart
 FlatButton(
   // ...
@@ -298,7 +299,7 @@ FlatButton(
 - Category: `Method`
 - Return Type: `void`
 
-Time travel method. `Redo` state update. This rebuild the widgets.
+Time travel method. `Redo` state update. This will rebuild the widgets.
 ```dart
 FlatButton(
   // ...
@@ -433,7 +434,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 - Category: `Readonly Property`
 - Type: `bool`
 
-Indicates whether this controller is lazy loaded or not. This was exposed publicly for no reason at all.
+Indicates whether this controller is lazy loaded or not. This was exposed publicly for no reason at all. I was too lazy thinking for some use cases :)
 ```dart
 class ExampleController extends MomentumController<ExampleModel> {
   
