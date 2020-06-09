@@ -14,6 +14,7 @@
     - [Momentum](momentum.md)
     - [MomentumBuilder](momentum-builder.md)
     - [MomentumModel](momentum-model.md)
+    - [MomentumController](momentum-controller.md)
 
 - More
 
