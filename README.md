@@ -6,13 +6,15 @@
 
 ---
 
-[![pub-score](https://img.shields.io/badge/pub--score-83-blue)](https://pub.dev/packages/momentum#-analysis-tab-)
 [![Pub Version](https://img.shields.io/pub/v/momentum)](https://pub.dev/packages/momentum)
+![pub](https://img.shields.io/badge/dynamic/json?color=orange&label=popularity&query=popularity&url=http://www.pubscore.gq/all?package=momentum)
+![pub](https://img.shields.io/badge/dynamic/json?color=blue&label=score&query=overall&url=http://www.pubscore.gq/all?package=momentum)
+![pub](https://img.shields.io/badge/dynamic/json?color=blue&label=maintenance&query=maintenance&url=http://www.pubscore.gq/all?package=momentum)
+![pub](https://img.shields.io/badge/dynamic/json?color=green&label=health&query=health&url=http://www.pubscore.gq/all?package=momentum)
 [![GitHub stars](https://img.shields.io/github/stars/xamantra/momentum)](https://github.com/xamantra/momentum/stargazers)
 [![style: effective dart](https://img.shields.io/badge/style-effective_dart-54C5F8.svg)](https://github.com/tenhobi/effective_dart)
 [![GitHub license](https://img.shields.io/github/license/xamantra/momentum)](https://github.com/xamantra/momentum/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/xamantra/momentum)](https://github.com/xamantra/momentum/commits/master)
-
 ---
 
 **<h3>Features</h3>**
