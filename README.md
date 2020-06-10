@@ -1,8 +1,10 @@
 <p align="center">
-  <img src="https://i.imgur.com/DAFGeAd.png">
+  <img src="https://i.imgur.com/K7BNfKI.png">
 </p>
 
-<center>
+<p align="center">A super powerful flutter state management library inspired with MVC pattern with a very flexible dependency injection.</p>
+
+---
 
 [![pub-score](https://img.shields.io/badge/pub--score-83-blue)](https://pub.dev/packages/momentum#-analysis-tab-)
 [![Pub Version](https://img.shields.io/pub/v/momentum)](https://pub.dev/packages/momentum)
@@ -10,10 +12,6 @@
 [![style: effective dart](https://img.shields.io/badge/style-effective_dart-54C5F8.svg)](https://github.com/tenhobi/effective_dart)
 [![GitHub license](https://img.shields.io/github/license/xamantra/momentum)](https://github.com/xamantra/momentum/blob/master/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/xamantra/momentum)](https://github.com/xamantra/momentum/commits/master)
-
-</center>
-
-<p align="center">A super powerful flutter state management library inspired with MVC pattern with a very flexible dependency injection.</p>
 
 ---
 
