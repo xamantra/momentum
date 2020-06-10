@@ -4,10 +4,17 @@
 
     - [Quick Start](quick-start.md)
     - [The Basics](basics.md)
-    - [Asynchronous](asynchronous.md)
     - [Persistence State](persistence.md)
     - [Time Travel (Undo/Redo)](time-travel.md)
     - [Equatable Support](equatable.md)
+
+- Recipes
+
+    - [Asynchronous](asynchronous.md)
+    - [Streams](streams.md)
+    - [Event System](event-system.md)
+    - [Login Session](login-session.md)
+    - [Restarting App](restart-app.md)
 
 - API Reference
 
