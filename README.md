@@ -4,17 +4,18 @@
 
 <p align="center">A super powerful flutter state management library inspired with MVC pattern with a very flexible dependency injection.</p>
 
----
+<p align="center">
+<a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
+<a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=orange&label=popularity&query=popularity&url=http://www.pubscore.gq/all?package=momentum" alt="popularity" /></a>
+<a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=score&query=overall&url=http://www.pubscore.gq/all?package=momentum" alt="score" /></a>
+<a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=maintenance&query=maintenance&url=http://www.pubscore.gq/all?package=momentum" alt="maintenance" /></a>
+<a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=health&query=health&url=http://www.pubscore.gq/all?package=momentum" alt="health" /></a>
+<a href="https://github.com/xamantra/momentum/stargazers" target="_blank"><img src="https://img.shields.io/github/stars/xamantra/momentum" alt="GitHub stars" /></a>
+<a href="https://github.com/tenhobi/effective_dart" target="_blank"><img src="https://img.shields.io/badge/style-effective_dart-54C5F8.svg" alt="style: effective dart" /></a>
+<a href="https://github.com/xamantra/momentum/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/xamantra/momentum" alt="GitHub license" /></a>
+<a href="https://github.com/xamantra/momentum/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/xamantra/momentum" alt="GitHub last commit" /></a>
+</p>
 
-[![Pub Version](https://img.shields.io/pub/v/momentum)](https://pub.dev/packages/momentum)
-![pub](https://img.shields.io/badge/dynamic/json?color=orange&label=popularity&query=popularity&url=http://www.pubscore.gq/all?package=momentum)
-![pub](https://img.shields.io/badge/dynamic/json?color=blue&label=score&query=overall&url=http://www.pubscore.gq/all?package=momentum)
-![pub](https://img.shields.io/badge/dynamic/json?color=blue&label=maintenance&query=maintenance&url=http://www.pubscore.gq/all?package=momentum)
-![pub](https://img.shields.io/badge/dynamic/json?color=green&label=health&query=health&url=http://www.pubscore.gq/all?package=momentum)
-[![GitHub stars](https://img.shields.io/github/stars/xamantra/momentum)](https://github.com/xamantra/momentum/stargazers)
-[![style: effective dart](https://img.shields.io/badge/style-effective_dart-54C5F8.svg)](https://github.com/tenhobi/effective_dart)
-[![GitHub license](https://img.shields.io/github/license/xamantra/momentum)](https://github.com/xamantra/momentum/blob/master/LICENSE)
-[![GitHub last commit](https://img.shields.io/github/last-commit/xamantra/momentum)](https://github.com/xamantra/momentum/commits/master)
 ---
 
 **<h3>Features</h3>**
