@@ -27,9 +27,16 @@
   - You can `reset a state` or all of the states.
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
-  - Everything is in the widget tree.
   - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
   - Supports older versions of flutter.
+
+## Core Concepts
+
+  - Momentum only uses `setState(...)` under the hood.
+  - The method `model.update(...)` is the setState of momentum.
+  - Modular project structure because of the component system (`MomentumController` + `MomentumModel`).
+  - Everything can be reusable from widgets, services, data, state to logic.
+  - Everything is in the widget tree.
 
 ## Preview
 In this image the process was like this:
