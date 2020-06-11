@@ -1,8 +1,6 @@
 # Working with Streams
 You don't need `StreamBuilder`. With `MomentumBuilder` you can do any synchronous, asynchronous and `reactive` state management. The most common area where you'll be required to work with streams is firebase library.
 
-!> **NOTE:** This is not a full tutorial. This will only give you an idea on how to work with streams in momentum.
-
 This will guide you on how to rebuild your widgets with firebase snapshot, how to dispose listeners when user logs out, and handling stream errors.
 
 ## Setup the Model
