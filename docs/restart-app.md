@@ -21,7 +21,7 @@ void main() {
 }
 ```
 
-To easily implement restart, we need a new instance of momentum everytime. And it can be done using a top level method.
+To easily implement restart, we need a new instance of momentum every time. And it can be done using a top-level method.
 
 ```dart
 void main() {
@@ -39,7 +39,7 @@ Momentum momentum() {
 }
 ```
 
-Now, down the tree we can call the `momentum()` method which returns a fresh copy of `Momentum` instance with exact same dependencies.
+Now, down the tree, we can call the `momentum()` method which returns a fresh copy of `Momentum` instance with the same dependencies.
 
 <hr>
 
@@ -53,4 +53,4 @@ Momentum.restart(context, momentum());
 
 - If you are using persistent navigation, we need to call `Router.resetWithContext<Home>` to set the initial page when the app restarts.
 - `Momentum.restart(...)` called the method `momentum()`.
-- Requires context so you need to call this inside a widget like button click.
+- Requires context so you need to call this inside a widget like a button click.
