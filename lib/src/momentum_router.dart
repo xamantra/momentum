@@ -148,7 +148,7 @@ class Router extends MomentumService {
     Type route, {
     Route Function(BuildContext, Widget) transition,
   }) {
-    var service = Momentum.getService<Router>(context);
+    var service = Momentum.service<Router>(context);
     service._goto(
       context,
       route,
@@ -161,7 +161,7 @@ class Router extends MomentumService {
     BuildContext context, {
     Route Function(BuildContext, Widget) transition,
   }) {
-    var service = Momentum.getService<Router>(context);
+    var service = Momentum.service<Router>(context);
     var routeResult = service._pop(context, transition: transition);
     return routeResult;
   }
@@ -170,14 +170,14 @@ class Router extends MomentumService {
   /// You may want this to be your initial
   /// widget when your app starts.
   static Widget getActivePage(BuildContext context) {
-    var service = Momentum.getService<Router>(context);
+    var service = Momentum.service<Router>(context);
     var page = service._getActivePage();
     return page;
   }
 
   /// Clear navigation history using context.
   static Future<void> clearHistoryWithContext(BuildContext context) async {
-    var service = Momentum.getService<Router>(context);
+    var service = Momentum.service<Router>(context);
     await service.clearHistory();
   }
 
@@ -185,7 +185,7 @@ class Router extends MomentumService {
   static Future<void> resetWithContext<T extends Widget>(
     BuildContext context,
   ) async {
-    var service = Momentum.getService<Router>(context);
+    var service = Momentum.service<Router>(context);
     await service.reset<T>();
   }
 }

@@ -92,7 +92,7 @@ Router.goto(
 
 Clear the navigation history. Popping will close the app.
 ```dart
-var router = Momentum.getService<Router>(context);
+var router = Momentum.service<Router>(context);
 await router.clearHistory();
 ```
 
@@ -115,7 +115,7 @@ await Router.clearHistoryWithContext(context);
 
 Clear navigation history and set an initial page. The recommended use case for this is when you want to restart your app.
 ```dart
-var router = Momentum.getService<Router>(context);
+var router = Momentum.service<Router>(context);
 // this will not automatically go to the login page.
 await router.reset<LoginPage>();
 // will be restarted in the login page.

@@ -29,7 +29,7 @@ A callback similar to `initState()` but you can access the context variable safe
 
   @override
   void initMomentumState() {
-    exampleController = Momentum.of<ExampleController>(context);
+    exampleController = Momentum.controller<ExampleController>(context);
   }
 ```
 
