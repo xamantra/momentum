@@ -1023,8 +1023,8 @@ class Momentum extends InheritedWidget {
       child: _MomentumRoot(
         child: child,
         appLoader: appLoader,
-        controllers: controllers,
-        services: services,
+        controllers: controllers ?? [],
+        services: services ?? [],
         enableLogging: enableLogging,
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,
