@@ -1,5 +1,5 @@
 # Initialize App
-Have you ever wanted to load some big data before your app actually starts? That's where `bootstrapAsync()` comes in.
+Have you ever wanted to load some big data before your app starts? That's where `bootstrapAsync()` comes in.
 
 - With `bootstrapAsync()`, you can load something asynchronously before your app starts.
 - Momentum will show a default loading widget but you can override it with a custom one. 
