@@ -1,8 +1,8 @@
 # Event System
-`MomentumController` can send an event data to the widgets. Widgets can receive this events with the `.listen<T>` method where `T` can be of any type.
+`MomentumController` can send event data to the widgets. Widgets can receive these events with the `.listen<T>` method where `T` can be of any type.
 
 - This can be useful for showing dialogs/alerts/snackbars.
-- Navigating to different page if certain logic in the controller meets all the conditions.
+- Navigating to a different page if certain logic in the controller meets all the conditions.
 - Or just print the event data on the debug console.
 
 ## Defining Events
@@ -62,7 +62,7 @@ class LoginController extends Momentum<LoginModel> {
 }
 ```
 
-- Don't pay too much attention with the other codes.
+- Don't pay too much attention to the other codes.
 - Only focus on `sendEvent(...)` and `LoginEvent(...)`.
 - In the next section, you're going to see how the widgets can receive these events.
 
@@ -107,4 +107,4 @@ class _LoginWidgetState extends MomentumState<LoginWidget> {
 - Any call to `sendEvent(LoginEvent(...))` will invoke the parameter `invoke`.
 - The argument `event` is of type `LoginEvent`.
 - You can then use this argument to display snackbars or toast.
-- If the login was success, navigate to home page.
+- If the login was successful, navigate to the home page.
