@@ -124,7 +124,7 @@ Momentum.restart(context, momentum());
 
 <hr>
 
-## .resetWithContext(context)
+## .resetWithContext\<T\>(context)
 - Category: `Method`
 - Type: `Future<void>`
 
