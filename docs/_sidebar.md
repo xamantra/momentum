@@ -14,7 +14,6 @@
     - [Asynchronous](asynchronous.md "Asynchronous State Management | Momentum")
     - [Streams](streams.md "Working with Streams | Momentum")
     - [Event System](event-system.md "Event System from Controllers to Widgets | Momentum")
-    - [Login Session](login-session.md "Automatically Save Login Session for Auth Apps | Momentum")
     - [Restarting App](restart-app.md "Implementing app restart in few lines of code | Momentum")
 
 - API Reference
