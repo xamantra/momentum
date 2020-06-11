@@ -66,7 +66,7 @@ PS: If you hate static/singleton this library is for you. :)
  <hr>
 <b id="access-and-control-everything">Access and Control everything</b> - The basic idea is that everything can be easily accessed and manipulated. If you are familiar with `BLoC` package the functions are written in the `Bloc` class (ex. _LoginBloc_). In momentum, you write the functions in your `MomentumController` class (ex. _LoginController_). One big difference with BLoC package is that **_there is no "default and easy" way to call another `Bloc` class_**, with momentum it's very easy to call another Controller class, like this:
 
-```Dart
+```dart
 class LoginController extends MomentumController<LoginModel> {
   ...
 
@@ -96,7 +96,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   First, this is how your fresh flutter app looks like;
 
-  ```Dart
+  ```dart
     void main() {
       runApp(MyApp());
     }
@@ -104,7 +104,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Then, implementing momentum state management will make it look like this:
 
-  ```Dart
+  ```dart
   void main() {
     runApp(
       Momentum(
@@ -128,7 +128,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="momentummodel---view-model-class">MomentumModel</b> is the `view model` for you controller. It is always linked to a specific type of `MomentumController`. The `update(...)` method you below is like a `copyWith` method with just a slight difference. This method is used to update values (immutable). A pair of controller and model can be use in any widgets, they are NOT tied to a single widget only.
 
-  ```Dart
+  ```dart
     class CounterModel extends MomentumModel<CounterController> {
       final int value;
 
@@ -153,7 +153,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="momentumcontroller---logic-class">MomentumController</b> class - This is where your logic comes _(like a "Bloc" class)_. It is always linked to a specific type of `MomentumModel`. The `MomentumController` class is an abstract base class. It requires an implementation of `init()` method which must return the model type linked with this controller. The library automatically calls this method.
 
-  ```Dart
+  ```dart
     class CounterController extends MomentumController<CounterModel> {
       @override
       CounterModel init() {
@@ -176,7 +176,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="momentumbuilder---widget-class">MomentumBuilder</b> is the widget class. With the `controllers` parameter, instead of injecting an instance, you inject a type. It is multiple too which makes it easy to refactor instead of having separate class for single and multiple controller builder class.
 
-  ```Dart
+  ```dart
     MomentumBuilder(
       controllers: [CounterController], // a type not an instance :)
       builder: (context, snapshot) {
@@ -193,7 +193,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="momentumstate---listener-class">MomentumState</b> class - A replacement for `State` class if you want to add a listener for your model state and react to it (showing dialogs, snackbars, toast, navigation and many more...). `initMomentumState` is part of `MomentumState` and will only be called once.
 
-  ```Dart
+  ```dart
   class Login extends StatefulWidget {
     ...
   }
@@ -227,7 +227,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   - `MomentumController` overrides `Momentum`'s setting.
   - If this is `false` from `Momentum` class but `true` in `MomentumController` class, the accepted value will be `true`.
 
-    ```Dart
+    ```dart
       Momentum(
         controller: [
           LoginController()..config(enableLogging: true),
@@ -244,7 +244,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
   - Both the `Momentum` root widget and `MomentumController` has this config property. Defaults to `true`.
   - If this is `true`, the `bootstrap()` method will be called when the very first `MomentumBuilder` that listens to a specific controller will be loaded.
 
-    ```Dart
+    ```dart
       Momentum(
         controller: [
           LoginController()..config(lazy: true),
@@ -272,7 +272,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   - Example `LoginController`, file: `lib/src/components/login/login.controller.dart`.
 
-    ```Dart
+    ```dart
       import 'package:momentum/momentum.dart';
 
       import 'index.dart';
@@ -288,7 +288,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   - Example `LoginModel`, file: `lib/src/components/login/login.model.dart`.
 
-    ```Dart
+    ```dart
       import 'package:momentum/momentum.dart';
 
       import 'index.dart';
@@ -304,7 +304,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
     ```
 
   - And the optional `lib/src/components/login/index.dart` file.
-    ```Dart
+    ```dart
       export 'login.controller.dart';
       export 'login.model.dart';
     ```
@@ -318,7 +318,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="init-method">init()</b> method - `MomentumController` requires this method to be implemented, but the library will call it for you. This will only be called once. Also, you should NOT put any logic in here, use <a href="#bootstrap-method">`bootstrap()`</a> method instead.
 
-  ```Dart
+  ```dart
     class LoginController extends MomentumController<LoginModel> {
 
       @override
@@ -336,7 +336,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="bootstrap-method">bootstrap()</b> - A `MomentumController` method. Called after `init()`. This is an optional virtual method. If you override this, the library will call it for you. This is where you put initialization logic instead of `init()`. This is only called once too. This is also a good place to listen to streams, you don't have to worry about closing/disposing it since `bootstrap()` method is only called once.
 
-  ```Dart
+  ```dart
     class LoginController extends MomentumController<LoginModel> {
 
       @override
@@ -357,7 +357,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="momentumoftcontext-method">Momentum.of<T>(context) method - </b>Get a specific controller to call needed functions.
 
-  ```Dart
+  ```dart
     class Login extends StatefulWidget {
       ...
     }
@@ -392,7 +392,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="modelupdate-method">model.update(...)</b> method - This is the method which is use to rebuild widgets. When this method is called, all `MomentumBuilder`s that listens to a certain controller will rebuild, for example to `LoginController`. This method is also similar to `copyWith`. This method must be inside your model class and all properties must be final.
 
-  ```Dart
+  ```dart
   // declaration
   @override
   void update({
@@ -421,7 +421,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="snapshott-builder-method">snapshot<T>()</b> method - This method is use inside `MomentumBuilder`'s _builder_ method.
 
-  ```Dart
+  ```dart
   controllers: [LoginController],
   builder: (context, snapshot) {
     var loginModel = snapshot<LoginModel>();
@@ -431,7 +431,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Multiple controller support:
 
-  ```Dart
+  ```dart
   controllers: [LoginController, SessionController],
   builder: (context, snapshot) {
     var loginModel = snapshot<LoginModel>();
@@ -449,7 +449,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Call inside the controller itself:
 
-  ```Dart
+  ```dart
     class LoginController ... {
       ...
 
@@ -464,7 +464,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Call inside a widget:
 
-  ```Dart
+  ```dart
     loginController = Momentum.of<LoginController>(context);
     ...
     loginController.reset();
@@ -472,7 +472,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   Call inside another controller
 
-        ```Dart
+        ```dart
           class HomeController ... {
             ...
 
@@ -492,7 +492,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
   - You can easily call this method: `Momentum.resetAll(context);`
   - The `onResetAll` parameter. Take a look at this example, assuming we have a logout function that resets everything.
-    ```Dart
+    ```dart
       void main() {
         runApp(
           Momentum(
@@ -548,7 +548,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="backward-time-travel-method">backward()</b> method - A `MomentumController` method. Sets the state one step _behind_ from the current model state. Example:
 
-  ```Dart
+  ```dart
   loginController.backward();
   ```
 
@@ -557,7 +557,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - <b id="backward-time-travel-method">forward()</b> method - A `MomentumController` method. Sets the state one step _ahead_ from the current model state. Example:
 
-  ```Dart
+  ```dart
   loginController.forward();
   ```
 
