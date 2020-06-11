@@ -28,6 +28,7 @@
 
 - More
 
+    - [Old README](README.old.md "Old Readme Docs | Momentum")
     - [Github](https://github.com/xamantra/momentum)
     - [pub.dev](https://pub.dev/packages/momentum)
     - [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code)
