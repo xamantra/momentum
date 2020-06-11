@@ -1,7 +1,7 @@
 # Working with Streams
-You don't need `StreamBuilder`. With `MomentumBuilder` you can do any synchronous, asynchronous and `reactive` state management. The most common area where you'll be required to work with streams is firebase library.
+You don't need `StreamBuilder`. With `MomentumBuilder` you can do any synchronous, asynchronous, and `reactive` state management. The most common area where you'll be required to work with streams is the firebase library.
 
-This will guide you on how to rebuild your widgets with firebase snapshot, how to dispose listeners when user logs out, and handling stream errors.
+This will guide you on how to rebuild your widgets with firebase snapshots, how to dispose of the listener when the user logs out and handling stream errors.
 
 ## Setup the Model
 
@@ -42,7 +42,7 @@ class ChatModel extends MomentumModel<ChatController> {
 
 - `QuerySnapshot` - the actual data we need to display on our widget. It is a room list snapshot in this case.
 
-- `StreamSubscription<QuerySnapshot>` - we need a reference to the stream subscription so we can dispose it later.
+- `StreamSubscription<QuerySnapshot>` - we need a reference to the stream subscription so we can dispose of it later.
 
 <hr>
 
@@ -68,7 +68,7 @@ class ChatController extends MomentumController<ChatModel> {
 }
 ```
 
-- `bootstrap()` - this is the best place to initialize listeners not just for streams. This callback method is guaranteed to run only once. There is asynchronous version for this but we don't need any async code right now.
+- `bootstrap()` - this is the best place to initialize listeners not just for streams. This callback method is guaranteed to run only once. There is an asynchronous version for this but we don't need any async code right now.
 
 - `.snapshots()` is of type `Stream<QuerySnapshot>`. We need to listen to this stream.
 
@@ -76,7 +76,7 @@ class ChatController extends MomentumController<ChatModel> {
 
 - Inside `.listen(...)` callback, we are updating the `roomsSnapshot` with the provided `querySnapshot`. This is realtime so whenever firestore updates this collection, `MomentumBuilder` will also rebuild.
 
-- Finally, we are saving the `roomsSubscription` into the model so we can dispose it later.
+- Finally, we are saving the `roomsSubscription` into the model so we can dispose of it later.
 
 <hr>
 
@@ -133,17 +133,17 @@ MomentumBuilder(
 
 - In this momentum builder, we injected `ChatController` so that we can use the `roomsSnapshot` property from `ChatModel`.
 
-- With `roomsSnapshot.documents`, we can access the list of rooms from firestore and do anything with it.
+- With `roomsSnapshot.documents`, we can access the list of rooms from the firestore and do anything with it.
 
-- `room.data` is the json representation of your firestore room.
+- `room.data` is the JSON representation of your firestore room.
 
-- `RoomWidget` is just an example, you can basically display any widget here.
+- `RoomWidget` is just an example, you can display any widget here.
 
-- It is highly recommended to parse the json data into typed object.
+- It is highly recommended to parse the JSON data into a typed object.
 
 <hr>
 
-## Dispose the Stream
+## Dispose of the Stream
 
 ```dart
 class ChatController extends MomentumController<ChatModel> {
@@ -158,7 +158,7 @@ class ChatController extends MomentumController<ChatModel> {
 }
 ```
 
-- The `.cancel()` method is asynchronous, the stream needs to cleanup after cancelling a subscription.
+- The `.cancel()` method is asynchronous, the stream needs to clean up after canceling a subscription.
 - Now, we can call `disposeStream()` anywhere in our code.
 
 Let's close the stream subscription when the user logout:
@@ -182,12 +182,12 @@ FlatButton(
 
 <hr>
 
-## Long Boilerplate ?
-You might be thinking right now that just for one stream data, the code is very long. Well, that is very true. But you are actually seeing it wrong. The biggest advantage with this enough you can overlook the long boilerplate is the `reusability`.
+## Long Boilerplate?
+You might be thinking right now that just for one stream data, the code is very long. Well, that is very true. But you are seeing it wrong. The biggest advantage with this enough you can overlook the long boilerplate is the `reusability`.
 
 Imagine this scenario:
 
-- You decided that, in the home page, you want to display the number of rooms that the current user belongs to.
+- You decided that, on the home page, you want to display the number of rooms that the current user belongs to.
 - Then, are you going to create another `QuerySnapshot` for it? **NO**.
 - Instead of creating another one, you can just reuse the `QuerySnapshot` we created above.
 
@@ -209,4 +209,4 @@ AppBar(
 
 - In the appbar, we displayed the room count along with the username.
 - We also injected multiple controllers here. (*another good thing about momentum*)
-- And this is realtime so whenever room list gets updated in firestore the appbar title will automatically rebuild too.
+- And this is realtime so whenever the room list gets updated on firestore the appbar title will automatically rebuild too.
