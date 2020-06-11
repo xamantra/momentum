@@ -8,8 +8,9 @@
     - [Time Travel (Undo/Redo)](time-travel.md)
     - [Equatable Support](equatable.md)
 
-- Recipes
+- Guides
 
+    - [Initialize App](initialize-app.md)
     - [Asynchronous](asynchronous.md)
     - [Streams](streams.md)
     - [Event System](event-system.md)
