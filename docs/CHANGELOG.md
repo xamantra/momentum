@@ -10,13 +10,13 @@ Major changes:
 Minor changes:
   - `Momentum.controller<T>` is now the recommended way of getting a controller using context instead of `Momentum.of<T>`.
   - `Momentum.service<T>` is now the recommended way of getting a service using context instead of `Momentum.getService<T>`.
-  - `enableLogging` is now default to `false`.
+  - `enableLogging` now defaults to `false`.
 
 <hr>
 
 ## 1.1.6
 - New function added: `Momentum.restart(...)`
-  - Restart the app with new momentum instance.
+  - Restart the app with a new momentum instance.
   - To easily implement, in you `main.dart` create a method that returns `Momentum` instance.
     ```dart
     void main() {
@@ -96,7 +96,7 @@ Minor changes:
 - `bootstrap()` method is now synchronous only.
 - added `bootstrapAsync()` for separate asynchronous support.
 - For the execution order, `bootstrap()` gets called first then `bootstrapAsync()`.
-- added detailed logging for both `bootstrap()` and `bootstrapAsync()` so you can really see what gets executed first and the time it took.
+- added detailed logging for both `bootstrap()` and `bootstrapAsync()` so you can see what gets executed first and the time it took.
 
 <hr>
 
@@ -119,13 +119,13 @@ Minor changes:
         model.update(appSettings: appSettings);
       }
     ```
-  - Now, imagine `apiService.getAppSettings()` takes 3-5 seconds to load. Before your `MyApp()` gets actually loaded, _momentum_ will await this boostrap method and show a loading widget until it finishes. Means, you can now do anything you want with `bootstrap()` method synchronous or asynchonous. It is safe to call `model.update(...)` in this method.
+  - Now, imagine `apiService.getAppSettings()` takes 3-5 seconds to load. Before your `MyApp()` gets loaded, _momentum_ will await this bootstrap method and show a loading widget until it finishes. Means, you can now do anything you want with the `bootstrap()` method synchronous or asynchronous. It is safe to call `model.update(...)` in this method.
 
 <hr>
 
 ## 1.1.0
 
-- Reformatted the whole readme, reduce number of headings.
+- Reformatted the whole readme, reduce the number of headings.
 
 <hr>
 
@@ -134,9 +134,9 @@ Minor changes:
 - New feature: `dontRebuildIf` parameter for `MomentumBuilder`.
 
   - This method will be called after `model.update(...)` right before the `builder`.
-  - `isTimeTravel` is also provided that indicates if the model was updated by time travel methods `.backward()` or `.forward()`, returning it directly means you don't want to rebuild if an update was done with time travel method.
-  - Two new properties was also added: `MomentumController.prevModel` and `MomentumController.nextModel` which are properties from model history and their meaning is quite obvious. The `prevModel` is the previous state and `nextModel` is the next state which will only have a value if you use `.backward()` method. If you are on latest snapshot of the model `nextModel` will be null.
-  - Take a look at this example, The widget is displaying a time format `HH:mm` and `TimerController` ticks every `500ms` for accuracy. We only need to rebuild if _minute_ property is changed, that's where `dontRebuildIf` parameter comes.
+  - `isTimeTravel` is also provided that indicates if the model was updated by time travel methods `.backward()` or `.forward()`, returning it directly means you don't want to rebuild if an update was done with the time travel method.
+  - Two new properties were also added: `MomentumController.prevModel` and `MomentumController.nextModel` which are properties from model history and their meaning is quite obvious. The `prevModel` is the previous state and `nextModel` is the next state which will only have a value if you use `.backward()` method. If you are on the latest snapshot of the model `nextModel` will be null.
+  - Take a look at this example, The widget is displaying a time format `HH: mm` and `TimerController` ticks every `500ms` for accuracy. We only need to rebuild if _minute_ property is changed, that's where the `dontRebuildIf` parameter comes.
 
     ```Dart
       MomentumBuilder(
@@ -152,27 +152,27 @@ Minor changes:
       )
     ```
 
-  - **WARNING:** This method is the same as any other `builder` or `build` methods, do not call `model.update(...)` or anything that calls `build` method, for example `setState(...)`. You'll get an infinite loop.
+  - **WARNING:** This method is the same as any other `builder` or `build` methods, do not call `model.update(...)` or anything that calls `build` method, for example, `setState(...)`. You'll get an infinite loop.
 
 <hr>
 
 ## 1.0.8
 
 - Major update:
-  - updated `onResetAll` to support widget operation before actually reseting all models.
-  - improved README, added lots of new contents.
+  - updated `onResetAll` to support widget operation before actually resetting all models.
+  - improved README added lots of new content.
 
 <hr>
 
 ## 1.0.7
 
-- fixed typos on readme.
+- fixed typos on the readme.
 
 <hr>
 
 ## 1.0.6
 
-- updated readme, added MomentumState listener section. and also fix typos.
+- updated readme added MomentumState listener section. and also fix typos.
 
 <hr>
 

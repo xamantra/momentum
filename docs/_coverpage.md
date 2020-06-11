@@ -2,7 +2,7 @@
 
 # momentum <small>1.1.7</small>
 
-> Full featured flutter state management library.
+> Full-featured flutter state management library.
 
 - Very flexible dependency injection.
 - Persistence Support for states and routing.

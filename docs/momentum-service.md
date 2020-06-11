@@ -1,5 +1,5 @@
 # MomentumService
-An abstract class used for marking any classes you create as a `service` class. Services can by anything. It can be a class that wraps all your HTTP calls (api service), notifications, file watcher, cloud downloader, email handler, etc.
+An abstract class used for marking any classes you create as a `service` class. Services can by anything. It can be a class that wraps all your HTTP calls (API service), notifications, file watcher, cloud downloader, email handler, etc.
 
 - This class doesn't have any property, methods, or behaviors.
 - Only used for marking really.
@@ -47,4 +47,4 @@ class AuthController extends MomentumController<AuthModel> {
 }
 ```
 
-!> Head to this [section](/momentum?id=services) to know how to setup a service.
+!> Head to this [section](/momentum?id=services) to know how to set up a service.
