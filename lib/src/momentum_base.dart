@@ -373,9 +373,9 @@ abstract class MomentumController<M> {
       try {
         json = (model as MomentumModel).toJson();
         modelRawJson = jsonEncode(json);
-      } on dynamic catch (e, stackStrace) {
+      } on dynamic catch (e, stackTrace) {
         print(e);
-        print(stackStrace);
+        print(stackTrace);
       }
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
@@ -423,9 +423,9 @@ abstract class MomentumController<M> {
         } else {
           try {
             result = (model as MomentumModel).fromJson(json) as M;
-          } on dynamic catch (e, stackStrace) {
+          } on dynamic catch (e, stackTrace) {
             print(e);
-            print(stackStrace);
+            print(stackTrace);
           }
           if (result == null && _momentumLogging) {
             print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
@@ -569,7 +569,7 @@ abstract class MomentumController<M> {
   bool get isLazy => _lazy;
   bool _configMethodCalled = false;
 
-  /// Configure this controller to set some custom behaviours.
+  /// Configure this controller to set some custom behaviors.
   void config({
     bool enableLogging,
     int maxTimeTravelSteps,
@@ -1077,6 +1077,11 @@ class Momentum extends InheritedWidget {
 
   final PersistSaver _persistSave;
   final PersistGet _persistGet;
+
+  /// Method for testing only.
+  T controllerForTest<T extends MomentumController>() {
+    return _getController<T>();
+  }
 
   T _getController<T extends MomentumController>([bool isInternal = false]) {
     var controller = _controllers.firstWhere((c) => c is T, orElse: () => null);
