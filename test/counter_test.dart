@@ -21,6 +21,18 @@ void main() {
     expect(controller.model.value, 0);
   });
 
+  testWidgets('Click Increment', (tester) async {
+    var widget = counter();
+    await inject(tester, widget);
+    await tester.tap(find.byKey(keyIncrementButton));
+    await tester.pump();
+    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byKey(keyIncrementButton));
+    await tester.pump();
+    expect(find.text('1'), findsNothing);
+    expect(find.text('2'), findsOneWidget);
+  });
+
   testWidgets('Trigger Increment', (tester) async {
     var widget = counter();
     await inject(tester, widget);
