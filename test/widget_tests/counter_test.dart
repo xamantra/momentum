@@ -14,13 +14,6 @@ void main() {
     expect(incrementFinder, findsOneWidget);
   });
 
-  testWidgets('Initialize Controller', (tester) async {
-    var widget = counter();
-    await inject(tester, widget);
-    var controller = widget.controllerForTest<CounterController>();
-    expect(controller.model.value, 0);
-  });
-
   testWidgets('Click Increment', (tester) async {
     var widget = counter();
     await inject(tester, widget);
