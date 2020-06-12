@@ -89,7 +89,6 @@ abstract class MomentumController<M> {
   /// Dependency injection method for getting other controllers.
   /// Useful for accessing other controllers' function
   /// and model properties without dragging the widget context around.
-  @protected
   T dependOn<T extends MomentumController>() {
     if (this is T) {
       throw Exception(_formatMomentumLog('[$this]: called '
@@ -562,7 +561,13 @@ abstract class MomentumController<M> {
   }
 
   bool _momentumLogging;
+
+  /// Indicates whether debug logging for this controller is enable or not.
+  bool get loggingEnabled => _momentumLogging;
   int _maxTimeTravelSteps;
+
+  /// Maximum number of steps this controller can undo and redo states.
+  int get maxTimeTravelSteps => _maxTimeTravelSteps;
   bool _lazy;
 
   /// A getter that indicates if this controller is lazy loaded or not.
