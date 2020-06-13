@@ -558,7 +558,7 @@ abstract class MomentumController<M> {
       _setMomentum(null, backward: true);
     } else {
       _currentActiveModel = init();
-      _setMomentum(_currentActiveModel);
+      _setMomentum(init());
     }
     if (_momentumLogging) {
       print(_formatMomentumLog('[$this] has been reset.'));
