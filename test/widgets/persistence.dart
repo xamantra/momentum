@@ -8,7 +8,7 @@ import '../components/persist-error2/index.dart';
 import '../components/persist-error3/index.dart';
 import '../components/persist-error4/index.dart';
 import '../components/persist-test/index.dart';
-import '../utilities/memory_db.dart';
+import '../utilities/in_memory_storage.dart';
 
 Momentum persistedApp({
   bool noPersistSave = false,
@@ -27,21 +27,21 @@ Momentum persistedApp({
     ],
     enableLogging: true,
     services: [
-      InMemoryStorage<String>(),
+      InMemoryStorage(),
     ],
     persistSave: noPersistSave
         ? null
         : (context, key, value) async {
             if (fakeFailSave) return false;
-            var storage = InMemoryStorage.of<String>('persistedApp', context);
-            var result = await storage.save(key, value);
+            var storage = InMemoryStorage.of('persistedApp', context);
+            var result = await storage.setString(key, value);
             return result;
           },
     persistGet: noPersistGet
         ? null
         : (context, key) async {
-            var storage = InMemoryStorage.of<String>('persistedApp', context);
-            var result = storage.getValue(key);
+            var storage = InMemoryStorage.of('persistedApp', context);
+            var result = storage.getString(key);
             return result;
           },
   );

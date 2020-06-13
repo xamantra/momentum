@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
 import '../components/counter/index.dart';
-import '../utilities/memory_db.dart';
+import '../utilities/in_memory_storage.dart';
 
 const gotoPageBKey = Key('Goto PageB');
 const gotoPageCKey = Key('Goto PageC');
@@ -20,16 +20,16 @@ Momentum routerTestWidget() {
         PageB(),
         PageC(),
       ]),
-      InMemoryStorage<String>(),
+      InMemoryStorage(),
     ],
     persistSave: (context, key, value) async {
-      var storage = InMemoryStorage.of<String>('routerTestWidget', context);
-      var result = await storage.save(key, value);
+      var storage = InMemoryStorage.of('routerTestWidget', context);
+      var result = await storage.setString(key, value);
       return result;
     },
     persistGet: (context, key) async {
-      var storage = InMemoryStorage.of<String>('routerTestWidget', context);
-      var result = storage.getValue(key);
+      var storage = InMemoryStorage.of('routerTestWidget', context);
+      var result = storage.getString(key);
       return result;
     },
   );
