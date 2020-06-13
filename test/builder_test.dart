@@ -6,6 +6,7 @@ import 'widgets/error_widget.dart';
 import 'widgets/error_widget2.dart';
 import 'widgets/error_widget3.dart';
 import 'widgets/error_widget4.dart';
+import 'widgets/error_widget5.dart';
 import 'widgets/skip_rebuild.dart';
 
 void main() {
@@ -43,5 +44,15 @@ void main() {
     var widget = errorWidget4();
     await inject(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
+  });
+  testWidgets('dontRebuildIf access controller not injected', (tester) async {
+    var widget = errorWidget5();
+    await inject(tester, widget);
+    var controller = widget.controllerForTest<CounterController>();
+    try {
+      controller.increment();
+    } on dynamic catch (e) {
+      expect(e is Exception, true);
+    }
   });
 }
