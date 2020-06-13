@@ -27,6 +27,16 @@ Momentum asyncApp({
     services: [
       InMemoryStorage<String>(),
     ],
+    persistSave: (context, key, value) async {
+      var storage = InMemoryStorage.of<String>(context);
+      var result = await storage.save(key, value);
+      return result;
+    },
+    persistGet: (context, key) async {
+      var storage = InMemoryStorage.of<String>(context);
+      var result = storage.getValue(key);
+      return result;
+    },
   );
 }
 

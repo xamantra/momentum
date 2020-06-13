@@ -23,4 +23,21 @@ class PersistTestModel extends MomentumModel<PersistTestController> {
       email: email ?? this.email,
     ).updateMomentum();
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'email': email,
+    };
+  }
+
+  PersistTestModel fromJson(Map<String, dynamic> map) {
+    if (map == null) return null;
+
+    return PersistTestModel(
+      controller,
+      username: map['username'],
+      email: map['email'],
+    );
+  }
 }

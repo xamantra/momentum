@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'components/async-test/async-test.controller.dart';
 import 'components/counter/index.dart';
 import 'components/dummy/index.dart';
+import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
 import 'widgets/async.dart';
@@ -219,5 +220,25 @@ void main() {
     var b = widget.controllerForTest<DummyController>();
     var keyB = 'Momentum[Instance of DummyController<DummyModel>]';
     expect(b.persistenceKey, keyB);
+  });
+
+  group('Persistence State Test', () {
+    testWidgets('Start App', (tester) async {
+      var widget = asyncApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('Restart App', (tester) async {
+      var widget = asyncApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
   });
 }

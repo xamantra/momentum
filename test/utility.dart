@@ -20,11 +20,26 @@ Future<void> sleep(int milliseconds) async {
   return;
 }
 
+var _persistedStorage = [];
+
 class InMemoryStorage<T> extends MomentumService {
   final Map<String, T> _store = {};
 
+  static InMemoryStorage<T> of<T>(BuildContext context) {
+    var findStorage = _persistedStorage.firstWhere(
+      (x) => x is InMemoryStorage<T>,
+      orElse: () => null,
+    );
+    if (findStorage == null) {
+      var inMemoryStorage = Momentum.getService<InMemoryStorage<T>>(context);
+      _persistedStorage.add(inMemoryStorage);
+      return inMemoryStorage;
+    }
+    return findStorage as InMemoryStorage<T>;
+  }
+
   Future<bool> save(String key, T value) async {
-    await sleep(1000);
+    await sleep(100);
     _store.addAll({key: value});
     var successfullySaved = _store.containsKey(key) && _store[key] == value;
     return successfullySaved;
