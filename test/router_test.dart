@@ -127,5 +127,26 @@ void main() {
       await tester.pumpAndSettle();
       expect(router.isRoutesEmpty, true);
     });
+
+    testWidgets('#1 router reset', (tester) async {
+      var widget = routerTestWidget();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageA, true);
+      await tester.tap(find.byKey(gotoPageBKey));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is PageB, true);
+      router.reset<PageC>();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('#2 router reset', (tester) async {
+      var widget = routerTestWidget();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageC, true);
+    });
   });
 }
