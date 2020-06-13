@@ -7,7 +7,6 @@ import 'components/error-test-1/index.dart';
 import 'components/error-test-2/index.dart';
 import 'components/error-test-3/index.dart';
 import 'components/persist-error1/index.dart';
-import 'components/persist-error2/index.dart';
 import 'components/persist-error3/index.dart';
 import 'components/persist-error4/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
