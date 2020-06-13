@@ -3,6 +3,7 @@ import 'package:momentum/momentum.dart';
 
 import 'utility.dart';
 import 'widgets/router_error_widget.dart';
+import 'widgets/router_exit.dart';
 import 'widgets/router_test_widget.dart';
 
 void main() {
@@ -45,7 +46,7 @@ void main() {
       expect(router.getActive() is PageC, true);
     });
 
-    testWidgets('Pop', (tester) async {
+    testWidgets('pop', (tester) async {
       var widget = routerTestWidget();
       await inject(tester, widget);
       var router = widget.serviceForTest<Router>();
@@ -66,6 +67,17 @@ void main() {
       await tester.pumpAndSettle();
       var active = router.getActive();
       expect(active is PageErrorTestA, true);
+    });
+
+    testWidgets('#2 pop(...): exit app', (tester) async {
+      var widget = routerExitApp();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageExitTest, true);
+      await tester.tap(find.byKey(routerExitButtonKey));
+      await tester.pumpAndSettle();
+      expect(router.isRoutesEmpty, true);
     });
   });
 }
