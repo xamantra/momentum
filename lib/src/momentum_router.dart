@@ -36,6 +36,10 @@ class Router extends MomentumService {
 
   List<int> _history = [];
 
+  /// Indicates whether there are no more pages in the
+  /// navigation history.
+  bool get isRoutesEmpty => _history.isEmpty;
+
   Future<void> _goto(
     BuildContext context,
     Type route, {
