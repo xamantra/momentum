@@ -25,7 +25,7 @@ Momentum asyncApp({
       DummyController(),
     ],
     services: [
-      InMemoryStorage(),
+      InMemoryStorage<String>(),
     ],
   );
 }

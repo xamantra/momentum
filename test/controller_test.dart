@@ -130,8 +130,8 @@ void main() {
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<DummyController>();
     expect(controller is DummyController, true);
-    var service = controller.getService<InMemoryStorage>();
-    expect(service is InMemoryStorage, true);
+    var service = controller.getService<InMemoryStorage<String>>();
+    expect(service is InMemoryStorage<String>, true);
     try {
       controller.getService<DummyService>();
     } on dynamic catch (e) {
