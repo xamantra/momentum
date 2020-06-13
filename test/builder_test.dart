@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'components/counter/counter.controller.dart';
-import 'utility.dart';
+import 'utilities/launcher.dart';
 import 'widgets/error_widget.dart';
 import 'widgets/error_widget2.dart';
 import 'widgets/error_widget3.dart';

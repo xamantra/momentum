@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'components/counter/counter.controller.dart';
 import 'components/sync-test/index.dart';
-import 'utility.dart';
+import 'utilities/launcher.dart';
 import 'widgets/blank_widget.dart';
 import 'widgets/counter_obsolete.dart';
 import 'widgets/counter_restart.dart';

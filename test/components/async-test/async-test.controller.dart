@@ -1,6 +1,6 @@
 import 'package:momentum/momentum.dart';
 
-import '../../utility.dart';
+import '../../utilities/sleep.dart';
 import 'index.dart';
 
 class AsyncTestController extends MomentumController<AsyncTestModel> {

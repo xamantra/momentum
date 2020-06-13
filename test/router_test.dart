@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import 'utility.dart';
+import 'utilities/launcher.dart';
 import 'widgets/router_error_widget.dart';
 import 'widgets/router_exit.dart';
 import 'widgets/router_page_test_pop.dart';
