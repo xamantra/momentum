@@ -15,7 +15,9 @@ import 'utility.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
 import 'widgets/persistence.dart';
+import 'widgets/reset.dart';
 import 'widgets/sync.dart';
+import 'widgets/time_travel.dart';
 
 void main() {
   testWidgets('Initialize Controller', (tester) async {
@@ -87,14 +89,14 @@ void main() {
     expect(await controller.skipPersist(), true);
   });
   testWidgets('listen(...) | sendEvent(...)', (tester) async {
-    var widget = asyncApp(expect: expect);
+    var widget = asyncApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.sendEvent('test');
     controller.sendEvent(AsyncEvent(117, 'test'));
   });
   testWidgets('addListener(...)', (tester) async {
-    var widget = asyncApp(expect: expect);
+    var widget = asyncApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 100, name: 'momentum');
@@ -102,7 +104,7 @@ void main() {
     controller.backward();
   });
   testWidgets('backward()', (tester) async {
-    var widget = asyncApp();
+    var widget = timeTravelApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
@@ -116,7 +118,7 @@ void main() {
     expect(controller.model.name, 'momentum1');
   });
   testWidgets('forward()', (tester) async {
-    var widget = asyncApp();
+    var widget = timeTravelApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
@@ -168,7 +170,7 @@ void main() {
     }
   });
   testWidgets('reset()', (tester) async {
-    var widget = asyncApp();
+    var widget = resetApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
@@ -185,8 +187,8 @@ void main() {
     expect(controller.model.name, '');
   });
 
-    testWidgets('reset(clearHistory: true)', (tester) async {
-    var widget = asyncApp();
+  testWidgets('reset(clearHistory: true)', (tester) async {
+    var widget = resetApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
@@ -207,7 +209,7 @@ void main() {
 
   // property tests
   testWidgets('prevModel', (tester) async {
-    var widget = asyncApp();
+    var widget = timeTravelApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
@@ -228,7 +230,7 @@ void main() {
     expect(controller.model.name, 'flutter is awesome');
   });
   testWidgets('nextModel', (tester) async {
-    var widget = asyncApp();
+    var widget = timeTravelApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
