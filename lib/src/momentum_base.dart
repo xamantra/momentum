@@ -800,12 +800,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'to this model if it is injected into this ${widget.runtimeType}');
     }
     var model = _models.firstWhere((c) => c is T, orElse: () => null);
-    if (model == null) {
-      throw Exception(controller._formatMomentumLog('$_logHeader '
-          'An attempt to grab an instance of "$T" failed inside '
-          '${widget.runtimeType}\'s "builder" function.'));
-    }
-
     return model as T;
   }
 
