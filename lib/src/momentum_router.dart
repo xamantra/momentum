@@ -85,7 +85,7 @@ class Router extends MomentumService {
     if (_history.isEmpty) {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     } else {
-      var activePage = _getActivePage();
+      var activePage = getActive();
       Route r;
       if (transition != null) {
         r = transition(context, activePage);
@@ -112,7 +112,10 @@ class Router extends MomentumService {
     return;
   }
 
-  Widget _getActivePage() {
+  /// Get the active widget from the router.
+  /// You may want this to be your initial
+  /// widget when your app starts.
+  Widget getActive() {
     var isHistoryEmpty = _history.isEmpty;
     var findWidgetByIndex = isHistoryEmpty ? _pages[0] : _pages[_history.last];
     return findWidgetByIndex;
@@ -171,7 +174,7 @@ class Router extends MomentumService {
   /// widget when your app starts.
   static Widget getActivePage(BuildContext context) {
     var service = Momentum.service<Router>(context);
-    var page = service._getActivePage();
+    var page = service.getActive();
     return page;
   }
 
