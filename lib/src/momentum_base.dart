@@ -804,11 +804,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   }
 
   T _getController<T extends MomentumController>() {
-    if (widget.controllers == null) {
-      throw Exception('$_logHeader The '
-          'parameter "controllers" for ${widget.runtimeType} widget '
-          'must not be null.');
-    }
     var controller = ctrls?.firstWhere((x) => x is T, orElse: () => null);
     if (controller == null) {
       throw Exception('$_logHeader A controller of '
