@@ -4,7 +4,6 @@ import 'package:momentum/momentum.dart';
 
 import '../components/async-test/index.dart';
 import '../components/dummy/index.dart';
-import '../components/persist-test/index.dart';
 import '../utility.dart';
 
 Momentum asyncApp({
@@ -22,23 +21,9 @@ Momentum asyncApp({
     child: AsyncApp(expect: expect),
     controllers: [
       AsyncTestController()..config(lazy: lazy, maxTimeTravelSteps: 5),
-      PersistTestController()..config(lazy: lazy),
       DummyController(),
     ],
     enableLogging: enableLogging,
-    services: [
-      InMemoryStorage<String>(),
-    ],
-    persistSave: (context, key, value) async {
-      var storage = InMemoryStorage.of<String>(context);
-      var result = await storage.save(key, value);
-      return result;
-    },
-    persistGet: (context, key) async {
-      var storage = InMemoryStorage.of<String>(context);
-      var result = storage.getValue(key);
-      return result;
-    },
   );
 }
 

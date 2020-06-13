@@ -11,6 +11,7 @@ import 'components/sync-test/index.dart';
 import 'utility.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
+import 'widgets/persistence.dart';
 import 'widgets/sync.dart';
 
 void main() {
@@ -151,7 +152,7 @@ void main() {
     }
   });
   testWidgets('getService<T>()', (tester) async {
-    var widget = asyncApp();
+    var widget = persistedApp();
     await inject(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<DummyController>();
     expect(controller is DummyController, true);
@@ -248,7 +249,7 @@ void main() {
 
   group('Persistence State Test', () {
     testWidgets('Start App', (tester) async {
-      var widget = asyncApp();
+      var widget = persistedApp();
       await inject(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
@@ -258,7 +259,7 @@ void main() {
     });
 
     testWidgets('Restart App', (tester) async {
-      var widget = asyncApp();
+      var widget = persistedApp();
       await inject(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       expect(controller.model.username, 'momentum');

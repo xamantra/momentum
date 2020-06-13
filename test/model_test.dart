@@ -5,6 +5,7 @@ import 'components/persist-test/persist-test.controller.dart';
 import 'utility.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
+import 'widgets/persistence.dart';
 
 void main() {
   testWidgets('Initialize Model', (tester) async {
@@ -32,7 +33,7 @@ void main() {
     });
 
     testWidgets('implemented', (tester) async {
-      var widget = asyncApp();
+      var widget = persistedApp();
       await inject(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       var model = controller.model.fromJson({
@@ -54,7 +55,7 @@ void main() {
     });
 
     testWidgets('implemented', (tester) async {
-      var widget = asyncApp();
+      var widget = persistedApp();
       await inject(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       var map = {
