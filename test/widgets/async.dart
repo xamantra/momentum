@@ -4,6 +4,7 @@ import 'package:momentum/momentum.dart';
 
 import '../components/async-test/index.dart';
 import '../components/dummy/index.dart';
+import '../components/sync-test/index.dart';
 
 Momentum asyncApp({
   bool lazy = true,
@@ -19,6 +20,7 @@ Momentum asyncApp({
     child: AsyncApp(expect: expect),
     controllers: [
       AsyncTestController()..config(lazy: lazy, maxTimeTravelSteps: 5),
+      SyncTestController()..config(lazy: lazy),
       DummyController(),
     ],
   );

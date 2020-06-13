@@ -6,6 +6,7 @@ import 'components/dummy/index.dart';
 import 'utility.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
+import 'widgets/sync.dart';
 
 void main() {
   testWidgets('Initialize Controller', (tester) async {
@@ -38,20 +39,20 @@ void main() {
     expect(init.name, '');
   });
   testWidgets('bootstrap()', (tester) async {
-    var widget = asyncApp();
+    var widget = syncApp();
     await inject(tester, widget, milliseconds: 2000);
-    var controller = widget.controllerForTest<AsyncTestController>();
-    controller.bootstrap();
-    expect(controller.model.value, 1);
-    expect(controller.model.name, 'momentum');
+    var nameFinder = find.text('flutter is awesome');
+    var valueFinder = find.text('333');
+    expect(nameFinder, findsOneWidget);
+    expect(valueFinder, findsOneWidget);
   });
   testWidgets('bootstrapAsync()', (tester) async {
-    // var widget = asyncApp(lazy: false);
-    // await inject(tester, widget, milliseconds: 5000);
-    // var controller = widget.controllerForTest<AsyncTestController>();
-    // await controller.bootstrapAsync();
-    // expect(controller.model.value, 2);
-    // expect(controller.model.name, 'momentum2');
+    var widget = asyncApp(lazy: false);
+    await inject(tester, widget, milliseconds: 5000);
+    var nameFinder = find.text('flutter is best');
+    var valueFinder = find.text('22');
+    expect(nameFinder, findsOneWidget);
+    expect(valueFinder, findsOneWidget);
   });
   testWidgets('skipPersist()', (tester) async {
     var widget = asyncApp();

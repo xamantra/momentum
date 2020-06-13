@@ -14,14 +14,9 @@ class AsyncTestController extends MomentumController<AsyncTestModel> {
   }
 
   @override
-  void bootstrap() {
-    model.update(value: 1, name: 'momentum');
-  }
-
-  @override
   Future<void> bootstrapAsync() async {
     await sleep(1500);
-    model.update(value: 2, name: 'momentum2');
+    model.update(value: 22, name: 'flutter is best');
   }
 
   @override
