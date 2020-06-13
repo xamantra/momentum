@@ -159,5 +159,16 @@ void main() {
       await tester.pumpAndSettle();
       expect(router.isRoutesEmpty, true);
     });
+
+    testWidgets('resetWithContext', (tester) async {
+      var widget = routerTestWidget();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageA, true);
+      await tester.tap(find.byKey(resetHistoryButton));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is PageB, true);
+    });
   });
 }

@@ -8,6 +8,7 @@ const gotoPageBKey = Key('Goto PageB');
 const gotoPageCKey = Key('Goto PageC');
 const fromPageCPop = Key('From PageC Pop');
 const clearHistoryButton = Key('clearHistoryButton');
+const resetHistoryButton = Key('resetHistoryButton');
 
 Momentum routerTestWidget() {
   return Momentum(
@@ -55,12 +56,23 @@ class PageA extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
-          key: gotoPageBKey,
-          onPressed: () {
-            Router.goto(context, PageB);
-          },
-          child: Text('Goto PageB'),
+        child: Column(
+          children: <Widget>[
+            FlatButton(
+              key: gotoPageBKey,
+              onPressed: () {
+                Router.goto(context, PageB);
+              },
+              child: Text('Goto PageB'),
+            ),
+            FlatButton(
+              key: resetHistoryButton,
+              onPressed: () {
+                Router.resetWithContext<PageB>(context);
+              },
+              child: Text('Reset Router'),
+            ),
+          ],
         ),
       ),
     );

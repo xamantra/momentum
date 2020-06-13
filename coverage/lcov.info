@@ -497,9 +497,9 @@ DA:177,1
 DA:182,1
 DA:183,1
 DA:184,2
-DA:188,0
-DA:191,0
-DA:192,0
+DA:188,1
+DA:191,1
+DA:192,2
 DA:212,0
 DA:216,0
 DA:218,0
@@ -509,7 +509,7 @@ DA:222,0
 DA:223,0
 DA:226,0
 LF:76
-LH:65
+LH:68
 end_of_record
 SF:lib\src\momentum_event.dart
 DA:17,2
