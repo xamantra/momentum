@@ -33,14 +33,14 @@ Momentum persistedApp({
         ? null
         : (context, key, value) async {
             if (fakeFailSave) return false;
-            var storage = InMemoryStorage.of<String>(context);
+            var storage = InMemoryStorage.of<String>('persistedApp', context);
             var result = await storage.save(key, value);
             return result;
           },
     persistGet: noPersistGet
         ? null
         : (context, key) async {
-            var storage = InMemoryStorage.of<String>(context);
+            var storage = InMemoryStorage.of<String>('persistedApp', context);
             var result = storage.getValue(key);
             return result;
           },
