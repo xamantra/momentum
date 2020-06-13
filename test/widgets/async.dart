@@ -4,7 +4,6 @@ import 'package:momentum/momentum.dart';
 
 import '../components/async-test/index.dart';
 import '../components/dummy/index.dart';
-import '../utility.dart';
 
 Momentum asyncApp({
   bool lazy = true,
