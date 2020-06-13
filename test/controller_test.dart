@@ -5,6 +5,7 @@ import 'components/counter/index.dart';
 import 'components/dummy/index.dart';
 import 'components/error-test-1/index.dart';
 import 'components/error-test-2/index.dart';
+import 'components/error-test-3/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
@@ -52,6 +53,11 @@ void main() {
       ErrorTest2Controller()..testInit();
     } on dynamic catch (e) {
       expect(e is Exception, true);
+    }
+    try {
+      ErrorTest3Controller()..testInit();
+    } on dynamic catch (e) {
+      expect(e is TypeError, true);
     }
   });
   testWidgets('bootstrap()', (tester) async {

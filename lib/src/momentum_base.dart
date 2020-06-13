@@ -238,11 +238,6 @@ abstract class MomentumController<M> {
           'method implementation returns NULL, please return a '
           'valid instance of "$M"'));
     }
-    if (!(initValue is M)) {
-      throw Exception(_formatMomentumLog('[$this]: your "init()" '
-          'method implementation does not return an instance of '
-          'type "$M", please return a valid instance of "$M".'));
-    }
     if ((initValue as MomentumModel).controller == null) {
       var name = '$this'.replaceAll('Instance of', '');
       throw Exception(_formatMomentumLog('[$this]: your "init()" '
