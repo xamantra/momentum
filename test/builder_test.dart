@@ -4,6 +4,7 @@ import 'components/counter/counter.controller.dart';
 import 'utility.dart';
 import 'widgets/error_widget.dart';
 import 'widgets/error_widget2.dart';
+import 'widgets/error_widget3.dart';
 import 'widgets/skip_rebuild.dart';
 
 void main() {
@@ -31,5 +32,10 @@ void main() {
     controller.increment();
     await tester.pump();
     expect(find.text('3'), findsNothing);
+  });
+  testWidgets('null controllers', (tester) async {
+    var widget = errorWidget3();
+    await inject(tester, widget);
+    expect(tester.takeException(), isInstanceOf<Exception>());
   });
 }
