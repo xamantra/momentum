@@ -23,14 +23,17 @@ class MomentumEvent {
   /// passed to the listeners at a later time, after the code creating the
   /// event has completed.
   MomentumEvent({bool sync = false})
-      : _streamController = StreamController.broadcast(sync: sync);
+      : _streamController = StreamController.broadcast(
+          sync: sync,
+        );
 
   /// Instead of using the default [StreamController] you can use this
   /// constructor to pass your own controller.
   ///
   /// An example would be to use an RxDart Subject as the controller.
-  MomentumEvent.customController(StreamController controller)
-      : _streamController = controller;
+  MomentumEvent.customController(
+    StreamController controller,
+  ) : _streamController = controller;
 
   /// Listens for events of Type [T] and its subtypes.
   ///
@@ -47,11 +50,7 @@ class MomentumEvent {
   /// internally until unpaused or canceled. So it's usually better to
   /// just cancel and later subscribe again (avoids memory leak).
   Stream<T> add<T>() {
-    if (T == dynamic) {
-      return streamController.stream;
-    } else {
-      return streamController.stream.where((event) => event is T).cast<T>();
-    }
+    return streamController.stream.where((event) => event is T).cast<T>();
   }
 
   /// Fires a new event on the event bus with the specified [event].
