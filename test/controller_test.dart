@@ -295,5 +295,15 @@ void main() {
       await tester.pump(Duration(milliseconds: 1000));
       expect(controller.model.data.value, 99);
     });
+
+    testWidgets('Failed to save data test: persistSave', (tester) async {
+      var widget = persistedApp(fakeFailSave: true);
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
   });
 }

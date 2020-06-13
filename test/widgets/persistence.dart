@@ -10,6 +10,7 @@ import '../utility.dart';
 Momentum persistedApp({
   bool noPersistSave = false,
   bool noPersistGet = false,
+  bool fakeFailSave = false,
 }) {
   return Momentum(
     child: PersistedApp(),
@@ -25,6 +26,7 @@ Momentum persistedApp({
     persistSave: noPersistSave
         ? null
         : (context, key, value) async {
+            if (fakeFailSave) return false;
             var storage = InMemoryStorage.of<String>(context);
             var result = await storage.save(key, value);
             return result;
