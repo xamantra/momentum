@@ -109,7 +109,6 @@ abstract class MomentumController<M> {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
-  @protected
   T getService<T extends MomentumService>() {
     var result = Momentum.getService<T>(_momentumRootContext);
     if (result == null) {
@@ -1096,6 +1095,11 @@ class Momentum extends InheritedWidget {
           'in the Momentum constructor.');
     }
     return controller;
+  }
+
+  /// Method for testing only.
+  T serviceForTest<T extends MomentumService>() {
+    return _getService<T>();
   }
 
   T _getService<T extends MomentumService>() {

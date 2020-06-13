@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'components/async-test/async-test.controller.dart';
 import 'components/counter/index.dart';
 import 'components/dummy/index.dart';
+import 'components/sync-test/index.dart';
 import 'utility.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
@@ -124,13 +125,99 @@ void main() {
       expect(e is Exception, true);
     }
   });
-  testWidgets('getService<T>()', (tester) async {});
-  testWidgets('reset()', (tester) async {});
+  testWidgets('getService<T>()', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<DummyController>();
+    expect(controller is DummyController, true);
+    var service = controller.getService<InMemoryStorage>();
+    expect(service is InMemoryStorage, true);
+    try {
+      controller.getService<DummyService>();
+    } on dynamic catch (e) {
+      expect(e is Exception, true);
+    }
+  });
+  testWidgets('reset()', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<AsyncTestController>();
+    controller.model.update(value: 1, name: 'momentum1');
+    controller.model.update(value: 2, name: 'momentum2');
+    controller.model.update(value: 3, name: 'momentum3');
+    controller.backward();
+    expect(controller.model.value, 2);
+    expect(controller.model.name, 'momentum2');
+    controller.backward();
+    expect(controller.model.value, 1);
+    expect(controller.model.name, 'momentum1');
+    controller.reset();
+    expect(controller.model.value, 0);
+    expect(controller.model.name, '');
+  });
 
   // property tests
-  testWidgets('prevModel', (tester) async {});
-  testWidgets('model', (tester) async {});
-  testWidgets('nextModel', (tester) async {});
-  testWidgets('isLazy', (tester) async {});
-  testWidgets('persistenceKey', (tester) async {});
+  testWidgets('prevModel', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<AsyncTestController>();
+    controller.model.update(value: 1, name: 'momentum1');
+    controller.model.update(value: 2, name: 'momentum2');
+    controller.model.update(value: 3, name: 'momentum3');
+    controller.backward();
+    expect(controller.prevModel.value, 1);
+    expect(controller.prevModel.name, 'momentum1');
+    expect(controller.model.value, 2);
+    expect(controller.model.name, 'momentum2');
+  });
+  testWidgets('model', (tester) async {
+    var widget = syncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<SyncTestController>();
+    expect(controller.model == null, false);
+    expect(controller.model.value, 333);
+    expect(controller.model.name, 'flutter is awesome');
+  });
+  testWidgets('nextModel', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<AsyncTestController>();
+    controller.model.update(value: 1, name: 'momentum1');
+    controller.model.update(value: 2, name: 'momentum2');
+    controller.model.update(value: 3, name: 'momentum3');
+    controller.backward();
+    expect(controller.prevModel.value, 1);
+    expect(controller.prevModel.name, 'momentum1');
+    expect(controller.model.value, 2);
+    expect(controller.model.name, 'momentum2');
+    expect(controller.nextModel.value, 3);
+    expect(controller.nextModel.name, 'momentum3');
+  });
+  testWidgets('isLazy', (tester) async {
+    var widget = asyncApp(lazy: true);
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<AsyncTestController>();
+    expect(controller.isLazy, true);
+
+    widget = asyncApp(lazy: false);
+    await inject(tester, widget, milliseconds: 3000);
+    controller = widget.controllerForTest<AsyncTestController>();
+    expect(controller.isLazy, false);
+
+    widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    controller = widget.controllerForTest<AsyncTestController>();
+    expect(controller.isLazy, true);
+  });
+  testWidgets('persistenceKey', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var a = widget.controllerForTest<AsyncTestController>();
+    var keyA = 'Momentum[Instance of AsyncTestController<AsyncTestModel>]';
+    expect(a.persistenceKey, keyA);
+
+    var b = widget.controllerForTest<DummyController>();
+    var keyB = 'Momentum[Instance of DummyController<DummyModel>]';
+    expect(b.persistenceKey, keyB);
+  });
 }
