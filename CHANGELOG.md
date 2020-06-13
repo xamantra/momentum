@@ -1,3 +1,22 @@
+## 1.1.8 - Important
+<a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
+<a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
+
+- Changed license to [BSD-3](https://opensource.org/licenses/BSD-3-Clause)
+- critical fix: reset() bug.
+- fix config check bug in "persistSave" parameter.
+- (test) fixed dependOn<T>() test to cover more exceptions.
+- added public methods for testability.
+- Added internal tests.
+
+#### TODO
+- Add more internal tests.
+- Find a workaround for issue [#5](https://github.com/xamantra/momentum/issues/5)
+- Write docs for project level testing.
+- Refactor tests description/names.
+
+<hr>
+
 ## 1.1.7 - Major Update
 Major changes:
 - Persistent state.
