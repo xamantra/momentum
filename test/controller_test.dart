@@ -6,7 +6,10 @@ import 'components/dummy/index.dart';
 import 'components/error-test-1/index.dart';
 import 'components/error-test-2/index.dart';
 import 'components/error-test-3/index.dart';
-import 'components/persist-error-test/index.dart';
+import 'components/persist-error1/index.dart';
+import 'components/persist-error2/index.dart';
+import 'components/persist-error3/index.dart';
+import 'components/persist-error4/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
@@ -304,6 +307,38 @@ void main() {
       await tester.pump(Duration(milliseconds: 1000));
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('#3 persist model for later error test', (tester) async {
+      var widget = persistedApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistError3Controller>();
+      controller.model.update(data: DummyObject3(99));
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.data.value, 99);
+    });
+
+    testWidgets('#2 (Restart) Code Hit Test: fromJson()', (tester) async {
+      var widget = persistedApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistError3Controller>();
+      expect(controller.model.data.value, 0);
+    });
+
+    testWidgets('#4 persist model for later error test', (tester) async {
+      var widget = persistedApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistError4Controller>();
+      controller.model.update(data: DummyObject3(99));
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.data.value, 99);
+    });
+
+    testWidgets('#4 (Restart) Code Hit Test: fromJson()', (tester) async {
+      var widget = persistedApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistError4Controller>();
+      expect(controller.model.data.value, 0);
     });
   });
 }
