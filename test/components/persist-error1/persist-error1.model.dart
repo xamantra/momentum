@@ -1,5 +1,6 @@
 import 'package:momentum/momentum.dart';
 
+import '../../utilities/dummy.dart';
 import 'index.dart';
 
 class PersistErrorModel extends MomentumModel<PersistErrorController> {
@@ -26,12 +27,4 @@ class PersistErrorModel extends MomentumModel<PersistErrorController> {
       'data': data,
     };
   }
-}
-
-class DummyObject {
-  final int value;
-
-  DummyObject(
-    this.value,
-  );
 }

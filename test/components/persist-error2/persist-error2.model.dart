@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:momentum/momentum.dart';
 
-import '../persist-error1/index.dart';
+import '../../utilities/dummy.dart';
 import 'index.dart';
 
 class PersistError2Model extends MomentumModel<PersistError2Controller> {
