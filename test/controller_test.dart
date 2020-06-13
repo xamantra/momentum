@@ -4,6 +4,7 @@ import 'components/async-test/async-test.controller.dart';
 import 'components/counter/index.dart';
 import 'components/dummy/index.dart';
 import 'components/error-test-1/index.dart';
+import 'components/error-test-2/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
@@ -41,9 +42,14 @@ void main() {
     expect(init.value, 0);
     expect(init.name, '');
   });
-    test('null init()', () async {
+  test('null init()', () async {
     try {
       ErrorTest1Controller()..testInit();
+    } on dynamic catch (e) {
+      expect(e is Exception, true);
+    }
+    try {
+      ErrorTest2Controller()..testInit();
     } on dynamic catch (e) {
       expect(e is Exception, true);
     }
