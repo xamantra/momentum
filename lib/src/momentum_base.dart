@@ -226,6 +226,11 @@ abstract class MomentumController<M> {
   @required
   M init();
 
+  /// Method for testing only.
+  void testInit() {
+    _checkInitImplementation();
+  }
+
   void _checkInitImplementation() {
     var initValue = init();
     if (initValue == null) {
