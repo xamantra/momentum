@@ -59,17 +59,13 @@ class Router extends MomentumService {
         _MOMENTUM_ROUTER_HISTORY,
         jsonEncode(_history),
       );
-      if (_history.isEmpty) {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      Route r;
+      if (transition != null) {
+        r = transition(context, findWidgetOfType);
       } else {
-        Route r;
-        if (transition != null) {
-          r = transition(context, findWidgetOfType);
-        } else {
-          r = MaterialPageRoute(builder: (_) => findWidgetOfType);
-        }
-        await Navigator.pushAndRemoveUntil(context, r, (r) => false);
+        r = MaterialPageRoute(builder: (_) => findWidgetOfType);
       }
+      await Navigator.pushAndRemoveUntil(context, r, (r) => false);
     } else {
       print('[$MomentumService -> $Router]: Unable to '
           'find page widget of type "$route".');
@@ -206,7 +202,7 @@ class RouterPage extends StatelessWidget {
   final Widget child;
 
   /// Just like [WillPopScope], you can
-  /// also override the popping behaviour
+  /// also override the popping behavior
   /// for system back button.
   final Future<bool> Function() onWillPop;
 
