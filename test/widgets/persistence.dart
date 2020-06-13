@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
 import '../components/dummy/dummy.controller.dart';
+import '../components/persist-error-test/index.dart';
 import '../components/persist-test/index.dart';
 import '../utility.dart';
 
@@ -14,7 +15,8 @@ Momentum persistedApp({
     child: PersistedApp(),
     controllers: [
       DummyController(),
-      PersistTestController()..config(),
+      PersistTestController(),
+      PersistErrorController(),
     ],
     enableLogging: true,
     services: [

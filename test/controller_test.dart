@@ -6,6 +6,7 @@ import 'components/dummy/index.dart';
 import 'components/error-test-1/index.dart';
 import 'components/error-test-2/index.dart';
 import 'components/error-test-3/index.dart';
+import 'components/persist-error-test/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
@@ -276,7 +277,7 @@ void main() {
       expect(controller.model.email, 'state@momentum');
     });
 
-    testWidgets('Misconfigured Code Hit Test persistGet', (tester) async {
+    testWidgets('Misconfigured Code Hit Test: persistGet', (tester) async {
       var widget = persistedApp(noPersistGet: true);
       await inject(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
@@ -284,6 +285,15 @@ void main() {
       await tester.pump(Duration(milliseconds: 1000));
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('Misconfigured Code Hit Test: toJson()', (tester) async {
+      var widget = persistedApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistErrorController>();
+      controller.model.update(data: DummyObject(99));
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.data.value, 99);
     });
   });
 }
