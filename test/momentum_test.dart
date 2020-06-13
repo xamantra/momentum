@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'components/counter/counter.controller.dart';
-import 'components/dummy/dummy.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
 import 'widgets/blank_widget.dart';
 import 'widgets/error_widget6.dart';
 import 'widgets/error_widget7.dart';
+import 'widgets/error_widget8.dart';
 import 'widgets/reset_all.dart';
 
 void main() {
@@ -45,5 +45,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(syncTest.model.value, 0);
     expect(find.text('0'), findsOneWidget);
+  });
+
+  testWidgets('Momentum.controller<T>(context)', (tester) async {
+    var widget = errorWidget8();
+    await inject(tester, widget);
+    expect(tester.takeException(), isInstanceOf<Exception>());
   });
 }
