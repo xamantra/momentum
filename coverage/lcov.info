@@ -448,7 +448,7 @@ DA:56,2
 DA:57,2
 DA:58,1
 DA:60,2
-DA:64,0
+DA:64,1
 DA:66,2
 DA:68,3
 DA:70,2
@@ -460,7 +460,7 @@ DA:83,2
 DA:85,2
 DA:86,1
 DA:88,1
-DA:91,0
+DA:91,1
 DA:93,2
 DA:95,3
 DA:102,1
@@ -509,7 +509,7 @@ DA:222,0
 DA:223,0
 DA:226,0
 LF:76
-LH:48
+LH:50
 end_of_record
 SF:lib\src\momentum_event.dart
 DA:17,2

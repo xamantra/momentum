@@ -5,6 +5,7 @@ import 'utility.dart';
 import 'widgets/router_error_widget.dart';
 import 'widgets/router_exit.dart';
 import 'widgets/router_test_widget.dart';
+import 'widgets/router_transition.dart';
 
 void main() {
   group("Router Test", () {
@@ -78,6 +79,39 @@ void main() {
       await tester.tap(find.byKey(routerExitButtonKey));
       await tester.pumpAndSettle();
       expect(router.isRoutesEmpty, true);
+    });
+
+    testWidgets('#1 transition goto(...)', (tester) async {
+      var widget = routerTransitionTest();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is TransitionPageA, true);
+      await tester.tap(find.byKey(transitionToBKey));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is TransitionPageB, true);
+    });
+
+    testWidgets('transition Restart', (tester) async {
+      var widget = routerTransitionTest();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is TransitionPageB, true);
+    });
+
+    testWidgets('#2 transition goto(...)', (tester) async {
+      var widget = routerTransitionTest();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is TransitionPageB, true);
+      await tester.tap(find.byKey(transitionToCKey));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is TransitionPageC, true);
+      await tester.tap(find.byKey(transitionCPop));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is TransitionPageB, true);
     });
   });
 }
