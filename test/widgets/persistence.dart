@@ -6,7 +6,10 @@ import '../components/dummy/dummy.controller.dart';
 import '../components/persist-test/index.dart';
 import '../utility.dart';
 
-Momentum persistedApp() {
+Momentum persistedApp({
+  bool noPersistSave = false,
+  bool noPersistGet = false,
+}) {
   return Momentum(
     child: PersistedApp(),
     controllers: [
@@ -17,16 +20,20 @@ Momentum persistedApp() {
     services: [
       InMemoryStorage<String>(),
     ],
-    persistSave: (context, key, value) async {
-      var storage = InMemoryStorage.of<String>(context);
-      var result = await storage.save(key, value);
-      return result;
-    },
-    persistGet: (context, key) async {
-      var storage = InMemoryStorage.of<String>(context);
-      var result = storage.getValue(key);
-      return result;
-    },
+    persistSave: noPersistSave
+        ? null
+        : (context, key, value) async {
+            var storage = InMemoryStorage.of<String>(context);
+            var result = await storage.save(key, value);
+            return result;
+          },
+    persistGet: noPersistGet
+        ? null
+        : (context, key) async {
+            var storage = InMemoryStorage.of<String>(context);
+            var result = storage.getValue(key);
+            return result;
+          },
   );
 }
 

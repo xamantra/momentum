@@ -265,5 +265,25 @@ void main() {
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
     });
+
+    testWidgets('Misconfigured Code Hit Test: persistSave', (tester) async {
+      var widget = persistedApp(noPersistSave: true);
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('Misconfigured Code Hit Test persistGet', (tester) async {
+      var widget = persistedApp(noPersistGet: true);
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pump(Duration(milliseconds: 1000));
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
   });
 }
