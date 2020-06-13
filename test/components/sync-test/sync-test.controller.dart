@@ -16,4 +16,7 @@ class SyncTestController extends MomentumController<SyncTestModel> {
   void bootstrap() {
     model.update(value: 333, name: 'flutter is awesome');
   }
+
+  @override
+  Future<bool> skipPersist() async => true;
 }

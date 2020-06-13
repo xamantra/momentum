@@ -9,4 +9,7 @@ class DummyController extends MomentumController<DummyModel> {
       this,
     );
   }
+
+  @override
+  Future<bool> skipPersist() async => true;
 }

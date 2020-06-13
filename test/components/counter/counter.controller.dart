@@ -11,6 +11,9 @@ class CounterController extends MomentumController<CounterModel> {
     );
   }
 
+  @override
+  Future<bool> skipPersist() async => true;
+
   void increment() {
     var newValue = model.value + 1;
     model.update(value: newValue);
