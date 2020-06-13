@@ -148,5 +148,16 @@ void main() {
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
     });
+
+    testWidgets('clearHistoryWithContext', (tester) async {
+      var widget = routerTestWidget();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageC, true);
+      await tester.tap(find.byKey(clearHistoryButton));
+      await tester.pumpAndSettle();
+      expect(router.isRoutesEmpty, true);
+    });
   });
 }

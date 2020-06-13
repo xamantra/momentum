@@ -7,6 +7,7 @@ import '../utility.dart';
 const gotoPageBKey = Key('Goto PageB');
 const gotoPageCKey = Key('Goto PageC');
 const fromPageCPop = Key('From PageC Pop');
+const clearHistoryButton = Key('clearHistoryButton');
 
 Momentum routerTestWidget() {
   return Momentum(
@@ -92,12 +93,23 @@ class PageC extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
-          key: fromPageCPop,
-          onPressed: () {
-            Router.pop(context);
-          },
-          child: Text('Goto PageC'),
+        child: Column(
+          children: <Widget>[
+            FlatButton(
+              key: fromPageCPop,
+              onPressed: () {
+                Router.pop(context);
+              },
+              child: Text('Pop From PageC'),
+            ),
+            FlatButton(
+              key: clearHistoryButton,
+              onPressed: () {
+                Router.clearHistoryWithContext(context);
+              },
+              child: Text('Clear History'),
+            ),
+          ],
         ),
       ),
     );
