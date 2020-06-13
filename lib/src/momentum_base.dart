@@ -335,7 +335,7 @@ abstract class MomentumController<M> {
             'be present to enable persistence state.'));
       }
     }
-    if (!hasSaver == null && hasGet) {
+    if (!hasSaver && hasGet) {
       if (_momentumLogging && printLog) {
         print(_formatMomentumLog('[$this] "persistGet" is '
             'specified but "persistSave" is not. These two functions must '
