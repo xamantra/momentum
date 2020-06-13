@@ -4,6 +4,7 @@ import 'components/counter/counter.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utility.dart';
 import 'widgets/blank_widget.dart';
+import 'widgets/counter_obsolete.dart';
 import 'widgets/counter_restart.dart';
 import 'widgets/error_widget6.dart';
 import 'widgets/error_widget7.dart';
@@ -86,5 +87,17 @@ void main() {
     await tester.tap(find.byKey(keyRestartButton));
     await tester.pumpAndSettle();
     expect(find.text('0'), findsOneWidget);
+  });
+
+    testWidgets('obsolete api: Momentum.of<T>', (tester) async {
+    var widget = counterObsolete();
+    await inject(tester, widget);
+    await tester.tap(find.byKey(keyCounterObsoleteIncrement));
+    await tester.pump();
+    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byKey(keyCounterObsoleteIncrement));
+    await tester.pump();
+    expect(find.text('1'), findsNothing);
+    expect(find.text('2'), findsOneWidget);
   });
 }
