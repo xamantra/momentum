@@ -5,6 +5,7 @@ import 'utility.dart';
 import 'widgets/error_widget.dart';
 import 'widgets/error_widget2.dart';
 import 'widgets/error_widget3.dart';
+import 'widgets/error_widget4.dart';
 import 'widgets/skip_rebuild.dart';
 
 void main() {
@@ -35,6 +36,11 @@ void main() {
   });
   testWidgets('null controllers', (tester) async {
     var widget = errorWidget3();
+    await inject(tester, widget);
+    expect(tester.takeException(), isInstanceOf<Exception>());
+  });
+  testWidgets('access a model but controller is not injected', (tester) async {
+    var widget = errorWidget4();
     await inject(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
