@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../components/counter/index.dart';
-import '../utilities/launcher.dart';
-import '../widgets/counter.dart';
+import 'components/counter/index.dart';
+import 'utilities/launcher.dart';
+import 'widgets/counter.dart';
 
 void main() {
   testWidgets('Start Widget', (tester) async {
