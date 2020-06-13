@@ -1117,18 +1117,13 @@ class Momentum extends InheritedWidget {
     return service;
   }
 
-  T _getControllerOfType<T extends MomentumController>([
-    Type t,
-    bool isInternal = false,
-  ]) {
+  T _getControllerOfType<T extends MomentumController>([Type t]) {
     var controller = _controllers.firstWhere(
       (c) => c.runtimeType == t,
       orElse: () => null,
     );
-    if (controller == null && !isInternal) {
-      throw Exception('The controller of type "$T" doesn\'t exists or '
-          'was not initialized from the "controllers" '
-          'parameter in the Momentum constructor.');
+    if (controller == null) {
+      return null;
     }
     return controller as T;
   }
@@ -1203,7 +1198,7 @@ class Momentum extends InheritedWidget {
   }
 
   static T _ofType<T extends MomentumController>(BuildContext context, Type t) {
-    return _getMomentumInstance(context)._getControllerOfType<T>(t, true);
+    return _getMomentumInstance(context)._getControllerOfType<T>(t);
   }
 
   static T _ofInternal<T extends MomentumController>(BuildContext context) {
