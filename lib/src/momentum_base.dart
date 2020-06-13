@@ -110,15 +110,19 @@ abstract class MomentumController<M> {
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
   T getService<T extends MomentumService>() {
-    var result = Momentum.getService<T>(_momentumRootContext);
-    if (result == null) {
+    try {
+      var result = Momentum.getService<T>(_momentumRootContext);
+      return result;
+    } on dynamic catch (e) {
+      if (_momentumLogging) {
+        print(e);
+      }
       throw Exception(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()", but no service of type [$T] '
           'had been found.\nTry checking your "Momentum" '
           'root widget implementation if the service "$T" '
           'was instantiated there.'));
     }
-    return result;
   }
 
   bool _booted = false;
