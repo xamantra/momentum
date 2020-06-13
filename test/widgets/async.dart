@@ -9,6 +9,7 @@ import '../utility.dart';
 
 Momentum asyncApp({
   bool lazy = true,
+  bool enableLogging = true,
   void Function(
     dynamic actual,
     dynamic matcher, {
@@ -24,6 +25,7 @@ Momentum asyncApp({
       PersistTestController()..config(lazy: lazy),
       DummyController(),
     ],
+    enableLogging: enableLogging,
     services: [
       InMemoryStorage<String>(),
     ],
