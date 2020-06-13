@@ -120,8 +120,12 @@ void main() {
     var dummyController = controller.dependOn<DummyController>();
     expect(dummyController is DummyController, true);
     try {
-      controller.dependOn<CounterController>();
       controller.dependOn<AsyncTestController>();
+    } on dynamic catch (e) {
+      expect(e is Exception, true);
+    }
+    try {
+      controller.dependOn<CounterController>();
     } on dynamic catch (e) {
       expect(e is Exception, true);
     }
