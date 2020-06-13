@@ -27,14 +27,6 @@ class MomentumEvent {
           sync: sync,
         );
 
-  /// Instead of using the default [StreamController] you can use this
-  /// constructor to pass your own controller.
-  ///
-  /// An example would be to use an RxDart Subject as the controller.
-  MomentumEvent.customController(
-    StreamController controller,
-  ) : _streamController = controller;
-
   /// Listens for events of Type [T] and its subtypes.
   ///
   /// The method is called like this: myEventBus.on<MyType>();
