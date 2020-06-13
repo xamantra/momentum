@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1.3.0
+    - name: Install Packages
+      run: flutter packages get
+    - name: Tests
+      run: flutter test --no-pub --coverage
+    - name: Code Coverage -> Check
+      uses: ChicagoFlutter/lcov-cop@v1.0.0
+    - name: Code Coverage -> Upload
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
