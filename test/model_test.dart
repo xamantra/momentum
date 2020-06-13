@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 
 import 'components/counter/index.dart';
+import 'components/persist-test/persist-test.controller.dart';
 import 'utility.dart';
+import 'widgets/async.dart';
 import 'widgets/counter.dart';
 
 void main() {
@@ -18,5 +20,52 @@ void main() {
     await inject(tester, widget, milliseconds: 2000);
     var controller = widget.controllerForTest<CounterController>();
     expect(controller.model.controllerName, 'CounterController');
+  });
+
+  group('fromJson(...)', () {
+    testWidgets('unimplemented', (tester) async {
+      var widget = counter();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<CounterController>();
+      var model = controller.model.fromJson({});
+      expect(model == null, true);
+    });
+
+    testWidgets('implemented', (tester) async {
+      var widget = asyncApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      var model = controller.model.fromJson({
+        "username": "momentum",
+        "email": "state@momentum",
+      });
+      expect(model.username, "momentum");
+      expect(model.email, "state@momentum");
+    });
+  });
+
+  group('toJson()', () {
+    testWidgets('unimplemented', (tester) async {
+      var widget = counter();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<CounterController>();
+      var json = controller.model.toJson();
+      expect(json == null, true);
+    });
+
+    testWidgets('implemented', (tester) async {
+      var widget = asyncApp();
+      await inject(tester, widget, milliseconds: 4000);
+      var controller = widget.controllerForTest<PersistTestController>();
+      var map = {
+        "username": "momentum",
+        "email": "state@momentum",
+      };
+      var model = controller.model.fromJson(map);
+      expect(model.username, "momentum");
+      expect(model.email, "state@momentum");
+      var json = model.toJson();
+      expect(json, map);
+    });
   });
 }
