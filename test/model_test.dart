@@ -12,4 +12,11 @@ void main() {
     expect(controller.model == null, false);
     expect(controller.model.value, 0);
   });
+
+  testWidgets('controllerName', (tester) async {
+    var widget = counter();
+    await inject(tester, widget, milliseconds: 2000);
+    var controller = widget.controllerForTest<CounterController>();
+    expect(controller.model.controllerName, 'CounterController');
+  });
 }
