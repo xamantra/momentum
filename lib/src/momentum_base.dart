@@ -872,6 +872,9 @@ class _MomentumRootState extends State<_MomentumRoot> {
   bool _rootStateInitialized = false;
   bool _controllersBootstrapped = false;
   bool _servicesInitialized = false;
+
+  bool errorFound = false;
+
   bool get _canStartApp {
     // ignore: lines_longer_than_80_chars
     return _rootStateInitialized && _controllersBootstrapped && _modelsInitialized && _servicesInitialized;
@@ -898,13 +901,15 @@ class _MomentumRootState extends State<_MomentumRoot> {
     List<MomentumController> controllers,
   ) async {
     for (var controller in controllers) {
-      controller._setMomentumRootContext = context;
-      controller._configInternal(
-        enableLogging: widget.enableLogging,
-        maxTimeTravelSteps: widget.maxTimeTravelSteps,
-        lazy: widget.lazy,
-      );
-      await controller._initializeMomentumController();
+      if (controller != null) {
+        controller._setMomentumRootContext = context;
+        controller._configInternal(
+          enableLogging: widget.enableLogging,
+          maxTimeTravelSteps: widget.maxTimeTravelSteps,
+          lazy: widget.lazy,
+        );
+        await controller._initializeMomentumController();
+      }
     }
     setState(() {
       _modelsInitialized = true;
@@ -914,13 +919,15 @@ class _MomentumRootState extends State<_MomentumRoot> {
   void _initServices(List<MomentumService> services) async {
     var momentum = Momentum._getMomentumInstance(context);
     for (var service in services) {
-      if (service is Router) {
-        service.setFunctions(
-          context,
-          momentum._persistSave,
-          momentum._persistGet,
-        );
-        await service.init();
+      if (service != null) {
+        if (service is Router) {
+          service.setFunctions(
+            context,
+            momentum._persistSave,
+            momentum._persistGet,
+          );
+          await service.init();
+        }
       }
     }
     setState(() {
@@ -929,15 +936,21 @@ class _MomentumRootState extends State<_MomentumRoot> {
   }
 
   void _bootstrapControllers(List<MomentumController> controllers) {
-    var lazyControllers = widget.controllers.where((e) => !e._lazy);
+    var lazyControllers = widget.controllers.where((e) {
+      return e != null && !e._lazy;
+    });
     for (var lazyController in lazyControllers) {
-      lazyController._bootstrap();
+      if (lazyController != null) {
+        lazyController._bootstrap();
+      }
     }
   }
 
   void _bootstrapControllersAsync(List<MomentumController> controllers) async {
     var started = DateTime.now().millisecondsSinceEpoch;
-    var nonLazyControllers = widget.controllers.where((e) => !e._lazy);
+    var nonLazyControllers = widget.controllers.where((e) {
+      return e != null && !e._lazy;
+    });
     var futures = nonLazyControllers.map<Future>((e) => e._bootstrapAsync());
     await Future.wait(futures);
     var finished = DateTime.now().millisecondsSinceEpoch;
@@ -955,7 +968,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var error = Momentum._getMomentumInstance(context)._validateControllers(
       widget.controllers,
     );
-    if (error != null) throw Exception(error);
+    if (!errorFound && error != null) {
+      errorFound = true;
+      throw Exception(error);
+    }
     if (_canStartApp) {
       return widget.child;
     } else {
