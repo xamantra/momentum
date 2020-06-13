@@ -748,12 +748,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       var c = Momentum._ofType(context, t);
       if (c != null) {
         ctrls.add(c);
-      } else {
-        throw Exception('$_logHeader The controller of type '
-            '"$t" is not initialized in the Momentum root '
-            'widget.\nPossible solutions:\n\tCheck if you '
-            'initialized the controller attached to this '
-            'model on the Momentum root widget.');
       }
     }
     if (ctrls.isNotEmpty) {
