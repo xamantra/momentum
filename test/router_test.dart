@@ -4,6 +4,7 @@ import 'package:momentum/momentum.dart';
 import 'utility.dart';
 import 'widgets/router_error_widget.dart';
 import 'widgets/router_exit.dart';
+import 'widgets/router_page_test_pop.dart';
 import 'widgets/router_test_widget.dart';
 import 'widgets/router_transition.dart';
 
@@ -169,6 +170,20 @@ void main() {
       await tester.tap(find.byKey(resetHistoryButton));
       await tester.pumpAndSettle();
       expect(router.getActive() is PageB, true);
+    });
+
+    testWidgets('RouterPage Test', (tester) async {
+      var widget = routerPageTest();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is RouterPageA, true);
+      await tester.tap(find.byKey(gotoRouterPageB));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is RouterPageB, true);
+      await tester.tap(find.byKey(gotoRouterPopKey));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is RouterPageA, true);
     });
   });
 }
