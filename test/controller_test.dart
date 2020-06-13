@@ -186,6 +186,26 @@ void main() {
     expect(controller.model.name, '');
   });
 
+    testWidgets('reset(clearHistory: true)', (tester) async {
+    var widget = asyncApp();
+    await inject(tester, widget, milliseconds: 3000);
+    var controller = widget.controllerForTest<AsyncTestController>();
+    controller.model.update(value: 1, name: 'momentum1');
+    controller.model.update(value: 2, name: 'momentum2');
+    controller.model.update(value: 3, name: 'momentum3');
+    controller.backward();
+    expect(controller.model.value, 2);
+    expect(controller.model.name, 'momentum2');
+    controller.backward();
+    expect(controller.model.value, 1);
+    expect(controller.model.name, 'momentum1');
+    controller.reset(clearHistory: true);
+    expect(controller.model.value, 0);
+    expect(controller.model.name, '');
+    expect(controller.prevModel, null);
+    expect(controller.nextModel, null);
+  });
+
   // property tests
   testWidgets('prevModel', (tester) async {
     var widget = asyncApp();

@@ -553,6 +553,8 @@ abstract class MomentumController<M> {
       _momentumModelHistory.add(_currentActiveModel);
       _initialMomentumModel = _momentumModelHistory[0];
       _latestMomentumModel = _momentumModelHistory[0];
+      _nextModel = null;
+      _prevModel = null;
       _setMomentum(null, backward: true);
     } else {
       _currentActiveModel = init();
