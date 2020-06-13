@@ -113,5 +113,19 @@ void main() {
       await tester.pumpAndSettle();
       expect(router.getActive() is TransitionPageB, true);
     });
+
+    testWidgets('goto and clear history', (tester) async {
+      var widget = routerTestWidget();
+      await inject(tester, widget);
+      var router = widget.serviceForTest<Router>();
+      expect(router == null, false);
+      expect(router.getActive() is PageB, true);
+      await tester.tap(find.byKey(gotoPageCKey));
+      await tester.pumpAndSettle();
+      expect(router.getActive() is PageC, true);
+      router.clearHistory();
+      await tester.pumpAndSettle();
+      expect(router.isRoutesEmpty, true);
+    });
   });
 }
