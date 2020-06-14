@@ -27,5 +27,21 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Selected: $selected'), findsOneWidget);
     expect(controller.model.gender, selected);
+    controller.reset();
+    await tester.pumpAndSettle();
+    expect(find.text('Selected: ${Gender.other}'), findsOneWidget);
+    expect(controller.model.gender, Gender.other);
+    controller.forward();
+    await tester.pumpAndSettle();
+    expect(find.text('Selected: $selected'), findsOneWidget);
+    expect(controller.model.gender, Gender.other);
+    controller.reset(clearHistory: true);
+    await tester.pumpAndSettle();
+    expect(find.text('Selected: ${Gender.other}'), findsOneWidget);
+    expect(controller.model.gender, Gender.other);
+    controller.forward();
+    await tester.pumpAndSettle();
+    expect(find.text('Selected: ${Gender.other}'), findsOneWidget);
+    expect(controller.model.gender, Gender.other);
   });
 }
