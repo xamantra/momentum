@@ -73,4 +73,65 @@ void main() {
     expect(typeTestController, null);
     /* TypeTestController */
   });
+
+  testWidgets('Test generic param <T> type checks', (tester) async {
+    var widget = typeTestWidget();
+    await launch(tester, widget);
+
+    /* TypeTestAController */
+    var typeTestAController = widget.controllerForTest<TypeTestAController>();
+    expect(typeTestAController, isInstanceOf<TypeTestAController>());
+    typeTestAController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestAController: 1'), findsOneWidget);
+    typeTestAController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestAController: 2'), findsOneWidget);
+    typeTestAController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestAController: 3'), findsOneWidget);
+    typeTestAController.multiplyBy(5);
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestAController: 15'), findsOneWidget);
+    expect(typeTestAController.isOdd(), true); // the mixin method
+    /* TypeTestAController */
+
+    /* TypeTestBController */
+    var typeTestBController = widget.controllerForTest<TypeTestBController>();
+    expect(typeTestBController, isInstanceOf<TypeTestBController>());
+    typeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
+    typeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
+    typeTestBController.divideBy(2);
+    await tester.pumpAndSettle();
+    expect(typeTestBController.isOdd(), true); // the mixin method
+    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
+    typeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
+    expect(typeTestBController.isOdd(), false); // the mixin method
+    /* TypeTestBController */
+
+    /* TypeTestMixinController */
+    // ignore: lines_longer_than_80_chars
+    var typeTestMixinController = widget.controllerForTest<TypeTestMixinController>();
+    // should be null because in typeTestWidget(),
+    // there is no controller instance of type TypeTestMixinController(),
+    // well you can't instantiate a mixin.
+    expect(typeTestMixinController, null);
+    /* TypeTestMixinController */
+
+    /* TypeTestController */
+    var typeTestController = widget.controllerForTest<TypeTestController>();
+    // should be null because in typeTestWidget(),
+    // there is no controller instance of type TypeTestController(),
+    // well you can't instantiate an abstract class.
+    // TypeTestController is not "TypeTestBController"
+    // TypeTestController is not "TypeTestAController"
+    expect(typeTestController, null);
+    /* TypeTestController */
+  });
 }
