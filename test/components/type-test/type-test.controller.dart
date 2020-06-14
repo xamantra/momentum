@@ -52,7 +52,7 @@ class CTypeTestController extends BTypeTestController {
   }
 
   void square() {
-    model.update(squareRoot: sqrt(model.value));
+    model.update(squareRoot: (sqrt(model.value)).round());
   }
 }
 

@@ -37,6 +37,8 @@ void main() {
     bTypeTestController.increment();
     await tester.pumpAndSettle();
     expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    // verify A controller that it didn't update/rebuild.
+    expect(find.text('$ATypeTestController: 15'), findsOneWidget);
     bTypeTestController.increment();
     await tester.pumpAndSettle();
     expect(find.text('$BTypeTestController: 2'), findsOneWidget);
@@ -102,6 +104,8 @@ void main() {
     bTypeTestBController.increment();
     await tester.pumpAndSettle();
     expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    // verify A controller that it didn't update/rebuild.
+    expect(find.text('$ATypeTestController: 15'), findsOneWidget);
     bTypeTestBController.increment();
     await tester.pumpAndSettle();
     expect(find.text('$BTypeTestController: 2'), findsOneWidget);
@@ -133,5 +137,58 @@ void main() {
     // TypeTestController is not "TypeTestAController"
     expect(typeTestController, null);
     /* TypeTestController */
+  });
+
+  testWidgets('CTypeTestController ext BTypeTestController', (tester) async {
+    var widget = typeTestWidget();
+    await launch(tester, widget);
+
+    /* TypeTestBController */
+    var bTypeTestBController = widget.controllerForTest<BTypeTestController>();
+    expect(bTypeTestBController, isInstanceOf<BTypeTestController>());
+    bTypeTestBController.decrement();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: -1'), findsOneWidget);
+    bTypeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 0'), findsOneWidget);
+    bTypeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    bTypeTestBController.divideBy(2);
+    await tester.pumpAndSettle();
+    expect(bTypeTestBController.isOdd(), true); // the mixin method
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestBController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    expect(bTypeTestBController.isOdd(), false); // the mixin method
+    /* TypeTestBController */
+
+    /* CTypeTestController */
+    var cTypeTestController = widget.controllerForTest<CTypeTestController>();
+    expect(cTypeTestController, isInstanceOf<CTypeTestController>());
+    expect(find.text('$CTypeTestController.value: 0'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 1'), findsOneWidget);
+    // verify B controller that it didn't update/rebuild.
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 2'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 3'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 4'), findsOneWidget);
+    cTypeTestController.square();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.square: 2'), findsOneWidget);
+    /* CTypeTestController */
   });
 }

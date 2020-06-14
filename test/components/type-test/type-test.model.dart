@@ -10,12 +10,12 @@ class TypeTestModel extends MomentumModel<TypeTestController> {
   }) : super(controller);
 
   final int value;
-  final double squareRoot;
+  final int squareRoot;
 
   @override
   void update({
     int value,
-    double squareRoot,
+    int squareRoot,
   }) {
     TypeTestModel(
       controller,

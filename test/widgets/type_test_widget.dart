@@ -7,6 +7,7 @@ const keyTypeTestIncrementButton = Key('keyTypeTestIncrementButton');
 const keyTypeTestDecrementButton = Key('keyTypeTestDecrementButton');
 const keyTypeTestMultiplyButton = Key('keyTypeTestMultiplyButton');
 const keyTypeTestDivideButton = Key('keyTypeTestDivideButton');
+const keyTypeTestToSquareButton = Key('keyTypeTestToSquareButton');
 
 Momentum typeTestWidget() {
   return Momentum(
@@ -14,6 +15,7 @@ Momentum typeTestWidget() {
     controllers: [
       ATypeTestController(),
       BTypeTestController(),
+      CTypeTestController(),
     ],
   );
 }
@@ -42,6 +44,20 @@ class TypeTestApp extends StatelessWidget {
                   builder: (context, snapshot) {
                     var typeTest = snapshot<TypeTestModel>();
                     return Text('$BTypeTestController: ${typeTest.value}');
+                  },
+                ),
+                MomentumBuilder(
+                  controllers: [CTypeTestController],
+                  builder: (context, snapshot) {
+                    var typeTest = snapshot<TypeTestModel>();
+                    return Column(
+                      children: <Widget>[
+                        Text('$CTypeTestController.value: ${typeTest.value}'),
+                        Text(
+                          '$CTypeTestController.square: ${typeTest.squareRoot}',
+                        ),
+                      ],
+                    );
                   },
                 ),
                 FlatButton(
@@ -79,6 +95,15 @@ class TypeTestApp extends StatelessWidget {
                     ).divideBy(2);
                   },
                   child: Text('Divide by 2'),
+                ),
+                FlatButton(
+                  key: keyTypeTestToSquareButton,
+                  onPressed: () {
+                    Momentum.controller<CTypeTestController>(
+                      context,
+                    ).square();
+                  },
+                  child: Text('To Square'),
                 ),
               ],
             ),
