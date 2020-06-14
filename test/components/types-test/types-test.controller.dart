@@ -4,7 +4,7 @@ import 'package:momentum/momentum.dart';
 
 import 'index.dart';
 
-abstract class TypeTestController extends MomentumController<TypeTestModel> {
+abstract class TypesTestController extends MomentumController<TypeTestModel> {
   void increment() {
     model.update(value: model.value + 1);
   }
@@ -15,7 +15,7 @@ abstract class TypeTestController extends MomentumController<TypeTestModel> {
 }
 
 // ignore: lines_longer_than_80_chars
-class ATypeTestController extends TypeTestController with TypeTestMixinController {
+class ATypesTestController extends TypesTestController with TypesTestMixinController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
@@ -30,7 +30,7 @@ class ATypeTestController extends TypeTestController with TypeTestMixinControlle
 }
 
 // ignore: lines_longer_than_80_chars
-class BTypeTestController extends TypeTestController with TypeTestMixinController {
+class BTypesTestController extends TypesTestController with TypesTestMixinController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
@@ -44,7 +44,7 @@ class BTypeTestController extends TypeTestController with TypeTestMixinControlle
   }
 }
 
-class CTypeTestController extends BTypeTestController {
+class CTypesTestController extends BTypesTestController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
@@ -63,7 +63,7 @@ class CTypeTestController extends BTypeTestController {
   }
 }
 
-mixin TypeTestMixinController on TypeTestController {
+mixin TypesTestMixinController on TypesTestController {
   bool isOdd() {
     var rem = model.value % 2;
     return model.value == 1 || rem != 0;
@@ -71,7 +71,7 @@ mixin TypeTestMixinController on TypeTestController {
 }
 
 // ignore: lines_longer_than_80_chars
-class ImplementsABCTypeController extends TypeTestController with TypeTestMixinController implements ATypeTestController, BTypeTestController, CTypeTestController {
+class ImplementsABCTypesController extends TypesTestController with TypesTestMixinController implements ATypesTestController, BTypesTestController, CTypesTestController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
