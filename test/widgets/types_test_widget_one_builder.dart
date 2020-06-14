@@ -57,12 +57,12 @@ class _TypesTestOneBuilderWidgets extends StatelessWidget {
         var aTypeTest = snapshot<TypesTestModel>(ATypesTestController);
         var bTypeTest = snapshot<TypesTestModel>(BTypesTestController);
         var cTypeTest = snapshot<TypesTestModel>(CTypesTestController);
-        var abcTypeTest = snapshot<TypesTestModel>(ImplementsABCTypesController);
+        var abc = snapshot<TypesTestModel>(ImplementsABCTypesController);
         return _TypesTestBuilderContent(
           aTypeTest: aTypeTest,
           bTypeTest: bTypeTest,
           cTypeTest: cTypeTest,
-          abcTypeTest: abcTypeTest,
+          abcTypeTest: abc,
         );
       },
     );
