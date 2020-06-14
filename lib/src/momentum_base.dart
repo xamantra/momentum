@@ -1092,6 +1092,14 @@ class Momentum extends InheritedWidget {
     return _getController<T>();
   }
 
+  /// Method for testing only.
+  /// Get a controller using runtime type checker.
+  /// The generic type param <T> is for type conversion.
+  /// You don't need to do "controllerOfType(Foo) as Foo"
+  T controllerOfType<T extends MomentumController>(Type type) {
+    return _getControllerOfType<T>(type);
+  }
+
   T _getController<T extends MomentumController>([bool isInternal = false]) {
     var controller = _controllers.firstWhere((c) => c is T, orElse: () => null);
     if (controller == null && !isInternal) {
