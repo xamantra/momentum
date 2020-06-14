@@ -1,3 +1,11 @@
+## 1.1.9 - Critical
+- Fixed [#5](https://github.com/xamantra/momentum/issues/5)
+- Improve types system for dependency injection
+- Fix extending controllers that causes bug for `snapshot<T>()`. Click [here](https://xamdev.gq/momentum/#/extending-controllers) for the docs.
+- Added internal tests.
+
+<hr>
+
 ## 1.1.8 - Important
 <a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
@@ -13,6 +21,7 @@
 - Add more internal tests.
 - Find a workaround for issue [#5](https://github.com/xamantra/momentum/issues/5)
 - Write docs for project level testing.
+- Refactor tests description/names.
 
 <hr>
 
