@@ -6,21 +6,21 @@ class TypesTestModel extends MomentumModel<TypesTestController> {
   TypesTestModel(
     TypesTestController controller, {
     this.value,
-    this.squareRoot,
+    this.square,
   }) : super(controller);
 
   final int value;
-  final int squareRoot;
+  final int square;
 
   @override
   void update({
     int value,
-    int squareRoot,
+    int square,
   }) {
     TypesTestModel(
       controller,
       value: value ?? this.value,
-      squareRoot: squareRoot ?? this.squareRoot,
+      square: square ?? this.square,
     ).updateMomentum();
   }
 }

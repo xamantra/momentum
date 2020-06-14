@@ -70,7 +70,7 @@ class _TypesTestWidgets extends StatelessWidget {
               children: <Widget>[
                 Text('$CTypesTestController.value: ${typeTest.value}'),
                 Text(
-                  '$CTypesTestController.square: ${typeTest.squareRoot}',
+                  '$CTypesTestController.square: ${typeTest.square}',
                 ),
               ],
             );
@@ -86,7 +86,7 @@ class _TypesTestWidgets extends StatelessWidget {
                   '$ImplementsABCTypesController.value: ${typeTest.value}',
                 ),
                 Text(
-                  '$ImplementsABCTypesController.square: ${typeTest.squareRoot}',
+                  '$ImplementsABCTypesController.square: ${typeTest.square}',
                 ),
               ],
             );

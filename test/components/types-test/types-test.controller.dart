@@ -50,7 +50,7 @@ class CTypesTestController extends BTypesTestController {
     return TypesTestModel(
       this,
       value: 0,
-      squareRoot: 0,
+      square: 0,
     );
   }
 
@@ -59,7 +59,7 @@ class CTypesTestController extends BTypesTestController {
   }
 
   void square() {
-    model.update(squareRoot: (sqrt(model.value)).round());
+    model.update(square: (sqrt(model.value)).round());
   }
 }
 
@@ -77,7 +77,7 @@ class ImplementsABCTypesController extends TypesTestController with TypesTestMix
     return TypesTestModel(
       this,
       value: 10,
-      squareRoot: 4,
+      square: 4,
     );
   }
 
@@ -97,7 +97,7 @@ class ImplementsABCTypesController extends TypesTestController with TypesTestMix
 
   @override
   void square() {
-    model.update(squareRoot: (sqrt(model.value)).round());
+    model.update(square: (sqrt(model.value)).round());
   }
 
   @override

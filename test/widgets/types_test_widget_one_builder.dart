@@ -90,9 +90,9 @@ class _TypesTestBuilderContent extends StatelessWidget {
         Text('$ATypesTestController: ${aTypeTest.value}'),
         Text('$BTypesTestController: ${bTypeTest.value}'),
         Text('$CTypesTestController.value: ${cTypeTest.value}'),
-        Text('$CTypesTestController.square: ${cTypeTest.squareRoot}'),
+        Text('$CTypesTestController.square: ${cTypeTest.square}'),
         Text('$ImplementsABCTypesController.value: ${abcTypeTest.value}'),
-        Text('$ImplementsABCTypesController.square: ${abcTypeTest.squareRoot}'),
+        Text('$ImplementsABCTypesController.square: ${abcTypeTest.square}'),
         FlatButton(
           key: keyTypeTestIncrementButton,
           onPressed: () {
