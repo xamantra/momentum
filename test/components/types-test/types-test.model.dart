@@ -2,9 +2,9 @@ import 'package:momentum/momentum.dart';
 
 import 'index.dart';
 
-class ATypesTestModel extends MomentumModel<TypesTestController> {
+class ATypesTestModel extends MomentumModel<TypesTestCtrl> {
   ATypesTestModel(
-    TypesTestController controller, {
+    TypesTestCtrl controller, {
     this.value,
     this.square,
   }) : super(controller);

@@ -846,8 +846,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     if (updateState) {
       try {
         setState(_);
-        // ignore: avoid_catches_without_on_clauses
-      } catch (e) {
+      } on dynamic {
         // ignore the setState error because
         // it is allowed to call "model.update(...)"
         // inside initState or when the widget tree is
@@ -885,23 +884,22 @@ class _MomentumRoot extends StatefulWidget {
 }
 
 class _MomentumRootState extends State<_MomentumRoot> {
-  bool _modelsInitialized = false;
-  bool _rootStateInitialized = false;
-  bool _controllersBootstrapped = false;
-  bool _servicesInitialized = false;
+  bool _mModelsInit = false;
+  bool _mRootInit = false;
+  bool _mControllersInit = false;
+  bool _mServicesInit = false;
 
-  bool errorFound = false;
+  bool _mErrorFound = false;
 
   bool get _canStartApp {
-    // ignore: lines_longer_than_80_chars
-    return _rootStateInitialized && _controllersBootstrapped && _modelsInitialized && _servicesInitialized;
+    return _mRootInit && _mControllersInit && _mModelsInit && _mServicesInit;
   }
 
   @override
   @mustCallSuper
   void didChangeDependencies() {
-    if (!_rootStateInitialized) {
-      _rootStateInitialized = true;
+    if (!_mRootInit) {
+      _mRootInit = true;
       _init();
     }
     super.didChangeDependencies();
@@ -929,7 +927,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       }
     }
     setState(() {
-      _modelsInitialized = true;
+      _mModelsInit = true;
     });
   }
 
@@ -948,7 +946,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       }
     }
     setState(() {
-      _servicesInitialized = true;
+      _mServicesInit = true;
     });
   }
 
@@ -976,7 +974,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var waitTime = (min - diff).clamp(0, min);
     await Future.delayed(Duration(milliseconds: waitTime));
     setState(() {
-      _controllersBootstrapped = true;
+      _mControllersInit = true;
     });
   }
 
@@ -985,8 +983,8 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var error = Momentum._getMomentumInstance(context)._validateControllers(
       widget.controllers,
     );
-    if (!errorFound && error != null) {
-      errorFound = true;
+    if (!_mErrorFound && error != null) {
+      _mErrorFound = true;
       throw MomentumError(error);
     }
     if (_canStartApp) {

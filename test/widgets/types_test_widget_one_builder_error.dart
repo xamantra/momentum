@@ -13,10 +13,10 @@ Momentum typesTestWidgetError() {
   return Momentum(
     child: _TypesTestErrorApp(),
     controllers: [
-      ATypesTestController()..config(maxTimeTravelSteps: 10),
-      BTypesTestController(),
-      CTypesTestController(),
-      ImplementsABCTypesController(),
+      ATypesTestCtrl()..config(maxTimeTravelSteps: 10),
+      BTypesTestCtrl(),
+      CTypesTestCtrl(),
+      ImplementsABCTypesCtrl(),
     ],
   );
 }
@@ -48,15 +48,15 @@ class _TypesTestErrorWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     return MomentumBuilder(
       controllers: [
-        ATypesTestController,
-        BTypesTestController,
-        CTypesTestController,
-        ImplementsABCTypesController,
+        ATypesTestCtrl,
+        BTypesTestCtrl,
+        CTypesTestCtrl,
+        ImplementsABCTypesCtrl,
       ],
       builder: (context, snapshot) {
-        var aTypeTest = snapshot<ATypesTestModel>(ATypesTestController);
-        var bTypeTest = snapshot<ATypesTestModel>(BTypesTestController);
-        var cTypeTest = snapshot<ATypesTestModel>(CTypesTestController);
+        var aTypeTest = snapshot<ATypesTestModel>(ATypesTestCtrl);
+        var bTypeTest = snapshot<ATypesTestModel>(BTypesTestCtrl);
+        var cTypeTest = snapshot<ATypesTestModel>(CTypesTestCtrl);
         var abc = snapshot<ATypesTestModel>(); // throws an error
         return _TypesTestErrorContent(
           aTypeTest: aTypeTest,
@@ -87,16 +87,16 @@ class _TypesTestErrorContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text('$ATypesTestController: ${aTypeTest.value}'),
-        Text('$BTypesTestController: ${bTypeTest.value}'),
-        Text('$CTypesTestController.value: ${cTypeTest.value}'),
-        Text('$CTypesTestController.square: ${cTypeTest.square}'),
-        Text('$ImplementsABCTypesController.value: ${abcTypeTest.value}'),
-        Text('$ImplementsABCTypesController.square: ${abcTypeTest.square}'),
+        Text('$ATypesTestCtrl: ${aTypeTest.value}'),
+        Text('$BTypesTestCtrl: ${bTypeTest.value}'),
+        Text('$CTypesTestCtrl.value: ${cTypeTest.value}'),
+        Text('$CTypesTestCtrl.square: ${cTypeTest.square}'),
+        Text('$ImplementsABCTypesCtrl.value: ${abcTypeTest.value}'),
+        Text('$ImplementsABCTypesCtrl.square: ${abcTypeTest.square}'),
         FlatButton(
           key: keyTypesErrorIncrementButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).increment();
           },
@@ -105,7 +105,7 @@ class _TypesTestErrorContent extends StatelessWidget {
         FlatButton(
           key: keyTypesErrorDecrementButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).decrement();
           },
@@ -114,7 +114,7 @@ class _TypesTestErrorContent extends StatelessWidget {
         FlatButton(
           key: keyTypesErrorMultiplyButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).multiplyBy(2);
           },
@@ -123,7 +123,7 @@ class _TypesTestErrorContent extends StatelessWidget {
         FlatButton(
           key: keyTypesErrorDivideButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).divideBy(2);
           },
@@ -132,7 +132,7 @@ class _TypesTestErrorContent extends StatelessWidget {
         FlatButton(
           key: keyTypeErrorToSquareButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).square();
           },

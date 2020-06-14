@@ -5,8 +5,7 @@ import 'package:flutter/services.dart';
 import 'momentum_base.dart';
 import 'momentum_types.dart';
 
-// ignore: constant_identifier_names
-const _MOMENTUM_ROUTER_HISTORY = 'MOMENTUM_ROUTER_HISTORY';
+const _momentumRouterHistory = 'MOMENTUM_ROUTER_HISTORY';
 
 /// A built-in momentum service for persistent navigation system.
 class Router extends MomentumService {
@@ -56,7 +55,7 @@ class Router extends MomentumService {
       _history.add(indexOfWidgetOfType);
       _persistSaver(
         _rootContext,
-        _MOMENTUM_ROUTER_HISTORY,
+        _momentumRouterHistory,
         jsonEncode(_history),
       );
       Route r;
@@ -79,7 +78,7 @@ class Router extends MomentumService {
     trycatch(() => _history.removeLast());
     _persistSaver(
       _rootContext,
-      _MOMENTUM_ROUTER_HISTORY,
+      _momentumRouterHistory,
       jsonEncode(_history),
     );
     if (_history.isEmpty) {
@@ -101,7 +100,7 @@ class Router extends MomentumService {
   /// library.
   Future<void> init() async {
     var historyJson = await tryasync(
-      () => _persistGet(_rootContext, _MOMENTUM_ROUTER_HISTORY),
+      () => _persistGet(_rootContext, _momentumRouterHistory),
       '[]',
     );
     var result = jsonDecode(historyJson);
@@ -127,7 +126,7 @@ class Router extends MomentumService {
     _history = [];
     await _persistSaver(
       _rootContext,
-      _MOMENTUM_ROUTER_HISTORY,
+      _momentumRouterHistory,
       jsonEncode(_history),
     );
   }
@@ -138,7 +137,7 @@ class Router extends MomentumService {
     _history = [i == -1 ? 0 : i];
     await _persistSaver(
       _rootContext,
-      _MOMENTUM_ROUTER_HISTORY,
+      _momentumRouterHistory,
       jsonEncode(_history),
     );
   }

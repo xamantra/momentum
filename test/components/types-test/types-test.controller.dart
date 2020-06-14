@@ -4,7 +4,7 @@ import 'package:momentum/momentum.dart';
 
 import 'index.dart';
 
-abstract class TypesTestController extends MomentumController<ATypesTestModel> {
+abstract class TypesTestCtrl extends MomentumController<ATypesTestModel> {
   void increment() {
     model.update(value: model.value + 1);
   }
@@ -14,8 +14,7 @@ abstract class TypesTestController extends MomentumController<ATypesTestModel> {
   }
 }
 
-// ignore: lines_longer_than_80_chars
-class ATypesTestController extends TypesTestController with TypesTestMixinController {
+class ATypesTestCtrl extends TypesTestCtrl with TypesTestMixinCtrl {
   @override
   ATypesTestModel init() {
     return ATypesTestModel(
@@ -29,8 +28,7 @@ class ATypesTestController extends TypesTestController with TypesTestMixinContro
   }
 }
 
-// ignore: lines_longer_than_80_chars
-class BTypesTestController extends TypesTestController with TypesTestMixinController {
+class BTypesTestCtrl extends TypesTestCtrl with TypesTestMixinCtrl {
   @override
   ATypesTestModel init() {
     return ATypesTestModel(
@@ -44,7 +42,7 @@ class BTypesTestController extends TypesTestController with TypesTestMixinContro
   }
 }
 
-class CTypesTestController extends BTypesTestController {
+class CTypesTestCtrl extends BTypesTestCtrl {
   @override
   ATypesTestModel init() {
     return ATypesTestModel(
@@ -63,7 +61,7 @@ class CTypesTestController extends BTypesTestController {
   }
 }
 
-mixin TypesTestMixinController on TypesTestController {
+mixin TypesTestMixinCtrl on TypesTestCtrl {
   bool isOdd() {
     var rem = model.value % 2;
     return model.value == 1 || rem != 0;
@@ -71,7 +69,7 @@ mixin TypesTestMixinController on TypesTestController {
 }
 
 // ignore: lines_longer_than_80_chars
-class ImplementsABCTypesController extends TypesTestController with TypesTestMixinController implements ATypesTestController, BTypesTestController, CTypesTestController {
+class ImplementsABCTypesCtrl extends TypesTestCtrl with TypesTestMixinCtrl implements ATypesTestCtrl, BTypesTestCtrl, CTypesTestCtrl {
   @override
   ATypesTestModel init() {
     return ATypesTestModel(

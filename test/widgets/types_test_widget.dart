@@ -13,10 +13,10 @@ Momentum typesTestWidget() {
   return Momentum(
     child: _TypesTestApp(),
     controllers: [
-      ATypesTestController()..config(maxTimeTravelSteps: 10),
-      BTypesTestController(),
-      CTypesTestController(),
-      ImplementsABCTypesController(),
+      ATypesTestCtrl()..config(maxTimeTravelSteps: 10),
+      BTypesTestCtrl(),
+      CTypesTestCtrl(),
+      ImplementsABCTypesCtrl(),
     ],
   );
 }
@@ -49,44 +49,44 @@ class _TypesTestWidgets extends StatelessWidget {
     return Column(
       children: <Widget>[
         MomentumBuilder(
-          controllers: [ATypesTestController],
+          controllers: [ATypesTestCtrl],
           builder: (context, snapshot) {
             var typeTest = snapshot<ATypesTestModel>();
-            return Text('$ATypesTestController: ${typeTest.value}');
+            return Text('$ATypesTestCtrl: ${typeTest.value}');
           },
         ),
         MomentumBuilder(
-          controllers: [BTypesTestController],
+          controllers: [BTypesTestCtrl],
           builder: (context, snapshot) {
             var typeTest = snapshot<ATypesTestModel>();
-            return Text('$BTypesTestController: ${typeTest.value}');
+            return Text('$BTypesTestCtrl: ${typeTest.value}');
           },
         ),
         MomentumBuilder(
-          controllers: [CTypesTestController],
+          controllers: [CTypesTestCtrl],
           builder: (context, snapshot) {
             var typeTest = snapshot<ATypesTestModel>();
             return Column(
               children: <Widget>[
-                Text('$CTypesTestController.value: ${typeTest.value}'),
+                Text('$CTypesTestCtrl.value: ${typeTest.value}'),
                 Text(
-                  '$CTypesTestController.square: ${typeTest.square}',
+                  '$CTypesTestCtrl.square: ${typeTest.square}',
                 ),
               ],
             );
           },
         ),
         MomentumBuilder(
-          controllers: [ImplementsABCTypesController],
+          controllers: [ImplementsABCTypesCtrl],
           builder: (context, snapshot) {
             var typeTest = snapshot<ATypesTestModel>();
             return Column(
               children: <Widget>[
                 Text(
-                  '$ImplementsABCTypesController.value: ${typeTest.value}',
+                  '$ImplementsABCTypesCtrl.value: ${typeTest.value}',
                 ),
                 Text(
-                  '$ImplementsABCTypesController.square: ${typeTest.square}',
+                  '$ImplementsABCTypesCtrl.square: ${typeTest.square}',
                 ),
               ],
             );
@@ -95,7 +95,7 @@ class _TypesTestWidgets extends StatelessWidget {
         FlatButton(
           key: keyTypeTestIncrementButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).increment();
           },
@@ -104,7 +104,7 @@ class _TypesTestWidgets extends StatelessWidget {
         FlatButton(
           key: keyTypeTestDecrementButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).decrement();
           },
@@ -113,7 +113,7 @@ class _TypesTestWidgets extends StatelessWidget {
         FlatButton(
           key: keyTypeTestMultiplyButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).multiplyBy(2);
           },
@@ -122,7 +122,7 @@ class _TypesTestWidgets extends StatelessWidget {
         FlatButton(
           key: keyTypeTestDivideButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).divideBy(2);
           },
@@ -131,7 +131,7 @@ class _TypesTestWidgets extends StatelessWidget {
         FlatButton(
           key: keyTypeTestToSquareButton,
           onPressed: () {
-            Momentum.controller<ImplementsABCTypesController>(
+            Momentum.controller<ImplementsABCTypesCtrl>(
               context,
             ).square();
           },
