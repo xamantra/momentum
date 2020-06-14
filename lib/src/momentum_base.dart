@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
 
@@ -94,13 +95,13 @@ abstract class MomentumController<M> {
   T dependOn<T extends MomentumController>() {
     var type = _getType<T>();
     if (runtimeType == type) {
-      throw Exception(_formatMomentumLog('[$this]: called '
+      throw MomentumError(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()" on itself, you\'re not '
           'allowed to do that.'));
     }
     var result = Momentum._ofInternal<T>(_momentumRootContext);
     if (result == null) {
-      throw Exception(_formatMomentumLog('[$this]: called '
+      throw MomentumError(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()", but no controller of type '
           '[$T] had been found.\nTry checking your "Momentum" '
           'root widget implementation if the controller '
@@ -120,7 +121,7 @@ abstract class MomentumController<M> {
       if (_momentumLogging) {
         print(e);
       }
-      throw Exception(_formatMomentumLog('[$this]: called '
+      throw MomentumError(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()", but no service of type [$T] '
           'had been found.\nTry checking your "Momentum" '
           'root widget implementation if the service "$T" '
@@ -237,13 +238,13 @@ abstract class MomentumController<M> {
   void _checkInitImplementation() {
     var initValue = init();
     if (initValue == null) {
-      throw Exception(_formatMomentumLog('[$this]: your "init()" '
+      throw MomentumError(_formatMomentumLog('[$this]: your "init()" '
           'method implementation returns NULL, please return a '
           'valid instance of "$M"'));
     }
     if ((initValue as MomentumModel).controller == null) {
       var name = '$this'.replaceAll('Instance of', '');
-      throw Exception(_formatMomentumLog('[$this]: your "init()" '
+      throw MomentumError(_formatMomentumLog('[$this]: your "init()" '
           'method implementation returns an instance of "$M" but '
           'the "controller" property is null, please pass in a '
           'non-null value to it. But since "$M" is attached to '
@@ -738,7 +739,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   @override
   Widget build(BuildContext context) {
     if (widget.builder == null) {
-      throw Exception('$_logHeader The '
+      throw MomentumError('$_logHeader The '
           'parameter "builder" for ${widget.runtimeType} widget '
           'must not be null.');
     }
@@ -785,7 +786,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
 
   T _modelSnapshotOfType<T extends MomentumModel>([Type c]) {
     if (widget.controllers == null) {
-      throw Exception('$_logHeader The '
+      throw MomentumError('$_logHeader The '
           'parameter "controllers" for ${widget.runtimeType} widget '
           'must not be null.');
     }
@@ -796,7 +797,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
         )
         ?.toList();
     if (controllers == null || controllers.isEmpty) {
-      throw Exception('$_logHeader The controller '
+      throw MomentumError('$_logHeader The controller '
           'for the model of type "$T" is either not injected in this '
           '${widget.runtimeType} or not initialized in the Momentum root '
           'widget or can be both.\nPossible solutions:\n\t1. Check if '
@@ -805,7 +806,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'to this model if it is injected into this ${widget.runtimeType}');
     }
     if (controllers.length > 1 && c == null) {
-      throw Exception('$_logHeader The model of type "$T" is being '
+      throw MomentumError('$_logHeader The model of type "$T" is being '
           'used by multiple controllers. Please specify a specific controller '
           'using the syntax "snapshot<ModelType>(ControllerType)".');
     }
@@ -832,7 +833,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       orElse: () => null,
     );
     if (controller == null) {
-      throw Exception('$_logHeader A controller of '
+      throw MomentumError('$_logHeader A controller of '
           'type "$T" is either not injected in this ${widget.runtimeType} '
           'or not initialized in the Momentum root widget or can be both.'
           '\nPossible solutions:\n\t1. Check if you initialized "$T" on the '
@@ -996,7 +997,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     );
     if (!errorFound && error != null) {
       errorFound = true;
-      throw Exception(error);
+      throw MomentumError(error);
     }
     if (_canStartApp) {
       return widget.child;
@@ -1133,7 +1134,7 @@ class Momentum extends InheritedWidget {
       orElse: () => null,
     );
     if (controller == null && !isInternal) {
-      throw Exception('The controller of type "$T" doesn\'t exists '
+      throw MomentumError('The controller of type "$T" doesn\'t exists '
           'or was not initialized from the "controllers" parameter '
           'in the Momentum constructor.');
     }
@@ -1152,7 +1153,7 @@ class Momentum extends InheritedWidget {
       orElse: () => null,
     );
     if (service == null) {
-      throw Exception('The service class of type "$T" doesn\'t exists or '
+      throw MomentumError('The service class of type "$T" doesn\'t exists or '
           'was not initialized from the "services" parameter '
           'in the Momentum constructor.');
     }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:momentum/src/momentum_error.dart';
 
 import 'components/counter/counter.controller.dart';
 import 'components/sync-test/index.dart';
@@ -16,7 +17,7 @@ void main() {
   testWidgets('null controller specified in momentum', (tester) async {
     var widget = errorWidget6();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
 
   testWidgets('null controllers and services', (tester) async {
@@ -29,7 +30,7 @@ void main() {
   testWidgets('duplicate controller', (tester) async {
     var widget = errorWidget7();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
 
   testWidgets('resetAll', (tester) async {
@@ -53,7 +54,7 @@ void main() {
   testWidgets('Momentum.controller<T>(context)', (tester) async {
     var widget = errorWidget8();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
 
   testWidgets('resetAll - override onResetAll', (tester) async {

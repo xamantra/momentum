@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:momentum/src/momentum_error.dart';
 
 import 'components/types-test/index.dart';
 import 'utilities/launcher.dart';
@@ -328,6 +329,6 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
 Future<void> testErrorUnspecifiedController(WidgetTester tester) async {
   var widget = typesTestWidgetError();
   await launch(tester, widget);
-
-  expect(tester.takeException(), isInstanceOf<Exception>());
+  var exception = tester.takeException();
+  expect(exception, isInstanceOf<MomentumError>());
 }

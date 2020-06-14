@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:momentum/src/momentum_error.dart';
 
 import 'components/counter/counter.controller.dart';
 import 'utilities/launcher.dart';
@@ -13,12 +14,12 @@ void main() {
   testWidgets('null builder parameter', (tester) async {
     var widget = errorWidget();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
   testWidgets('non existent controller error test', (tester) async {
     var widget = errorWidget2();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
   testWidgets('dontRebuildIf test', (tester) async {
     var widget = skipRebuildWidget();
@@ -38,12 +39,12 @@ void main() {
   testWidgets('null controllers', (tester) async {
     var widget = errorWidget3();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
   testWidgets('access a model but controller is not injected', (tester) async {
     var widget = errorWidget4();
     await launch(tester, widget);
-    expect(tester.takeException(), isInstanceOf<Exception>());
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
   testWidgets('dontRebuildIf access controller not injected', (tester) async {
     var widget = errorWidget5();
