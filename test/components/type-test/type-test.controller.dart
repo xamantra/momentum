@@ -18,7 +18,10 @@ abstract class TypeTestController extends MomentumController<TypeTestModel> {
 class ATypeTestController extends TypeTestController with TypeTestMixinController {
   @override
   TypeTestModel init() {
-    return TypeTestModel(this, value: 0);
+    return TypeTestModel(
+      this,
+      value: 0,
+    );
   }
 
   void multiplyBy(int multiplier) {
@@ -51,6 +54,10 @@ class CTypeTestController extends BTypeTestController {
     );
   }
 
+  void add(int value) {
+    model.update(value: model.value + value);
+  }
+
   void square() {
     model.update(squareRoot: (sqrt(model.value)).round());
   }
@@ -64,12 +71,13 @@ mixin TypeTestMixinController on TypeTestController {
 }
 
 // ignore: lines_longer_than_80_chars
-class ImplementsABTypeController extends TypeTestController implements ATypeTestController, BTypeTestController {
+class ImplementsABCTypeController extends TypeTestController with TypeTestMixinController implements ATypeTestController, BTypeTestController, CTypeTestController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
       this,
-      value: 0,
+      value: 10,
+      squareRoot: 4,
     );
   }
 
@@ -85,5 +93,15 @@ class ImplementsABTypeController extends TypeTestController implements ATypeTest
   @override
   void divideBy(int divisor) {
     model.update(value: model.value ~/ divisor);
+  }
+
+  @override
+  void square() {
+    model.update(squareRoot: (sqrt(model.value)).round());
+  }
+
+  @override
+  void add(int value) {
+    model.update(value: model.value + value);
   }
 }

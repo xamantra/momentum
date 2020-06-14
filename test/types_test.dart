@@ -191,4 +191,110 @@ void main() {
     expect(find.text('$CTypeTestController.square: 2'), findsOneWidget);
     /* CTypeTestController */
   });
+
+  testWidgets('test: ImplementsABCTypeController', (tester) async {
+    var widget = typeTestWidget();
+    await launch(tester, widget);
+
+    /* TypeTestAController */
+    var aTypeTestController = widget.controllerOfType<ATypeTestController>(
+      ATypeTestController,
+    );
+    expect(aTypeTestController, isInstanceOf<ATypeTestController>());
+    aTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$ATypeTestController: 1'), findsOneWidget);
+    aTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$ATypeTestController: 2'), findsOneWidget);
+    aTypeTestController.backward(); // undo
+    await tester.pumpAndSettle();
+    expect(find.text('$ATypeTestController: 1'), findsOneWidget);
+    aTypeTestController.multiplyBy(5);
+    await tester.pumpAndSettle();
+    expect(find.text('$ATypeTestController: 5'), findsOneWidget);
+    expect(aTypeTestController.isOdd(), true); // the mixin method
+    /* TypeTestAController */
+
+    /* TypeTestBController */
+    var bTypeTestController = widget.controllerOfType<BTypeTestController>(
+      BTypeTestController,
+    );
+    expect(bTypeTestController, isInstanceOf<BTypeTestController>());
+    bTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    // verify A controller that it didn't update/rebuild.
+    expect(find.text('$ATypeTestController: 5'), findsOneWidget);
+    // undo, but no effect because B's undo/redo is disabled.
+    bTypeTestController.backward();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(bTypeTestController.isOdd(), false); // the mixin method
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    bTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$BTypeTestController: 3'), findsOneWidget);
+    expect(bTypeTestController.isOdd(), true); // the mixin method
+    /* TypeTestBController */
+
+    /* CTypeTestController */
+    var cTypeTestController = widget.controllerForTest<CTypeTestController>();
+    expect(cTypeTestController, isInstanceOf<CTypeTestController>());
+    expect(find.text('$CTypeTestController.value: 0'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 1'), findsOneWidget);
+    // verify B controller that it didn't update/rebuild.
+    expect(find.text('$BTypeTestController: 3'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 2'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 3'), findsOneWidget);
+    cTypeTestController.increment();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 4'), findsOneWidget);
+    cTypeTestController.square();
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.square: 2'), findsOneWidget);
+    cTypeTestController.add(10);
+    await tester.pumpAndSettle();
+    expect(find.text('$CTypeTestController.value: 14'), findsOneWidget);
+    /* CTypeTestController */
+
+    /* ImplementsABCTypeController */
+    var abcController = widget.controllerForTest<ImplementsABCTypeController>();
+    expect(abcController, isInstanceOf<ImplementsABCTypeController>());
+    expect(find.text('$ImplementsABCTypeController.value: 10'), findsOneWidget);
+    expect(find.text('$ImplementsABCTypeController.square: 4'), findsOneWidget);
+    await tester.tap(find.byKey(keyTypeTestIncrementButton));
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.value: 11'), findsOneWidget);
+    await tester.tap(find.byKey(keyTypeTestDecrementButton));
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.value: 10'), findsOneWidget);
+    await tester.tap(find.byKey(keyTypeTestMultiplyButton));
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.value: 20'), findsOneWidget);
+    await tester.tap(find.byKey(keyTypeTestDivideButton));
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.value: 10'), findsOneWidget);
+    // verify A controller that it didn't update/rebuild.
+    expect(find.text('$ATypeTestController: 5'), findsOneWidget);
+    // verify B controller that it didn't update/rebuild.
+    expect(find.text('$BTypeTestController: 3'), findsOneWidget);
+    // verify C controller that it didn't update/rebuild.
+    expect(find.text('$CTypeTestController.value: 14'), findsOneWidget);
+    abcController.add(15);
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.value: 25'), findsOneWidget);
+    abcController.square();
+    await tester.pumpAndSettle();
+    expect(find.text('$ImplementsABCTypeController.square: 5'), findsOneWidget);
+    /* ImplementsABCTypeController */
+  });
 }
