@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'momentum_base.dart';
 
-typedef MomentumSnapshot<T> = T Function<T extends MomentumModel>();
+typedef MomentumSnapshot<T> = T Function<T extends MomentumModel>([Type]);
 
 typedef MomentumBuilderFunction = Widget Function(
   BuildContext,

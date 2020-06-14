@@ -714,7 +714,7 @@ class MomentumBuilder extends StatefulWidget {
 class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   List<MomentumController> ctrls;
 
-  final _models = <dynamic>[];
+  // final _models = <dynamic>[];
 
   String get _logHeader {
     var noOwner = widget.owner == null;
@@ -754,7 +754,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       }
     }
     if (ctrls.isNotEmpty) {
-      _models.addAll(ctrls.map((_) => null));
+      // _models.addAll(ctrls.map((_) => null));
       for (var i = 0; i < ctrls.length; i++) {
         if (ctrls[i]._lazy) {
           ctrls[i]._bootstrap();
@@ -783,18 +783,19 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     return;
   }
 
-  T _modelSnapshotOfType<T extends MomentumModel>() {
+  T _modelSnapshotOfType<T extends MomentumModel>([Type c]) {
     if (widget.controllers == null) {
       throw Exception('$_logHeader The '
           'parameter "controllers" for ${widget.runtimeType} widget '
           'must not be null.');
     }
     var type = _getType<T>();
-    var controller = ctrls?.firstWhere(
-      (x) => x?.model?.runtimeType == type,
-      orElse: () => null,
-    );
-    if (controller == null) {
+    var controllers = ctrls
+        ?.where(
+          (x) => x?.model?.runtimeType == type,
+        )
+        ?.toList();
+    if (controllers == null || controllers.isEmpty) {
       throw Exception('$_logHeader The controller '
           'for the model of type "$T" is either not injected in this '
           '${widget.runtimeType} or not initialized in the Momentum root '
@@ -803,7 +804,24 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'Momentum root widget.\n\t2. Check the controller attached '
           'to this model if it is injected into this ${widget.runtimeType}');
     }
-    var model = _models.firstWhere((c) => c.runtimeType == type);
+    if (controllers.length > 1 && c == null) {
+      throw Exception('$_logHeader The model of type "$T" is being '
+          'used by multiple controllers. Please specify a specific controller '
+          'using the syntax "snapshot<ModelType>(ControllerType)".');
+    }
+    if (controllers.length > 1 && c != null) {
+      var model = controllers
+          .firstWhere(
+            (x) => x.runtimeType == c,
+          )
+          .model;
+      return model as T;
+    }
+    var model = controllers
+        .firstWhere(
+          (c) => c.model.runtimeType == type,
+        )
+        .model;
     return model as T;
   }
 
@@ -831,7 +849,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     bool updateState = true,
   ]) {
     // Trigger rebuild with the new list of updated models.
-    _models[index] = newModel;
+    // _models[index] = newModel;
     if (updateState) {
       try {
         setState(_);
