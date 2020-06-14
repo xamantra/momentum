@@ -8,7 +8,7 @@
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
 <a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
-<a href="https://xamdev.gq/momentum/#/" target="_blank"><img src="https://img.shields.io/badge/documentation-100%25-blueviolet" alt="documentation" /></a>
+<a href="https://xamdev.gq/momentum/#/" target="_blank"><img src="https://img.shields.io/badge/documentation-95%25-blueviolet" alt="documentation" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=orange&label=popularity&query=popularity&url=http://www.pubscore.gq/all?package=momentum" alt="popularity" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=score&query=overall&url=http://www.pubscore.gq/all?package=momentum" alt="score" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=maintenance&query=maintenance&url=http://www.pubscore.gq/all?package=momentum" alt="maintenance" /></a>
