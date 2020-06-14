@@ -10,24 +10,25 @@ import 'momentum_types.dart';
 
 Type _getType<T>() => T;
 
-///
+/// Used internally.
+/// Simplify trycatch blocks.
 T trycatch<T>(T Function() body, [T defaultValue]) {
   try {
     var result = body();
     return result ?? defaultValue;
-    // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } on dynamic {
     return defaultValue;
   }
 }
 
-///
+/// Used internally.
+/// Simplify trycatch blocks.
+/// Async version.
 Future<T> tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
   try {
     var result = await body();
     return result ?? defaultValue;
-    // ignore: avoid_catches_without_on_clauses
-  } catch (e) {
+  } on dynamic {
     return defaultValue;
   }
 }
