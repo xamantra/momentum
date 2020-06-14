@@ -1,3 +1,8 @@
+## 1.1.8 - Critical
+- Fixed [#5](https://github.com/xamantra/momentum/issues/5)
+- Improve types system for dependency injection
+- Fix extending controllers causes bug for `snapshot<T>()`.
+
 ## 1.1.8 - Important
 <a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
