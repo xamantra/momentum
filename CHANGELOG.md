@@ -1,7 +1,7 @@
 ## 1.1.9 - Critical
 - Fixed [#5](https://github.com/xamantra/momentum/issues/5)
 - Improve types system for dependency injection
-- Fix extending controllers that causes bug for `snapshot<T>()`. Click [here](https://xamdev.gq/momentum/#/extending-controllers) for the docs.
+- Fix extending controllers that cause bug for `snapshot<T>()`. Click [here](https://xamdev.gq/momentum/#/extending-controllers) for the docs.
 - Added internal tests.
 
 <hr>
@@ -12,7 +12,7 @@
 
 - Changed license to [BSD-3](https://opensource.org/licenses/BSD-3-Clause)
 - critical fix: reset() bug.
-- fix config check bug in "persistSave" parameter.
+- fix config check bug in the "persistSave" parameter.
 - (test) fixed dependOn<T>() test to cover more exceptions.
 - added public methods for testability.
 - Added internal tests.
@@ -20,7 +20,7 @@
 #### TODO
 - Add more internal tests.
 - Find a workaround for issue [#5](https://github.com/xamantra/momentum/issues/5)
-- Write docs for project level testing.
+- Write docs for project-level testing.
 - Refactor tests description/names.
 
 <hr>

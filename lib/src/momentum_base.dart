@@ -74,7 +74,7 @@ abstract class MomentumModel<Controller extends MomentumController> {
   /// the `controller` property otherwise.
   MomentumModel fromJson(Map<String, dynamic> json) => null;
 
-  /// Method to generate map from this model.
+  /// Method to generate a map from this model.
   Map<String, dynamic> toJson() => null;
 }
 
@@ -174,7 +174,7 @@ abstract class MomentumController<M> {
   M _nextModel;
 
   /// Previous model state.
-  /// Will only have a value if time travel is enabled.
+  /// Will only have value if time travel is enabled.
   M get prevModel => _prevModel;
 
   /// Next model state.
@@ -689,7 +689,7 @@ class MomentumBuilder extends StatefulWidget {
   @protected
   final MomentumBuilderFunction builder;
 
-  /// Create a widget for display your model properties.
+  /// Create a widget to display your model properties.
   /// Parameter `controllers` and `builder` is required.
   const MomentumBuilder({
     Key key,
@@ -1193,7 +1193,7 @@ class Momentum extends InheritedWidget {
     );
   }
 
-  /// The static method for getting controllers inside widget.
+  /// The static method for getting controllers inside a widget.
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   ///
@@ -1203,7 +1203,7 @@ class Momentum extends InheritedWidget {
     return _getMomentumInstance(context)._getController<T>();
   }
 
-  /// The static method for getting controllers inside widget.
+  /// The static method for getting controllers inside a widget.
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {

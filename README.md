@@ -2,7 +2,7 @@
   <img src="https://i.imgur.com/DAFGeAd.png">
 </p>
 
-<p align="center">A super powerful flutter state management library inspired with MVC pattern with a very flexible dependency injection.</p>
+<p align="center">A super-powerful flutter state management library inspired with MVC pattern with very flexible dependency injection.</p>
 
 <p align="center">
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
