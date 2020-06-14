@@ -15,26 +15,26 @@ import 'widgets/reset_all_override.dart';
 void main() {
   testWidgets('null controller specified in momentum', (tester) async {
     var widget = errorWidget6();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
 
   testWidgets('null controllers and services', (tester) async {
     var widget = blankWidget();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var blankText = find.text('Blank App');
     expect(blankText, findsOneWidget);
   });
 
   testWidgets('duplicate controller', (tester) async {
     var widget = errorWidget7();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
 
   testWidgets('resetAll', (tester) async {
     var widget = resetAllWidget();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var syncTest = widget.controllerForTest<SyncTestController>();
     expect(syncTest.model.value, 333);
     var counter = widget.controllerForTest<CounterController>();
@@ -52,13 +52,13 @@ void main() {
 
   testWidgets('Momentum.controller<T>(context)', (tester) async {
     var widget = errorWidget8();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
 
   testWidgets('resetAll - override onResetAll', (tester) async {
     var widget = resetAllOverrideWidget();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var syncTest = widget.controllerForTest<SyncTestController>();
     expect(syncTest.model.value, 333);
     var counter = widget.controllerForTest<CounterController>();
@@ -76,7 +76,7 @@ void main() {
 
   testWidgets('restart', (tester) async {
     var widget = counterRestart();
-    await inject(tester, widget);
+    await launch(tester, widget);
     await tester.tap(find.byKey(keyCounterIncrementButton));
     await tester.pump();
     expect(find.text('1'), findsOneWidget);
@@ -91,7 +91,7 @@ void main() {
 
     testWidgets('obsolete api: Momentum.of<T>', (tester) async {
     var widget = counterObsolete();
-    await inject(tester, widget);
+    await launch(tester, widget);
     await tester.tap(find.byKey(keyCounterObsoleteIncrement));
     await tester.pump();
     expect(find.text('1'), findsOneWidget);

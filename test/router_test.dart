@@ -12,7 +12,7 @@ void main() {
   group("Router Test", () {
     testWidgets('Initialize', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
@@ -20,7 +20,7 @@ void main() {
 
     testWidgets('#1 goto(...)', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
@@ -31,7 +31,7 @@ void main() {
 
     testWidgets('Restart', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
@@ -39,7 +39,7 @@ void main() {
 
     testWidgets('#2 goto(...)', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
@@ -50,7 +50,7 @@ void main() {
 
     testWidgets('pop', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
@@ -61,7 +61,7 @@ void main() {
 
     testWidgets('#3 goto(...): error test', (tester) async {
       var widget = routerErrorTest();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageErrorTestA, true);
@@ -73,7 +73,7 @@ void main() {
 
     testWidgets('#2 pop(...): exit app', (tester) async {
       var widget = routerExitApp();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageExitTest, true);
@@ -84,7 +84,7 @@ void main() {
 
     testWidgets('#1 transition goto(...)', (tester) async {
       var widget = routerTransitionTest();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageA, true);
@@ -95,7 +95,7 @@ void main() {
 
     testWidgets('transition Restart', (tester) async {
       var widget = routerTransitionTest();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageB, true);
@@ -103,7 +103,7 @@ void main() {
 
     testWidgets('#2 transition goto(...)', (tester) async {
       var widget = routerTransitionTest();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageB, true);
@@ -117,7 +117,7 @@ void main() {
 
     testWidgets('goto and clear history', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
@@ -131,7 +131,7 @@ void main() {
 
     testWidgets('#1 router reset', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
@@ -144,7 +144,7 @@ void main() {
 
     testWidgets('#2 router reset', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
@@ -152,7 +152,7 @@ void main() {
 
     testWidgets('clearHistoryWithContext', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
@@ -163,7 +163,7 @@ void main() {
 
     testWidgets('resetWithContext', (tester) async {
       var widget = routerTestWidget();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
@@ -174,7 +174,7 @@ void main() {
 
     testWidgets('RouterPage Test', (tester) async {
       var widget = routerPageTest();
-      await inject(tester, widget);
+      await launch(tester, widget);
       var router = widget.serviceForTest<Router>();
       expect(router == null, false);
       expect(router.getActive() is RouterPageA, true);

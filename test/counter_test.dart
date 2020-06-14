@@ -7,7 +7,7 @@ import 'widgets/counter.dart';
 void main() {
   testWidgets('Start Widget', (tester) async {
     var widget = counter();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var valueFinder = find.byKey(keyCounterValue);
     var incrementFinder = find.byKey(keyIncrementButton);
     expect(valueFinder, findsOneWidget);
@@ -16,7 +16,7 @@ void main() {
 
   testWidgets('Click Increment', (tester) async {
     var widget = counter();
-    await inject(tester, widget);
+    await launch(tester, widget);
     await tester.tap(find.byKey(keyIncrementButton));
     await tester.pump();
     expect(find.text('1'), findsOneWidget);
@@ -28,7 +28,7 @@ void main() {
 
   testWidgets('Trigger Increment', (tester) async {
     var widget = counter();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var controller = widget.controllerForTest<CounterController>();
     controller.increment();
     await tester.pump();
@@ -41,7 +41,7 @@ void main() {
 
   testWidgets('Trigger Decrement', (tester) async {
     var widget = counter();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var controller = widget.controllerForTest<CounterController>();
     controller.decrement();
     await tester.pump();

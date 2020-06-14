@@ -12,17 +12,17 @@ import 'widgets/skip_rebuild.dart';
 void main() {
   testWidgets('null builder parameter', (tester) async {
     var widget = errorWidget();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
   testWidgets('non existent controller error test', (tester) async {
     var widget = errorWidget2();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
   testWidgets('dontRebuildIf test', (tester) async {
     var widget = skipRebuildWidget();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(find.text('0'), findsOneWidget);
     var controller = widget.controllerForTest<CounterController>();
     controller.increment();
@@ -37,17 +37,17 @@ void main() {
   });
   testWidgets('null controllers', (tester) async {
     var widget = errorWidget3();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
   testWidgets('access a model but controller is not injected', (tester) async {
     var widget = errorWidget4();
-    await inject(tester, widget);
+    await launch(tester, widget);
     expect(tester.takeException(), isInstanceOf<Exception>());
   });
   testWidgets('dontRebuildIf access controller not injected', (tester) async {
     var widget = errorWidget5();
-    await inject(tester, widget);
+    await launch(tester, widget);
     var controller = widget.controllerForTest<CounterController>();
     try {
       controller.increment();

@@ -24,7 +24,7 @@ import 'widgets/time_travel.dart';
 void main() {
   testWidgets('Initialize Controller', (tester) async {
     var widget = counter();
-    await inject(tester, widget, milliseconds: 2000);
+    await launch(tester, widget, milliseconds: 2000);
     var controller = widget.controllerForTest<CounterController>();
     expect(controller.model.value, 0);
   });
@@ -32,7 +32,7 @@ void main() {
   // method tests
   testWidgets('config(...)', (tester) async {
     var widget = counter();
-    await inject(tester, widget, milliseconds: 2000);
+    await launch(tester, widget, milliseconds: 2000);
     var controller = widget.controllerForTest<CounterController>()
       ..config(
         lazy: false,
@@ -45,7 +45,7 @@ void main() {
   });
   testWidgets('init()', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 2000);
+    await launch(tester, widget, milliseconds: 2000);
     var controller = widget.controllerForTest<AsyncTestController>();
     var init = controller.init();
     expect(init.value, 0);
@@ -70,7 +70,7 @@ void main() {
   });
   testWidgets('bootstrap()', (tester) async {
     var widget = syncApp();
-    await inject(tester, widget, milliseconds: 2000);
+    await launch(tester, widget, milliseconds: 2000);
     var nameFinder = find.text('flutter is awesome');
     var valueFinder = find.text('333');
     expect(nameFinder, findsOneWidget);
@@ -78,7 +78,7 @@ void main() {
   });
   testWidgets('bootstrapAsync()', (tester) async {
     var widget = asyncApp(lazy: false);
-    await inject(tester, widget, milliseconds: 5000);
+    await launch(tester, widget, milliseconds: 5000);
     var nameFinder = find.text('flutter is best');
     var valueFinder = find.text('22');
     expect(nameFinder, findsOneWidget);
@@ -86,20 +86,20 @@ void main() {
   });
   testWidgets('skipPersist()', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 2000);
+    await launch(tester, widget, milliseconds: 2000);
     var controller = widget.controllerForTest<AsyncTestController>();
     expect(await controller.skipPersist(), true);
   });
   testWidgets('listen(...) | sendEvent(...)', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.sendEvent('test');
     controller.sendEvent(AsyncEvent(117, 'test'));
   });
   testWidgets('addListener(...)', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 100, name: 'momentum');
     controller.model.update(value: 101, name: 'momentum101');
@@ -107,7 +107,7 @@ void main() {
   });
   testWidgets('backward()', (tester) async {
     var widget = timeTravelApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -121,7 +121,7 @@ void main() {
   });
   testWidgets('forward()', (tester) async {
     var widget = timeTravelApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -143,7 +143,7 @@ void main() {
   });
   testWidgets('dependOn<T>()', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     var dummyController = controller.dependOn<DummyController>();
     expect(dummyController is DummyController, true);
@@ -160,7 +160,7 @@ void main() {
   });
   testWidgets('getService<T>()', (tester) async {
     var widget = persistedApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<DummyController>();
     expect(controller is DummyController, true);
     var service = controller.getService<InMemoryStorage>();
@@ -173,7 +173,7 @@ void main() {
   });
   testWidgets('reset()', (tester) async {
     var widget = resetApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -191,7 +191,7 @@ void main() {
 
   testWidgets('reset(clearHistory: true)', (tester) async {
     var widget = resetApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -212,7 +212,7 @@ void main() {
   // property tests
   testWidgets('prevModel', (tester) async {
     var widget = timeTravelApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -225,7 +225,7 @@ void main() {
   });
   testWidgets('model', (tester) async {
     var widget = syncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<SyncTestController>();
     expect(controller.model == null, false);
     expect(controller.model.value, 333);
@@ -233,7 +233,7 @@ void main() {
   });
   testWidgets('nextModel', (tester) async {
     var widget = timeTravelApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     controller.model.update(value: 1, name: 'momentum1');
     controller.model.update(value: 2, name: 'momentum2');
@@ -248,23 +248,23 @@ void main() {
   });
   testWidgets('isLazy', (tester) async {
     var widget = asyncApp(lazy: true);
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var controller = widget.controllerForTest<AsyncTestController>();
     expect(controller.isLazy, true);
 
     widget = asyncApp(lazy: false);
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     controller = widget.controllerForTest<AsyncTestController>();
     expect(controller.isLazy, false);
 
     widget = asyncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     controller = widget.controllerForTest<AsyncTestController>();
     expect(controller.isLazy, true);
   });
   testWidgets('persistenceKey', (tester) async {
     var widget = asyncApp();
-    await inject(tester, widget, milliseconds: 3000);
+    await launch(tester, widget, milliseconds: 3000);
     var a = widget.controllerForTest<AsyncTestController>();
     var keyA = 'Momentum[Instance of AsyncTestController<AsyncTestModel>]';
     expect(a.persistenceKey, keyA);
@@ -277,7 +277,7 @@ void main() {
   group('Persistence State Test', () {
     testWidgets('Start App', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
       await tester.pump(Duration(milliseconds: 1000));
@@ -287,7 +287,7 @@ void main() {
 
     testWidgets('Restart App', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
@@ -295,7 +295,7 @@ void main() {
 
     testWidgets('Misconfigured Code Hit Test: persistSave', (tester) async {
       var widget = persistedApp(noPersistSave: true);
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
       await tester.pump(Duration(milliseconds: 1000));
@@ -305,7 +305,7 @@ void main() {
 
     testWidgets('Misconfigured Code Hit Test: persistGet', (tester) async {
       var widget = persistedApp(noPersistGet: true);
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
       await tester.pump(Duration(milliseconds: 1000));
@@ -315,7 +315,7 @@ void main() {
 
     testWidgets('Misconfigured Code Hit Test: toJson()', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistErrorController>();
       controller.model.update(data: DummyObject(99));
       await tester.pump(Duration(milliseconds: 1000));
@@ -324,7 +324,7 @@ void main() {
 
     testWidgets('Failed to save data test: persistSave', (tester) async {
       var widget = persistedApp(fakeFailSave: true);
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
       await tester.pump(Duration(milliseconds: 1000));
@@ -334,7 +334,7 @@ void main() {
 
     testWidgets('#3 persist model for later error test', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistError3Controller>();
       controller.model.update(data: DummyObject3(99));
       await tester.pump(Duration(milliseconds: 1000));
@@ -343,14 +343,14 @@ void main() {
 
     testWidgets('#2 (Restart) Code Hit Test: fromJson()', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistError3Controller>();
       expect(controller.model.data.value, 0);
     });
 
     testWidgets('#4 persist model for later error test', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistError4Controller>();
       controller.model.update(data: DummyObject3(99));
       await tester.pump(Duration(milliseconds: 1000));
@@ -359,7 +359,7 @@ void main() {
 
     testWidgets('#4 (Restart) Code Hit Test: fromJson()', (tester) async {
       var widget = persistedApp();
-      await inject(tester, widget, milliseconds: 4000);
+      await launch(tester, widget, milliseconds: 4000);
       var controller = widget.controllerForTest<PersistError4Controller>();
       expect(controller.model.data.value, 0);
     });

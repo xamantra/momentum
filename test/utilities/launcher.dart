@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<void> inject(
+Future<void> launch(
   WidgetTester tester,
   Widget widget, {
   int milliseconds,
