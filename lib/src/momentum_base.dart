@@ -33,6 +33,16 @@ Future<T> tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
   }
 }
 
+class _ListenedState<T> {
+  final T model;
+  final bool isTimeTravel;
+
+  _ListenedState(
+    this.model, {
+    bool isTimeTravel,
+  }) : isTimeTravel = isTimeTravel ?? false;
+}
+
 class _MomentumListener<M> {
   final MomentumState state;
 
@@ -482,6 +492,13 @@ abstract class MomentumController<M> {
     _momentumListeners.add(_momentumListener);
   }
 
+  _ListenedState<M> _lastListenedState;
+
+  /// Get the last state received by `.addListener(...)`'s
+  /// `invoke` implementation.
+  /// This is made for testing `.addListener(...)`.
+  _ListenedState<M> getLastListenedState() => _lastListenedState;
+
   /// **UPDATE NOTE:** For showing dialogs/snackbars/toast/alerts/etc or navigation
   /// , use the new [MomentumController.listen] instead for better flow.
   ///
@@ -496,8 +513,27 @@ abstract class MomentumController<M> {
   }) {
     _externalMomentumListeners.add(_MomentumListener<M>(
       state: state,
-      invoke: invoke,
+      invoke: (model, isTimeTravel) {
+        invoke(model, isTimeTravel);
+        _lastListenedState = _ListenedState<M>(
+          model,
+          isTimeTravel: isTimeTravel,
+        );
+      },
     ));
+  }
+
+  dynamic _lastEventReceived;
+
+  /// Get the last event received by the listeners using
+  /// `.listen<T>(T event)` and `.sendEvent<T>(T event)`. The last event is set
+  /// after the listener's `invoke` implementation is called.
+  /// This is made for testing `sendEvent` and `listen`.
+  T getLastEvent<T>() {
+    if (_lastEventReceived != null) {
+      return _lastEventReceived as T;
+    }
+    return null;
   }
 
   /// **NEW FEATURE**
@@ -517,7 +553,13 @@ abstract class MomentumController<M> {
     @required MomentumState state,
     @required void Function(T data) invoke,
   }) {
-    _eventHandlers.add(state._eventHandler..add<T>().listen(invoke));
+    _eventHandlers.add(
+      state._eventHandler
+        ..add<T>().listen((data) {
+          invoke(data);
+          _lastEventReceived = data;
+        }),
+    );
   }
 
   /// Send event data to all listeners of data type `T`.

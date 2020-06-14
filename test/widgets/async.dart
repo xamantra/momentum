@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
 import 'package:momentum/momentum.dart';
 
@@ -31,23 +30,19 @@ class _AsyncAppState extends MomentumState<AsyncApp> {
     asyncTestController ??= Momentum.controller<AsyncTestController>(context);
     asyncTestController.listen<String>(
       state: this,
-      invoke: (event) {
-        expect(event, 'test');
-      },
+      invoke: print,
     );
     asyncTestController.listen<AsyncEvent>(
       state: this,
       invoke: (event) {
-        expect(event.value, 117);
-        expect(event.message, 'test');
+        print([event.value, event.message]);
       },
     );
     asyncTestController.addListener(
       state: this,
       invoke: (model, isTimeTravel) {
         if (isTimeTravel) {
-          expect(model.value, 100);
-          expect(model.name, 'momentum');
+          print([model.value, model.name]);
         }
       },
     );
