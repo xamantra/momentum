@@ -81,12 +81,7 @@ abstract class MomentumModel<Controller extends MomentumController> {
 /// The class which holds the logic for your app.
 /// This is tied with [MomentumModel].
 abstract class MomentumController<M> {
-  BuildContext _momentumRootContext;
-
-  // ignore: avoid_setters_without_getters
-  set _setMomentumRootContext(BuildContext context) {
-    _momentumRootContext = context;
-  }
+  BuildContext _mRootContext;
 
   /// Dependency injection method for getting other controllers.
   /// Useful for accessing other controllers' function
@@ -98,7 +93,7 @@ abstract class MomentumController<M> {
           '"dependOn<$T>()" on itself, you\'re not '
           'allowed to do that.'));
     }
-    var result = Momentum._ofInternal<T>(_momentumRootContext);
+    var result = Momentum._ofInternal<T>(_mRootContext);
     if (result == null) {
       throw MomentumError(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()", but no controller of type '
@@ -114,7 +109,7 @@ abstract class MomentumController<M> {
   /// [Momentum] root widget.
   T getService<T extends MomentumService>() {
     try {
-      var result = Momentum.getService<T>(_momentumRootContext);
+      var result = Momentum.getService<T>(_mRootContext);
       return result;
     } on dynamic catch (e) {
       if (_momentumLogging) {
@@ -328,7 +323,7 @@ abstract class MomentumController<M> {
   }
 
   bool _persistenceConfigured([bool printLog = false]) {
-    var momentum = Momentum._getMomentumInstance(_momentumRootContext);
+    var momentum = Momentum._getMomentumInstance(_mRootContext);
     var hasSaver = momentum._persistSave != null;
     var hasGet = momentum._persistGet != null;
     if (hasSaver && !hasGet) {
@@ -371,7 +366,7 @@ abstract class MomentumController<M> {
   Future<void> _persistModel(M model) async {
     var skip = await skipPersist();
     if (skip || !_persistenceConfigured()) return;
-    var momentum = Momentum._getMomentumInstance(_momentumRootContext);
+    var momentum = Momentum._getMomentumInstance(_mRootContext);
     if (momentum._persistSave != null) {
       Map<String, dynamic> json;
       String modelRawJson;
@@ -391,7 +386,7 @@ abstract class MomentumController<M> {
         }
       } else {
         var isSaved = await momentum._persistSave(
-          _momentumRootContext,
+          _mRootContext,
           persistenceKey,
           modelRawJson,
         );
@@ -408,10 +403,10 @@ abstract class MomentumController<M> {
     var skip = await skipPersist();
     if (skip || !_persistenceConfigured()) return null;
     M result;
-    var momentum = Momentum._getMomentumInstance(_momentumRootContext);
+    var momentum = Momentum._getMomentumInstance(_mRootContext);
     if (momentum._persistGet != null) {
       var modelRawJson = await tryasync(
-        () => momentum._persistGet(_momentumRootContext, persistenceKey),
+        () => momentum._persistGet(_mRootContext, persistenceKey),
       );
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
@@ -924,7 +919,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
   ) async {
     for (var controller in controllers) {
       if (controller != null) {
-        controller._setMomentumRootContext = context;
+        controller._mRootContext = context;
         controller._configInternal(
           enableLogging: widget.enableLogging,
           maxTimeTravelSteps: widget.maxTimeTravelSteps,
