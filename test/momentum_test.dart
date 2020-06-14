@@ -36,9 +36,9 @@ void main() {
   testWidgets('resetAll', (tester) async {
     var widget = resetAllWidget();
     await launch(tester, widget);
-    var syncTest = widget.controllerForTest<SyncTestController>();
+    var syncTest = widget.getController<SyncTestController>();
     expect(syncTest.model.value, 333);
-    var counter = widget.controllerForTest<CounterController>();
+    var counter = widget.getController<CounterController>();
     counter.increment();
     await tester.pump();
     expect(find.text('1'), findsOneWidget);
@@ -60,9 +60,9 @@ void main() {
   testWidgets('resetAll - override onResetAll', (tester) async {
     var widget = resetAllOverrideWidget();
     await launch(tester, widget);
-    var syncTest = widget.controllerForTest<SyncTestController>();
+    var syncTest = widget.getController<SyncTestController>();
     expect(syncTest.model.value, 333);
-    var counter = widget.controllerForTest<CounterController>();
+    var counter = widget.getController<CounterController>();
     counter.increment();
     await tester.pump();
     expect(find.text('1'), findsOneWidget);

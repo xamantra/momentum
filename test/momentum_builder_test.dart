@@ -25,7 +25,7 @@ void main() {
     var widget = skipRebuildWidget();
     await launch(tester, widget);
     expect(find.text('0'), findsOneWidget);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     controller.increment();
     await tester.pump();
     expect(find.text('1'), findsOneWidget);
@@ -49,7 +49,7 @@ void main() {
   testWidgets('dontRebuildIf access controller not injected', (tester) async {
     var widget = errorWidget5();
     await launch(tester, widget);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     try {
       controller.increment();
     } on dynamic catch (e) {

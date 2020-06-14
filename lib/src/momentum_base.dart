@@ -1143,17 +1143,9 @@ class Momentum extends InheritedWidget {
   final PersistSaver _persistSave;
   final PersistGet _persistGet;
 
-  /// Method for testing only.
-  T controllerForTest<T extends MomentumController>() {
+  /// Method for testing controllers.
+  T getController<T extends MomentumController>() {
     return _getController<T>(true);
-  }
-
-  /// Method for testing only.
-  /// Get a controller using runtime type checker.
-  /// The generic type param <T> is for type conversion.
-  /// You don't need to do "controllerOfType(Foo) as Foo"
-  T controllerOfType<T extends MomentumController>(Type type) {
-    return _getControllerOfType<T>(type);
   }
 
   T _getController<T extends MomentumController>([bool isInternal = false]) {

@@ -10,7 +10,7 @@ void main() {
   testWidgets('Initialize Model', (tester) async {
     var widget = counter();
     await launch(tester, widget, milliseconds: 2000);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     expect(controller.model == null, false);
     expect(controller.model.value, 0);
   });
@@ -18,7 +18,7 @@ void main() {
   testWidgets('controllerName', (tester) async {
     var widget = counter();
     await launch(tester, widget, milliseconds: 2000);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     expect(controller.model.controllerName, 'CounterController');
   });
 
@@ -26,7 +26,7 @@ void main() {
     testWidgets('unimplemented', (tester) async {
       var widget = counter();
       await launch(tester, widget, milliseconds: 4000);
-      var controller = widget.controllerForTest<CounterController>();
+      var controller = widget.getController<CounterController>();
       var model = controller.model.fromJson({});
       expect(model == null, true);
     });
@@ -34,7 +34,7 @@ void main() {
     testWidgets('implemented', (tester) async {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
-      var controller = widget.controllerForTest<PersistTestController>();
+      var controller = widget.getController<PersistTestController>();
       var model = controller.model.fromJson({
         "username": "momentum",
         "email": "state@momentum",
@@ -48,7 +48,7 @@ void main() {
     testWidgets('unimplemented', (tester) async {
       var widget = counter();
       await launch(tester, widget, milliseconds: 4000);
-      var controller = widget.controllerForTest<CounterController>();
+      var controller = widget.getController<CounterController>();
       var json = controller.model.toJson();
       expect(json == null, true);
     });
@@ -56,7 +56,7 @@ void main() {
     testWidgets('implemented', (tester) async {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
-      var controller = widget.controllerForTest<PersistTestController>();
+      var controller = widget.getController<PersistTestController>();
       var map = {
         "username": "momentum",
         "email": "state@momentum",

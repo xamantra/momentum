@@ -31,9 +31,7 @@ Future<void> testObjectRuntimeType(WidgetTester tester) async {
   await launch(tester, widget);
 
   /* ATypesTestController */
-  var aTypesTestController = widget.controllerOfType<ATypesTestCtrl>(
-    ATypesTestCtrl,
-  );
+  var aTypesTestController = widget.getController<ATypesTestCtrl>();
   expect(aTypesTestController, isInstanceOf<ATypesTestCtrl>());
   aTypesTestController.increment();
   await tester.pumpAndSettle();
@@ -51,9 +49,7 @@ Future<void> testObjectRuntimeType(WidgetTester tester) async {
   /* ATypesTestController */
 
   /* BTypesTestController */
-  var bTypesTestController = widget.controllerOfType<BTypesTestCtrl>(
-    BTypesTestCtrl,
-  );
+  var bTypesTestController = widget.getController<BTypesTestCtrl>();
   expect(bTypesTestController, isInstanceOf<BTypesTestCtrl>());
   bTypesTestController.increment();
   await tester.pumpAndSettle();
@@ -74,9 +70,7 @@ Future<void> testObjectRuntimeType(WidgetTester tester) async {
   /* BTypesTestController */
 
   /* TypesTestMixinController */
-  var typesTestMixinCtrl = widget.controllerOfType<TypesTestMixinCtrl>(
-    TypesTestMixinCtrl,
-  );
+  var typesTestMixinCtrl = widget.getController<TypesTestMixinCtrl>();
   // should be null because in typeTestWidget(),
   // there is no controller instance of type TypesTestMixinController(),
   // well you can't instantiate a mixin.
@@ -84,9 +78,7 @@ Future<void> testObjectRuntimeType(WidgetTester tester) async {
   /* TypesTestMixinController */
 
   /* TypesTestController */
-  var typesTestController = widget.controllerOfType<TypesTestCtrl>(
-    TypesTestCtrl,
-  );
+  var typesTestController = widget.getController<TypesTestCtrl>();
   // should be null because in typeTestWidget(),
   // there is no controller instance of type TypesTestController(),
   // well you can't instantiate an abstract class.
@@ -101,7 +93,7 @@ Future<void> testGenericTypeParam(WidgetTester tester) async {
   await launch(tester, widget);
 
   /* ATypesTestController */
-  var aTypesTestController = widget.controllerForTest<ATypesTestCtrl>();
+  var aTypesTestController = widget.getController<ATypesTestCtrl>();
   expect(aTypesTestController, isInstanceOf<ATypesTestCtrl>());
   aTypesTestController.increment();
   await tester.pumpAndSettle();
@@ -119,7 +111,7 @@ Future<void> testGenericTypeParam(WidgetTester tester) async {
   /* ATypesTestController */
 
   /* BTypesTestController */
-  var bTypesTestBController = widget.controllerForTest<BTypesTestCtrl>();
+  var bTypesTestBController = widget.getController<BTypesTestCtrl>();
   expect(bTypesTestBController, isInstanceOf<BTypesTestCtrl>());
   bTypesTestBController.increment();
   await tester.pumpAndSettle();
@@ -140,7 +132,7 @@ Future<void> testGenericTypeParam(WidgetTester tester) async {
   /* BTypesTestController */
 
   /* TypesTestMixinController */
-  var typesTestMixinCtrl = widget.controllerForTest<TypesTestMixinCtrl>();
+  var typesTestMixinCtrl = widget.getController<TypesTestMixinCtrl>();
   // should be null because in typeTestWidget(),
   // there is no controller instance of type TypesTestMixinController(),
   // well you can't instantiate a mixin.
@@ -148,7 +140,7 @@ Future<void> testGenericTypeParam(WidgetTester tester) async {
   /* TypesTestMixinController */
 
   /* TypesTestController */
-  var typesTestController = widget.controllerForTest<TypesTestCtrl>();
+  var typesTestController = widget.getController<TypesTestCtrl>();
   // should be null because in typeTestWidget(),
   // there is no controller instance of type TypesTestController(),
   // well you can't instantiate an abstract class.
@@ -163,7 +155,7 @@ Future<void> testCTypeTestController(WidgetTester tester) async {
   await launch(tester, widget);
 
   /* BTypesTestController */
-  var bTypesTestBController = widget.controllerForTest<BTypesTestCtrl>();
+  var bTypesTestBController = widget.getController<BTypesTestCtrl>();
   expect(bTypesTestBController, isInstanceOf<BTypesTestCtrl>());
   bTypesTestBController.decrement();
   await tester.pumpAndSettle();
@@ -188,7 +180,7 @@ Future<void> testCTypeTestController(WidgetTester tester) async {
   /* BTypesTestController */
 
   /* CTypesTestController */
-  var cTypesTestController = widget.controllerForTest<CTypesTestCtrl>();
+  var cTypesTestController = widget.getController<CTypesTestCtrl>();
   expect(cTypesTestController, isInstanceOf<CTypesTestCtrl>());
   expect(find.text('$CTypesTestCtrl.value: 0'), findsOneWidget);
   cTypesTestController.increment();
@@ -216,9 +208,7 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
   await launch(tester, widget);
 
   /* ATypesTestController */
-  var aTypesTestController = widget.controllerOfType<ATypesTestCtrl>(
-    ATypesTestCtrl,
-  );
+  var aTypesTestController = widget.getController<ATypesTestCtrl>();
   expect(aTypesTestController, isInstanceOf<ATypesTestCtrl>());
   aTypesTestController.increment();
   await tester.pumpAndSettle();
@@ -236,9 +226,7 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
   /* ATypesTestController */
 
   /* BTypesTestController */
-  var bTypesTestController = widget.controllerOfType<BTypesTestCtrl>(
-    BTypesTestCtrl,
-  );
+  var bTypesTestController = widget.getController<BTypesTestCtrl>();
   expect(bTypesTestController, isInstanceOf<BTypesTestCtrl>());
   bTypesTestController.increment();
   await tester.pumpAndSettle();
@@ -260,7 +248,7 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
   /* BTypesTestController */
 
   /* CTypesTestController */
-  var cTypesTestController = widget.controllerForTest<CTypesTestCtrl>();
+  var cTypesTestController = widget.getController<CTypesTestCtrl>();
   expect(cTypesTestController, isInstanceOf<CTypesTestCtrl>());
   expect(find.text('$CTypesTestCtrl.value: 0'), findsOneWidget);
   cTypesTestController.increment();
@@ -286,7 +274,7 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
   /* CTypesTestController */
 
   /* ImplementsABCTypesController */
-  var abcController = widget.controllerForTest<ImplementsABCTypesCtrl>();
+  var abcController = widget.getController<ImplementsABCTypesCtrl>();
   expect(abcController, isInstanceOf<ImplementsABCTypesCtrl>());
   expect(find.text('$ImplementsABCTypesCtrl.value: 10'), findsOneWidget);
   expect(find.text('$ImplementsABCTypesCtrl.square: 4'), findsOneWidget);

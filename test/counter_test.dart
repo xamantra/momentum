@@ -29,7 +29,7 @@ void main() {
   testWidgets('Trigger Increment', (tester) async {
     var widget = counter();
     await launch(tester, widget);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     controller.increment();
     await tester.pump();
     expect(find.text('1'), findsOneWidget);
@@ -42,7 +42,7 @@ void main() {
   testWidgets('Trigger Decrement', (tester) async {
     var widget = counter();
     await launch(tester, widget);
-    var controller = widget.controllerForTest<CounterController>();
+    var controller = widget.getController<CounterController>();
     controller.decrement();
     await tester.pump();
     expect(find.text('-1'), findsOneWidget);
