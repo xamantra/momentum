@@ -803,10 +803,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'Momentum root widget.\n\t2. Check the controller attached '
           'to this model if it is injected into this ${widget.runtimeType}');
     }
-    var model = _models.firstWhere(
-      (c) => c.runtimeType == type,
-      orElse: () => null,
-    );
+    var model = _models.firstWhere((c) => c.runtimeType == type);
     return model as T;
   }
 
