@@ -2,8 +2,8 @@ import 'package:momentum/momentum.dart';
 
 import 'index.dart';
 
-class TypesTestModel extends MomentumModel<TypesTestController> {
-  TypesTestModel(
+class ATypesTestModel extends MomentumModel<TypesTestController> {
+  ATypesTestModel(
     TypesTestController controller, {
     this.value,
     this.square,
@@ -17,7 +17,7 @@ class TypesTestModel extends MomentumModel<TypesTestController> {
     int value,
     int square,
   }) {
-    TypesTestModel(
+    ATypesTestModel(
       controller,
       value: value ?? this.value,
       square: square ?? this.square,

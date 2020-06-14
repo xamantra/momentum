@@ -4,7 +4,7 @@ import 'package:momentum/momentum.dart';
 
 import 'index.dart';
 
-abstract class TypesTestController extends MomentumController<TypesTestModel> {
+abstract class TypesTestController extends MomentumController<ATypesTestModel> {
   void increment() {
     model.update(value: model.value + 1);
   }
@@ -17,8 +17,8 @@ abstract class TypesTestController extends MomentumController<TypesTestModel> {
 // ignore: lines_longer_than_80_chars
 class ATypesTestController extends TypesTestController with TypesTestMixinController {
   @override
-  TypesTestModel init() {
-    return TypesTestModel(
+  ATypesTestModel init() {
+    return ATypesTestModel(
       this,
       value: 0,
     );
@@ -32,8 +32,8 @@ class ATypesTestController extends TypesTestController with TypesTestMixinContro
 // ignore: lines_longer_than_80_chars
 class BTypesTestController extends TypesTestController with TypesTestMixinController {
   @override
-  TypesTestModel init() {
-    return TypesTestModel(
+  ATypesTestModel init() {
+    return ATypesTestModel(
       this,
       value: 0,
     );
@@ -46,8 +46,8 @@ class BTypesTestController extends TypesTestController with TypesTestMixinContro
 
 class CTypesTestController extends BTypesTestController {
   @override
-  TypesTestModel init() {
-    return TypesTestModel(
+  ATypesTestModel init() {
+    return ATypesTestModel(
       this,
       value: 0,
       square: 0,
@@ -73,8 +73,8 @@ mixin TypesTestMixinController on TypesTestController {
 // ignore: lines_longer_than_80_chars
 class ImplementsABCTypesController extends TypesTestController with TypesTestMixinController implements ATypesTestController, BTypesTestController, CTypesTestController {
   @override
-  TypesTestModel init() {
-    return TypesTestModel(
+  ATypesTestModel init() {
+    return ATypesTestModel(
       this,
       value: 10,
       square: 4,
