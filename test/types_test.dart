@@ -10,44 +10,44 @@ void main() {
     await launch(tester, widget);
 
     /* TypeTestAController */
-    var typeTestAController = widget.controllerOfType<TypeTestAController>(
-      TypeTestAController,
+    var aTypeTestController = widget.controllerOfType<ATypeTestController>(
+      ATypeTestController,
     );
-    expect(typeTestAController, isInstanceOf<TypeTestAController>());
-    typeTestAController.increment();
+    expect(aTypeTestController, isInstanceOf<ATypeTestController>());
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 1'), findsOneWidget);
-    typeTestAController.increment();
+    expect(find.text('$ATypeTestController: 1'), findsOneWidget);
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 2'), findsOneWidget);
-    typeTestAController.increment();
+    expect(find.text('$ATypeTestController: 2'), findsOneWidget);
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 3'), findsOneWidget);
-    typeTestAController.multiplyBy(5);
+    expect(find.text('$ATypeTestController: 3'), findsOneWidget);
+    aTypeTestController.multiplyBy(5);
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 15'), findsOneWidget);
-    expect(typeTestAController.isOdd(), true); // the mixin method
+    expect(find.text('$ATypeTestController: 15'), findsOneWidget);
+    expect(aTypeTestController.isOdd(), true); // the mixin method
     /* TypeTestAController */
 
     /* TypeTestBController */
-    var typeTestBController = widget.controllerOfType<TypeTestBController>(
-      TypeTestBController,
+    var bTypeTestController = widget.controllerOfType<BTypeTestController>(
+      BTypeTestController,
     );
-    expect(typeTestBController, isInstanceOf<TypeTestBController>());
-    typeTestBController.increment();
+    expect(bTypeTestController, isInstanceOf<BTypeTestController>());
+    bTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
-    typeTestBController.increment();
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
-    typeTestBController.divideBy(2);
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    bTypeTestController.divideBy(2);
     await tester.pumpAndSettle();
-    expect(typeTestBController.isOdd(), true); // the mixin method
-    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
-    typeTestBController.increment();
+    expect(bTypeTestController.isOdd(), true); // the mixin method
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
-    expect(typeTestBController.isOdd(), false); // the mixin method
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    expect(bTypeTestController.isOdd(), false); // the mixin method
     /* TypeTestBController */
 
     /* TypeTestMixinController */
@@ -79,40 +79,40 @@ void main() {
     await launch(tester, widget);
 
     /* TypeTestAController */
-    var typeTestAController = widget.controllerForTest<TypeTestAController>();
-    expect(typeTestAController, isInstanceOf<TypeTestAController>());
-    typeTestAController.increment();
+    var aTypeTestController = widget.controllerForTest<ATypeTestController>();
+    expect(aTypeTestController, isInstanceOf<ATypeTestController>());
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 1'), findsOneWidget);
-    typeTestAController.increment();
+    expect(find.text('$ATypeTestController: 1'), findsOneWidget);
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 2'), findsOneWidget);
-    typeTestAController.increment();
+    expect(find.text('$ATypeTestController: 2'), findsOneWidget);
+    aTypeTestController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 3'), findsOneWidget);
-    typeTestAController.multiplyBy(5);
+    expect(find.text('$ATypeTestController: 3'), findsOneWidget);
+    aTypeTestController.multiplyBy(5);
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestAController: 15'), findsOneWidget);
-    expect(typeTestAController.isOdd(), true); // the mixin method
+    expect(find.text('$ATypeTestController: 15'), findsOneWidget);
+    expect(aTypeTestController.isOdd(), true); // the mixin method
     /* TypeTestAController */
 
     /* TypeTestBController */
-    var typeTestBController = widget.controllerForTest<TypeTestBController>();
-    expect(typeTestBController, isInstanceOf<TypeTestBController>());
-    typeTestBController.increment();
+    var bTypeTestBController = widget.controllerForTest<BTypeTestController>();
+    expect(bTypeTestBController, isInstanceOf<BTypeTestController>());
+    bTypeTestBController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
-    typeTestBController.increment();
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestBController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
-    typeTestBController.divideBy(2);
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    bTypeTestBController.divideBy(2);
     await tester.pumpAndSettle();
-    expect(typeTestBController.isOdd(), true); // the mixin method
-    expect(find.text('$TypeTestBController: 1'), findsOneWidget);
-    typeTestBController.increment();
+    expect(bTypeTestBController.isOdd(), true); // the mixin method
+    expect(find.text('$BTypeTestController: 1'), findsOneWidget);
+    bTypeTestBController.increment();
     await tester.pumpAndSettle();
-    expect(find.text('$TypeTestBController: 2'), findsOneWidget);
-    expect(typeTestBController.isOdd(), false); // the mixin method
+    expect(find.text('$BTypeTestController: 2'), findsOneWidget);
+    expect(bTypeTestBController.isOdd(), false); // the mixin method
     /* TypeTestBController */
 
     /* TypeTestMixinController */

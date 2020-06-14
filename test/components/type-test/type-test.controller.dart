@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:momentum/momentum.dart';
 
 import 'index.dart';
@@ -13,7 +15,7 @@ abstract class TypeTestController extends MomentumController<TypeTestModel> {
 }
 
 // ignore: lines_longer_than_80_chars
-class TypeTestAController extends TypeTestController with TypeTestMixinController {
+class ATypeTestController extends TypeTestController with TypeTestMixinController {
   @override
   TypeTestModel init() {
     return TypeTestModel(this, value: 0);
@@ -25,14 +27,32 @@ class TypeTestAController extends TypeTestController with TypeTestMixinControlle
 }
 
 // ignore: lines_longer_than_80_chars
-class TypeTestBController extends TypeTestController with TypeTestMixinController {
+class BTypeTestController extends TypeTestController with TypeTestMixinController {
   @override
   TypeTestModel init() {
-    return TypeTestModel(this, value: 0);
+    return TypeTestModel(
+      this,
+      value: 0,
+    );
   }
 
   void divideBy(int divisor) {
     model.update(value: model.value ~/ divisor);
+  }
+}
+
+class CTypeTestController extends BTypeTestController {
+  @override
+  TypeTestModel init() {
+    return TypeTestModel(
+      this,
+      value: 0,
+      squareRoot: 0,
+    );
+  }
+
+  void square() {
+    model.update(squareRoot: sqrt(model.value));
   }
 }
 
@@ -44,7 +64,7 @@ mixin TypeTestMixinController on TypeTestController {
 }
 
 // ignore: lines_longer_than_80_chars
-class ImplementsTypeController extends TypeTestController implements TypeTestAController, TypeTestBController {
+class ImplementsABTypeController extends TypeTestController implements ATypeTestController, BTypeTestController {
   @override
   TypeTestModel init() {
     return TypeTestModel(
