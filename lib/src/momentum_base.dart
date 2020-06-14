@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:meta/meta.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
@@ -33,7 +32,6 @@ Future<T> tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
   }
 }
 
-@sealed
 class _MomentumListener<M> {
   final MomentumState state;
 
@@ -672,7 +670,6 @@ abstract class MomentumState<T extends StatefulWidget> extends State<T> {
 }
 
 /// The widget class for displaying your model properties.
-@sealed
 class MomentumBuilder extends StatefulWidget {
   /// Optional used for detailed error logs.
   /// Simply specify with `owner: this` for
@@ -711,7 +708,6 @@ class MomentumBuilder extends StatefulWidget {
   _MomentumBuilderState createState() => _MomentumBuilderState();
 }
 
-@sealed
 class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   List<MomentumController> ctrls;
 
@@ -867,7 +863,6 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   _() {}
 }
 
-@sealed
 class _MomentumRoot extends StatefulWidget {
   final Widget child;
   final Widget appLoader;
@@ -893,7 +888,6 @@ class _MomentumRoot extends StatefulWidget {
   _MomentumRootState createState() => _MomentumRootState();
 }
 
-@sealed
 class _MomentumRootState extends State<_MomentumRoot> {
   bool _modelsInitialized = false;
   bool _rootStateInitialized = false;
@@ -1024,7 +1018,6 @@ class _MomentumRootState extends State<_MomentumRoot> {
 }
 
 /// The root widget for configuring [Momentum].
-@sealed
 class Momentum extends InheritedWidget {
   const Momentum._internal({
     Key key,
