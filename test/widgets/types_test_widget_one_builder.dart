@@ -54,10 +54,10 @@ class _TypesTestOneBuilderWidgets extends StatelessWidget {
         ImplementsABCTypesController,
       ],
       builder: (context, snapshot) {
-        var aTypeTest = snapshot<TypeTestModel>(ATypesTestController);
-        var bTypeTest = snapshot<TypeTestModel>(BTypesTestController);
-        var cTypeTest = snapshot<TypeTestModel>(CTypesTestController);
-        var abcTypeTest = snapshot<TypeTestModel>(ImplementsABCTypesController);
+        var aTypeTest = snapshot<TypesTestModel>(ATypesTestController);
+        var bTypeTest = snapshot<TypesTestModel>(BTypesTestController);
+        var cTypeTest = snapshot<TypesTestModel>(CTypesTestController);
+        var abcTypeTest = snapshot<TypesTestModel>(ImplementsABCTypesController);
         return _TypesTestBuilderContent(
           aTypeTest: aTypeTest,
           bTypeTest: bTypeTest,
@@ -78,10 +78,10 @@ class _TypesTestBuilderContent extends StatelessWidget {
     @required this.abcTypeTest,
   }) : super(key: key);
 
-  final TypeTestModel aTypeTest;
-  final TypeTestModel bTypeTest;
-  final TypeTestModel cTypeTest;
-  final TypeTestModel abcTypeTest;
+  final TypesTestModel aTypeTest;
+  final TypesTestModel bTypeTest;
+  final TypesTestModel cTypeTest;
+  final TypesTestModel abcTypeTest;
 
   @override
   Widget build(BuildContext context) {

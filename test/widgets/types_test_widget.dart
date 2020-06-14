@@ -51,21 +51,21 @@ class _TypesTestWidgets extends StatelessWidget {
         MomentumBuilder(
           controllers: [ATypesTestController],
           builder: (context, snapshot) {
-            var typeTest = snapshot<TypeTestModel>();
+            var typeTest = snapshot<TypesTestModel>();
             return Text('$ATypesTestController: ${typeTest.value}');
           },
         ),
         MomentumBuilder(
           controllers: [BTypesTestController],
           builder: (context, snapshot) {
-            var typeTest = snapshot<TypeTestModel>();
+            var typeTest = snapshot<TypesTestModel>();
             return Text('$BTypesTestController: ${typeTest.value}');
           },
         ),
         MomentumBuilder(
           controllers: [CTypesTestController],
           builder: (context, snapshot) {
-            var typeTest = snapshot<TypeTestModel>();
+            var typeTest = snapshot<TypesTestModel>();
             return Column(
               children: <Widget>[
                 Text('$CTypesTestController.value: ${typeTest.value}'),
@@ -79,7 +79,7 @@ class _TypesTestWidgets extends StatelessWidget {
         MomentumBuilder(
           controllers: [ImplementsABCTypesController],
           builder: (context, snapshot) {
-            var typeTest = snapshot<TypeTestModel>();
+            var typeTest = snapshot<TypesTestModel>();
             return Column(
               children: <Widget>[
                 Text(
