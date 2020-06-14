@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'components/types-test/index.dart';
 import 'utilities/launcher.dart';
 import 'widgets/types_test_widget_one_builder.dart';
+import 'widgets/types_test_widget_one_builder_error.dart';
 
 void main() {
   testWidgets(
@@ -23,6 +24,11 @@ void main() {
   testWidgets(
     'all: ImplementsABCTypesController',
     testImplementsABCTypeController,
+  );
+
+  testWidgets(
+    'testErrorUnspecifiedController',
+    testErrorUnspecifiedController,
   );
 }
 
@@ -317,4 +323,11 @@ Future<void> testImplementsABCTypeController(WidgetTester tester) async {
   await tester.pumpAndSettle();
   expect(find.text('$ImplementsABCTypesController.square: 5'), findsOneWidget);
   /* ImplementsABCTypesController */
+}
+
+Future<void> testErrorUnspecifiedController(WidgetTester tester) async {
+  var widget = typesTestWidgetError();
+  await launch(tester, widget);
+
+  expect(tester.takeException(), isInstanceOf<Exception>());
 }
