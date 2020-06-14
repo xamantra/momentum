@@ -184,6 +184,9 @@ void main() {
       await tester.tap(find.byKey(gotoRouterPopKey));
       await tester.pumpAndSettle();
       expect(router.getActive() is RouterPageA, true);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(router.isRoutesEmpty, true);
     });
   });
 }

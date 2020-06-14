@@ -52,6 +52,7 @@ class RouterPageA extends StatelessWidget {
   Widget build(BuildContext context) {
     return RouterPage(
       child: Scaffold(
+        appBar: AppBar(leading: BackButton()),
         body: Center(
           child: Column(
             children: <Widget>[

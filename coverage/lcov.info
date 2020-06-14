@@ -521,11 +521,11 @@ DA:216,1
 DA:218,1
 DA:220,1
 DA:221,1
-DA:222,0
-DA:223,0
+DA:222,1
+DA:223,1
 DA:226,1
 LF:76
-LH:74
+LH:76
 end_of_record
 SF:lib\src\momentum_event.dart
 DA:17,2
