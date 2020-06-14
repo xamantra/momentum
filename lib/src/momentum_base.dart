@@ -8,8 +8,6 @@ import 'momentum_router.dart';
 
 import 'momentum_types.dart';
 
-Type _getType<T>() => T;
-
 ///
 T trycatch<T>(T Function() body, [T defaultValue]) {
   try {
@@ -92,8 +90,7 @@ abstract class MomentumController<M> {
   /// Useful for accessing other controllers' function
   /// and model properties without dragging the widget context around.
   T dependOn<T extends MomentumController>() {
-    var type = _getType<T>();
-    if (runtimeType == type) {
+    if (this is T) {
       throw Exception(_formatMomentumLog('[$this]: called '
           '"dependOn<$T>()" on itself, you\'re not '
           'allowed to do that.'));
@@ -789,9 +786,8 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'parameter "controllers" for ${widget.runtimeType} widget '
           'must not be null.');
     }
-    var type = _getType<T>();
     var controller = ctrls?.firstWhere(
-      (x) => x?.model?.runtimeType == type,
+      (x) => x?.model is T,
       orElse: () => null,
     );
     if (controller == null) {
@@ -803,19 +799,12 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
           'Momentum root widget.\n\t2. Check the controller attached '
           'to this model if it is injected into this ${widget.runtimeType}');
     }
-    var model = _models.firstWhere(
-      (c) => c.runtimeType == type,
-      orElse: () => null,
-    );
+    var model = _models.firstWhere((c) => c is T, orElse: () => null);
     return model as T;
   }
 
   T _getController<T extends MomentumController>() {
-    var type = _getType<T>();
-    var controller = ctrls?.firstWhere(
-      (x) => x.runtimeType == type,
-      orElse: () => null,
-    );
+    var controller = ctrls?.firstWhere((x) => x is T, orElse: () => null);
     if (controller == null) {
       throw Exception('$_logHeader A controller of '
           'type "$T" is either not injected in this ${widget.runtimeType} '
@@ -1100,7 +1089,7 @@ class Momentum extends InheritedWidget {
 
   /// Method for testing only.
   T controllerForTest<T extends MomentumController>() {
-    return _getController<T>(true);
+    return _getController<T>();
   }
 
   /// Method for testing only.
@@ -1112,11 +1101,7 @@ class Momentum extends InheritedWidget {
   }
 
   T _getController<T extends MomentumController>([bool isInternal = false]) {
-    var type = _getType<T>();
-    var controller = _controllers.firstWhere(
-      (c) => c.runtimeType == type,
-      orElse: () => null,
-    );
+    var controller = _controllers.firstWhere((c) => c is T, orElse: () => null);
     if (controller == null && !isInternal) {
       throw Exception('The controller of type "$T" doesn\'t exists '
           'or was not initialized from the "controllers" parameter '
@@ -1131,11 +1116,7 @@ class Momentum extends InheritedWidget {
   }
 
   T _getService<T extends MomentumService>() {
-    var type = _getType<T>();
-    var service = _services.firstWhere(
-      (c) => c.runtimeType == type,
-      orElse: () => null,
-    );
+    var service = _services.firstWhere((c) => c is T, orElse: () => null);
     if (service == null) {
       throw Exception('The service class of type "$T" doesn\'t exists or '
           'was not initialized from the "services" parameter '
