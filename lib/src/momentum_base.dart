@@ -325,11 +325,17 @@ abstract class MomentumController<M> {
   /// You can use this method to
   /// enable/disable persistence
   /// for this controller.
-  /// Returns `false` by default.
+  /// Returns `null` by default.
   /// Because this is asynchronous,
   /// you can do any asynchronous code.
-  Future<bool> skipPersist() async {
-    return false;
+  Future<bool> skipPersist() async => null;
+
+  Future<bool> _shouldPersistState() async {
+    var skip = await skipPersist();
+    if (skip == null) {
+      return !_disablePersistentState;
+    }
+    return !skip;
   }
 
   bool _persistenceConfigured([bool printLog = false]) {
@@ -374,7 +380,7 @@ abstract class MomentumController<M> {
   }
 
   Future<void> _persistModel(M model) async {
-    var skip = await skipPersist();
+    var skip = !(await _shouldPersistState());
     if (skip || !_persistenceConfigured()) return;
     var momentum = Momentum._getMomentumInstance(_mRootContext);
     if (momentum._persistSave != null) {
@@ -410,7 +416,7 @@ abstract class MomentumController<M> {
   }
 
   Future<M> _getPersistedModel() async {
-    var skip = await skipPersist();
+    var skip = !(await _shouldPersistState());
     if (skip || !_persistenceConfigured()) return null;
     M result;
     var momentum = Momentum._getMomentumInstance(_mRootContext);
@@ -606,6 +612,12 @@ abstract class MomentumController<M> {
   }
 
   bool _momentumLogging;
+  bool _disablePersistentState;
+
+  /// Indicates whether persistence is enabled or disabled for this controller.
+  ///
+  /// **NOTE:** This is overridden by `skipPersist()`.
+  bool get persistentStateDisabled => _disablePersistentState;
 
   /// Indicates whether debug logging for this controller is enable or not.
   bool get loggingEnabled => _momentumLogging;
@@ -634,10 +646,12 @@ abstract class MomentumController<M> {
   }
 
   void _configInternal({
+    bool disabledPersistentState,
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
   }) {
+    _disablePersistentState = disabledPersistentState ?? false;
     _momentumLogging ??= enableLogging ?? false;
     _maxTimeTravelSteps ??= (maxTimeTravelSteps ?? 1).clamp(1, 250);
     _lazy ??= lazy ?? true;
@@ -909,6 +923,7 @@ class _MomentumRoot extends StatefulWidget {
   final Widget appLoader;
   final List<MomentumController> controllers;
   final List<MomentumService> services;
+  final bool disabledPersistentState;
   final bool enableLogging;
   final int maxTimeTravelSteps;
   final bool lazy;
@@ -920,6 +935,7 @@ class _MomentumRoot extends StatefulWidget {
     this.appLoader,
     @required this.controllers,
     @required this.services,
+    this.disabledPersistentState,
     this.enableLogging,
     this.maxTimeTravelSteps,
     this.lazy,
@@ -965,6 +981,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       if (controller != null) {
         controller._mRootContext = context;
         controller._configInternal(
+          disabledPersistentState: widget.disabledPersistentState,
           enableLogging: widget.enableLogging,
           maxTimeTravelSteps: widget.maxTimeTravelSteps,
           lazy: widget.lazy,
@@ -1081,6 +1098,7 @@ class Momentum extends InheritedWidget {
     @required List<MomentumController> controllers,
     List<MomentumService> services,
     ResetAll onResetAll,
+    bool disabledPersistentState,
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
@@ -1094,6 +1112,7 @@ class Momentum extends InheritedWidget {
         appLoader: appLoader,
         controllers: controllers ?? [],
         services: services ?? [],
+        disabledPersistentState: disabledPersistentState,
         enableLogging: enableLogging,
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,

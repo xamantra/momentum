@@ -398,4 +398,34 @@ void main() {
       expect(controller.model.data.value, 0);
     });
   });
+
+  group('Persistence State Test: disabledPersistentState', () {
+    testWidgets('Start App', (tester) async {
+      var widget = persistedApp(
+        disabledPersistentState: true,
+        sessionId: 'disabledPersistentState',
+      );
+      await launch(tester, widget, milliseconds: 4000);
+      var controller = widget.getController<PersistTestController>();
+      expect(controller.persistentStateDisabled, true);
+      expect(controller.model.username, '');
+      expect(controller.model.email, '');
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pumpAndSettle();
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('Restart App', (tester) async {
+      var widget = persistedApp(
+        disabledPersistentState: true,
+        sessionId: 'disabledPersistentState',
+      );
+      await launch(tester, widget, milliseconds: 4000);
+      var controller = widget.getController<PersistTestController>();
+      expect(controller.persistentStateDisabled, true);
+      expect(controller.model.username, '');
+      expect(controller.model.email, '');
+    });
+  });
 }

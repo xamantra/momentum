@@ -1,3 +1,9 @@
+## 1.2.1
+- [Issue #7](https://github.com/xamantra/momentum/issues/7) - Added new capability to globally disable persistent state for all models. Docs [here](https://xamdev.gq/momentum/#/momentum?id=disabledpersistentstate).
+- `skipPersist()`, by default now returns null. Not a breaking change because this method is only meant to be used by momentum internally.
+
+<hr>
+
 ## 1.2.0
 - critical: fix `snapshot<T>()` where it throws a compile-time type error in older versions of flutter.
 - added and refactored test methods.

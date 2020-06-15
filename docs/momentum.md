@@ -92,6 +92,21 @@ Display custom loader widget that is used for awaiting all asynchronous initiali
 
 <hr>
 
+## disabledPersistentState
+- Category: `Constructor Parameter`
+- Type: `bool`
+- Default: `false`
+- Required: `NO`
+
+Globally disable persistent state for all models. This is for models only not router. This will be also overridden by [skipPersist()](/momentum-controller?id=skippersist).
+  ```dart
+    Momentum(
+      // child: ...,
+      // controllers: [...],
+      disabledPersistentState: true,
+    ),
+  ```
+
 ## lazy
 - Category: `Constructor Parameter`
 - Type: `bool`
