@@ -1,3 +1,10 @@
+## 1.2.0
+- critical: fix `snapshot<T>()` where it throws a compile-time type error in older versions of flutter.
+- added and refactored test methods.
+- added new internal tests.
+
+<hr>
+
 ## 1.1.9 - Critical
 - Fixed [#5](https://github.com/xamantra/momentum/issues/5)
 - Improve types system for dependency injection
