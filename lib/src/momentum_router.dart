@@ -18,6 +18,8 @@ class Router extends MomentumService {
   PersistSaver _persistSaver;
   PersistGet _persistGet;
 
+  bool get _canPersist => _persistSaver != null && _persistGet != null;
+
   /// You don't have to call this method.
   /// This is automatically called by the
   /// library.
@@ -51,11 +53,13 @@ class Router extends MomentumService {
         (e) => e.runtimeType == route,
       );
       _history.add(indexOfWidgetOfType);
-      _persistSaver(
-        _rootContext,
-        'MOMENTUM_ROUTER_HISTORY',
-        jsonEncode(_history),
-      );
+      if (_canPersist) {
+        _persistSaver(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      }
       Route r;
       if (transition != null) {
         r = transition(context, findWidgetOfType);
@@ -74,11 +78,13 @@ class Router extends MomentumService {
     Route Function(BuildContext, Widget) transition,
   }) async {
     trycatch(() => _history.removeLast());
-    _persistSaver(
-      _rootContext,
-      'MOMENTUM_ROUTER_HISTORY',
-      jsonEncode(_history),
-    );
+    if (_canPersist) {
+      _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
+    }
     if (_history.isEmpty) {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     } else {
@@ -122,22 +128,26 @@ class Router extends MomentumService {
   Future<void> clearHistory() async {
     _history.clear();
     _history = [];
-    await _persistSaver(
-      _rootContext,
-      'MOMENTUM_ROUTER_HISTORY',
-      jsonEncode(_history),
-    );
+    if (_canPersist) {
+      await _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
+    }
   }
 
   /// Clear navigation history and set an initial page.
   Future<void> reset<T extends Widget>() async {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
-    await _persistSaver(
-      _rootContext,
-      'MOMENTUM_ROUTER_HISTORY',
-      jsonEncode(_history),
-    );
+    if (_canPersist) {
+      await _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
+    }
   }
 
   /// The function to navigate to a specific

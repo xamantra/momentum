@@ -1,3 +1,7 @@
+## 1.2.2
+- Fixed `Router` error that happens when `persistSave` is not specified.
+- Fixed `MomentumError` doesn't override `toString()` so detailed error logs are not printed on the console.
+
 ## 1.2.1
 - [Issue #7](https://github.com/xamantra/momentum/issues/7) - Added new capability to globally disable persistent state for all models. Docs [here](https://xamdev.gq/momentum/#/momentum?id=disabledpersistentstate).
 - `skipPersist()`, by default now returns null. Not a breaking change because this method is only meant to be used by momentum internally.
