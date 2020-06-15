@@ -9,7 +9,7 @@ Momentum dropdownApp() {
   return Momentum(
     child: _DropdownApp(),
     controllers: [
-      DropdownController()..config(maxTimeTravelSteps: 2),
+      DropdownController()..config(maxTimeTravelSteps: 5),
     ],
   );
 }
