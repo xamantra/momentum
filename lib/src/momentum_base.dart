@@ -729,7 +729,11 @@ class MomentumBuilder extends StatefulWidget {
   /// The parameter for building your model snapshots.
   /// Returns a widget and must not be null.
   @protected
-  final MomentumBuilderFunction builder;
+  final Widget Function(
+      BuildContext,
+      T Function<T>([
+    Type,
+  ])) builder;
 
   /// Create a widget to display your model properties.
   /// Parameter `controllers` and `builder` is required.
@@ -818,7 +822,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
     return;
   }
 
-  T _modelSnapshotOfType<T extends MomentumModel>([Type c]) {
+  T _modelSnapshotOfType<T>([Type c]) {
     if (widget.controllers == null) {
       throw MomentumError('$_logHeader The '
           'parameter "controllers" for ${widget.runtimeType} widget '
