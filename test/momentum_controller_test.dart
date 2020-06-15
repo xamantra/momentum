@@ -314,7 +314,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
     });
@@ -332,7 +332,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
     });
@@ -342,7 +342,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
     });
@@ -352,7 +352,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistErrorController>();
       controller.model.update(data: DummyObject(99));
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.data.value, 99);
     });
 
@@ -361,7 +361,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistTestController>();
       controller.model.update(username: 'momentum', email: 'state@momentum');
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
     });
@@ -371,7 +371,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistError3Controller>();
       controller.model.update(data: DummyObject3(99));
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.data.value, 99);
     });
 
@@ -387,7 +387,7 @@ void main() {
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistError4Controller>();
       controller.model.update(data: DummyObject3(99));
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.pumpAndSettle();
       expect(controller.model.data.value, 99);
     });
 
