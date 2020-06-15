@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
 dev_dependencies:
-  test: ^1.6.0
   flutter_test:
     sdk: flutter
   effective_dart: ^1.2.1
