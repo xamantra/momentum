@@ -32,9 +32,7 @@ Momentum persistedApp({
     ],
     disabledPersistentState: disabledPersistentState ?? false,
     enableLogging: true,
-    services: [
-      InMemoryStorage(),
-    ],
+    services: testMode ? [] : [InMemoryStorage()],
     persistSave: noPersistSave
         ? null
         : (context, key, value) async {

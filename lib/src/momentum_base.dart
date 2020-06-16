@@ -1215,11 +1215,14 @@ class Momentum extends InheritedWidget {
       orElse: () => null,
     );
     if (service == null) {
+      if (_testMode && type == _getType<InMemoryStorage>()) {
+        return InMemoryStorage() as T;
+      }
       throw MomentumError('The service class of type "$T" doesn\'t exists or '
           'was not initialized from the "services" parameter '
           'in the Momentum constructor.');
     }
-    return service;
+    return service as T;
   }
 
   T _getControllerOfType<T extends MomentumController>([Type t]) {
