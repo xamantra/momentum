@@ -29,3 +29,14 @@ typedef PersistGet = Future<String> Function(
   BuildContext context,
   String key,
 );
+
+typedef PersistSaverSync = bool Function(
+  BuildContext context,
+  String key,
+  String value,
+);
+
+typedef PersistGetSync = String Function(
+  BuildContext context,
+  String key,
+);

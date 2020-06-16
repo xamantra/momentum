@@ -10,8 +10,13 @@ const fromPageCPop = Key('From PageC Pop');
 const clearHistoryButton = Key('clearHistoryButton');
 const resetHistoryButton = Key('resetHistoryButton');
 
-Momentum routerTestWidget() {
+Momentum routerTestWidget({
+  bool testMode,
+  String sessionName,
+}) {
   return Momentum(
+    testMode: testMode,
+    testSessionName: sessionName,
     child: MyApp(),
     controllers: [CounterController()],
     services: [

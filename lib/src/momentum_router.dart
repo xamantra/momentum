@@ -18,6 +18,10 @@ class Router extends MomentumService {
   PersistSaver _persistSaver;
   PersistGet _persistGet;
 
+  PersistSaverSync _persistSaverSync;
+  PersistGetSync _persistGetSync;
+  bool _testMode;
+
   bool get _canPersist => _persistSaver != null && _persistGet != null;
 
   /// You don't have to call this method.
@@ -27,10 +31,14 @@ class Router extends MomentumService {
     BuildContext context,
     PersistSaver persistSaver,
     PersistGet persistGet,
+    PersistSaverSync persistSaverSync,
+    PersistGetSync persistGetSync,
   ) {
     _rootContext = context;
     _persistSaver = persistSaver;
     _persistGet = persistGet;
+    _persistSaverSync = persistSaverSync;
+    _persistGetSync = persistGetSync;
   }
 
   List<int> _history = [];
@@ -54,11 +62,19 @@ class Router extends MomentumService {
       );
       _history.add(indexOfWidgetOfType);
       if (_canPersist) {
-        _persistSaver(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
+        if (_testMode) {
+          _persistSaverSync(
+            _rootContext,
+            'MOMENTUM_ROUTER_HISTORY',
+            jsonEncode(_history),
+          );
+        } else {
+          _persistSaver(
+            _rootContext,
+            'MOMENTUM_ROUTER_HISTORY',
+            jsonEncode(_history),
+          );
+        }
       }
       Route r;
       if (transition != null) {
@@ -79,11 +95,19 @@ class Router extends MomentumService {
   }) async {
     trycatch(() => _history.removeLast());
     if (_canPersist) {
-      _persistSaver(
-        _rootContext,
-        'MOMENTUM_ROUTER_HISTORY',
-        jsonEncode(_history),
-      );
+      if (_testMode) {
+        _persistSaverSync(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      } else {
+        _persistSaver(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      }
     }
     if (_history.isEmpty) {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
@@ -103,11 +127,44 @@ class Router extends MomentumService {
   /// This is automatically called by the
   /// library.
   Future<void> init() async {
-    var historyJson = await tryasync(
+    _testMode = false;
+    String historyJson;
+    historyJson = await tryasync(
       () => _persistGet(_rootContext, 'MOMENTUM_ROUTER_HISTORY'),
       '[]',
     );
-    var result = jsonDecode(historyJson);
+    var result = historyJson == null
+        ? '[]'
+        : trycatch(
+            () => jsonDecode(historyJson),
+            '[]',
+          );
+    _history = (result as List).map<int>((e) => e as int).toList();
+    if (_history.isEmpty) {
+      _history.add(0);
+    }
+    return;
+  }
+
+  /// You don't have to call this method.
+  /// This is automatically called by the
+  /// library.
+  void initSync({bool testMode = false}) {
+    _testMode = testMode ?? false;
+    String historyJson;
+    if (_testMode) {
+      historyJson = _persistGetSync(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+      );
+    }
+    if (historyJson == null) {
+      if (_history.isEmpty) {
+        _history.add(0);
+      }
+      return;
+    }
+    var result = trycatch(() => jsonDecode(historyJson), '[]');
     _history = (result as List).map<int>((e) => e as int).toList();
     if (_history.isEmpty) {
       _history.add(0);
@@ -129,11 +186,19 @@ class Router extends MomentumService {
     _history.clear();
     _history = [];
     if (_canPersist) {
-      await _persistSaver(
-        _rootContext,
-        'MOMENTUM_ROUTER_HISTORY',
-        jsonEncode(_history),
-      );
+      if (_testMode) {
+        _persistSaverSync(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      } else {
+        await _persistSaver(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      }
     }
   }
 
@@ -142,11 +207,19 @@ class Router extends MomentumService {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
     if (_canPersist) {
-      await _persistSaver(
-        _rootContext,
-        'MOMENTUM_ROUTER_HISTORY',
-        jsonEncode(_history),
-      );
+      if (_testMode) {
+        _persistSaverSync(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      } else {
+        await _persistSaver(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
+      }
     }
   }
 

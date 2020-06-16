@@ -943,6 +943,7 @@ class _MomentumRoot extends StatefulWidget {
   final int maxTimeTravelSteps;
   final bool lazy;
   final int minimumBootstrapTime;
+  final bool testMode;
 
   const _MomentumRoot({
     Key key,
@@ -955,6 +956,7 @@ class _MomentumRoot extends StatefulWidget {
     this.maxTimeTravelSteps,
     this.lazy,
     this.minimumBootstrapTime,
+    this.testMode,
   }) : super(key: key);
   @override
   _MomentumRootState createState() => _MomentumRootState();
@@ -997,8 +999,14 @@ class _MomentumRootState extends State<_MomentumRoot> {
             context,
             momentum._persistSave,
             momentum._persistGet,
+            momentum._syncPersistSave,
+            momentum._syncPersistGet,
           );
-          await service.init();
+          if (widget.testMode) {
+            service.initSync(testMode: widget.testMode);
+          } else {
+            await service.init();
+          }
         }
       }
     }
@@ -1118,6 +1126,7 @@ class Momentum extends InheritedWidget {
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,
         minimumBootstrapTime: minimumBootstrapTime,
+        testMode: testMode ?? false,
       ),
       controllers: controllers,
       services: services,
