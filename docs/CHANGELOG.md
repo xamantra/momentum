@@ -1,6 +1,15 @@
+## 1.2.3
+- Added `testMode` parameter on `Momentum` for easier testing on project level.
+- Fixed bugs related to testing asynchronous code.
+- Added more internal tests. 
+
+<hr>
+
 ## 1.2.2
 - Fixed `Router` error that happens when `persistSave` is not specified.
 - Fixed `MomentumError` doesn't override `toString()` so detailed error logs are not printed on the console.
+
+<hr>
 
 ## 1.2.1
 - [Issue #7](https://github.com/xamantra/momentum/issues/7) - Added new capability to globally disable persistent state for all models. Docs [here](https://xamdev.gq/momentum/#/momentum?id=disabledpersistentstate).
