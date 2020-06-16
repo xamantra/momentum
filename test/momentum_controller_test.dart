@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:momentum/src/in_memory_storage.dart';
 
 import 'components/async-test/async-test.controller.dart';
 import 'components/counter/index.dart';
@@ -12,7 +13,6 @@ import 'components/persist-error4/index.dart';
 import 'components/persist-test/persist-test.controller.dart';
 import 'components/sync-test/index.dart';
 import 'utilities/dummy.dart';
-import 'utilities/in_memory_storage.dart';
 import 'utilities/launcher.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';

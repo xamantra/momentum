@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:momentum/momentum.dart';
+import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/dummy/dummy.controller.dart';
 import '../components/persist-error1/index.dart';
@@ -8,7 +9,6 @@ import '../components/persist-error2/index.dart';
 import '../components/persist-error3/index.dart';
 import '../components/persist-error4/index.dart';
 import '../components/persist-test/index.dart';
-import '../utilities/in_memory_storage.dart';
 
 Momentum persistedApp({
   bool noPersistSave = false,

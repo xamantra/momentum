@@ -422,7 +422,7 @@ abstract class MomentumController<M> {
     var momentum = Momentum._getMomentumInstance(_mRootContext);
     if (momentum._persistGet != null) {
       var modelRawJson = await tryasync(
-        () => momentum._persistGet(_mRootContext, persistenceKey),
+        () async => await momentum._persistGet(_mRootContext, persistenceKey),
       );
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
@@ -946,32 +946,14 @@ class _MomentumRoot extends StatefulWidget {
 }
 
 class _MomentumRootState extends State<_MomentumRoot> {
-  bool _mModelsInit = false;
-  bool _mRootInit = false;
-  bool _mControllersInit = false;
-  bool _mServicesInit = false;
-
   bool _mErrorFound = false;
 
-  bool get _canStartApp {
-    return _mRootInit && _mControllersInit && _mModelsInit && _mServicesInit;
-  }
-
-  @override
-  @mustCallSuper
-  void didChangeDependencies() {
-    if (!_mRootInit) {
-      _mRootInit = true;
-      _init();
-    }
-    super.didChangeDependencies();
-  }
-
-  Future<void> _init() async {
+  Future<bool> _init() async {
     await _initControllerModel(widget.controllers);
     _bootstrapControllers(widget.controllers);
-    _bootstrapControllersAsync(widget.controllers);
-    _initServices(widget.services);
+    await _bootstrapControllersAsync(widget.controllers);
+    await _initServices(widget.services);
+    return true;
   }
 
   Future<void> _initControllerModel(
@@ -989,12 +971,9 @@ class _MomentumRootState extends State<_MomentumRoot> {
         await controller._initializeMomentumController();
       }
     }
-    setState(() {
-      _mModelsInit = true;
-    });
   }
 
-  void _initServices(List<MomentumService> services) async {
+  Future<void> _initServices(List<MomentumService> services) async {
     var momentum = Momentum._getMomentumInstance(context);
     for (var service in services) {
       if (service != null) {
@@ -1008,9 +987,6 @@ class _MomentumRootState extends State<_MomentumRoot> {
         }
       }
     }
-    setState(() {
-      _mServicesInit = true;
-    });
   }
 
   void _bootstrapControllers(List<MomentumController> controllers) {
@@ -1024,7 +1000,9 @@ class _MomentumRootState extends State<_MomentumRoot> {
     }
   }
 
-  void _bootstrapControllersAsync(List<MomentumController> controllers) async {
+  Future<void> _bootstrapControllersAsync(
+    List<MomentumController> controllers,
+  ) async {
     var started = DateTime.now().millisecondsSinceEpoch;
     var nonLazyControllers = widget.controllers.where((e) {
       return e != null && !e._lazy;
@@ -1036,9 +1014,6 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var min = (widget.minimumBootstrapTime ?? 0).clamp(0, 9999999);
     var waitTime = (min - diff).clamp(0, min);
     await Future.delayed(Duration(milliseconds: waitTime));
-    setState(() {
-      _mControllersInit = true;
-    });
   }
 
   @override
@@ -1050,27 +1025,32 @@ class _MomentumRootState extends State<_MomentumRoot> {
       _mErrorFound = true;
       throw MomentumError(error);
     }
-    if (_canStartApp) {
-      return widget.child;
-    } else {
-      return widget.appLoader ??
-          MaterialApp(
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              backgroundColor: Colors.white,
-              body: Center(
-                child: SizedBox(
-                  height: 36,
-                  width: 36,
-                  child: CircularProgressIndicator(),
+    return FutureBuilder<bool>(
+      future: _init(),
+      initialData: false,
+      builder: (context, snapshot) {
+        if (snapshot.data) {
+          return widget.child;
+        }
+        return widget.appLoader ??
+            MaterialApp(
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              debugShowCheckedModeBanner: false,
+              home: Scaffold(
+                backgroundColor: Colors.white,
+                body: Center(
+                  child: SizedBox(
+                    height: 36,
+                    width: 36,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
               ),
-            ),
-          );
-    }
+            );
+      },
+    );
   }
 }
 

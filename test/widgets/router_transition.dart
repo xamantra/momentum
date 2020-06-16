@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/counter/index.dart';
-import '../utilities/in_memory_storage.dart';
 
 const transitionToBKey = Key('transitionToBKey');
 const transitionToCKey = Key('transitionToCKey');
