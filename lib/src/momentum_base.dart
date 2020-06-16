@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
@@ -401,11 +402,20 @@ abstract class MomentumController<M> {
               'was called. Try to check the implementation.'));
         }
       } else {
-        var isSaved = await momentum._persistSave(
-          _mRootContext,
-          persistenceKey,
-          modelRawJson,
-        );
+        var isSaved = false;
+        if (momentum._testMode) {
+          isSaved = momentum._syncPersistSave(
+            _mRootContext,
+            persistenceKey,
+            modelRawJson,
+          );
+        } else {
+          isSaved = await momentum._persistSave(
+            _mRootContext,
+            persistenceKey,
+            modelRawJson,
+          );
+        }
         if (!isSaved && _momentumLogging) {
           print(_formatMomentumLog('[$this] wasn\'t able '
               'to save your model state using "persistSave". '
@@ -421,9 +431,14 @@ abstract class MomentumController<M> {
     M result;
     var momentum = Momentum._getMomentumInstance(_mRootContext);
     if (momentum._persistGet != null) {
-      var modelRawJson = await tryasync(
-        () async => await momentum._persistGet(_mRootContext, persistenceKey),
-      );
+      String modelRawJson;
+      if (momentum._testMode) {
+        modelRawJson = momentum._syncPersistGet(_mRootContext, persistenceKey);
+      } else {
+        modelRawJson = await tryasync(
+          () async => await momentum._persistGet(_mRootContext, persistenceKey),
+        );
+      }
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
           print(_formatMomentumLog('[$this] unable to get persisted'
@@ -1064,11 +1079,15 @@ class Momentum extends InheritedWidget {
     ResetAll onResetAll,
     PersistSaver persistSave,
     PersistGet persistGet,
+    bool testMode,
+    String testSessionName,
   })  : _controllers = controllers ?? const [],
         _onResetAll = onResetAll,
         _services = services ?? const [],
         _persistSave = persistSave,
         _persistGet = persistGet,
+        _testMode = testMode ?? false,
+        _testSessionName = testSessionName ?? 'default',
         super(key: key, child: child);
 
   /// Configure your app with [Momentum] root widget.
@@ -1085,6 +1104,8 @@ class Momentum extends InheritedWidget {
     int minimumBootstrapTime,
     PersistSaver persistSave,
     PersistGet persistGet,
+    bool testMode,
+    String testSessionName,
   }) {
     return Momentum._internal(
       child: _MomentumRoot(
@@ -1103,6 +1124,8 @@ class Momentum extends InheritedWidget {
       onResetAll: onResetAll,
       persistSave: persistSave,
       persistGet: persistGet,
+      testMode: testMode,
+      testSessionName: testSessionName,
     );
   }
 
@@ -1145,6 +1168,21 @@ class Momentum extends InheritedWidget {
 
   final PersistSaver _persistSave;
   final PersistGet _persistGet;
+
+  final bool _testMode;
+  final String _testSessionName;
+
+  bool _syncPersistSave(BuildContext context, String key, String value) {
+    var memory = InMemoryStorage.of(_testSessionName, context);
+    var result = memory.setString(key, value);
+    return result;
+  }
+
+  String _syncPersistGet(BuildContext context, String key) {
+    var memory = InMemoryStorage.of(_testSessionName, context);
+    var result = memory.getString(key);
+    return result;
+  }
 
   /// Method for testing controllers.
   T getController<T extends MomentumController>() {

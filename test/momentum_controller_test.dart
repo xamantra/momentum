@@ -428,4 +428,32 @@ void main() {
       expect(controller.model.email, '');
     });
   });
+
+  group('Persistence State Test: testModeParam', () {
+    testWidgets('Start App', (tester) async {
+      var widget = persistedApp(
+        testMode: true,
+        sessionId: 'testModeParam',
+      );
+      await launch(tester, widget, milliseconds: 4000);
+      var controller = widget.getController<PersistTestController>();
+      expect(controller.model.username, '');
+      expect(controller.model.email, '');
+      controller.model.update(username: 'momentum', email: 'state@momentum');
+      await tester.pumpAndSettle();
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
+
+    testWidgets('Restart App', (tester) async {
+      var widget = persistedApp(
+        testMode: true,
+        sessionId: 'testModeParam',
+      );
+      await launch(tester, widget, milliseconds: 4000);
+      var controller = widget.getController<PersistTestController>();
+      expect(controller.model.username, 'momentum');
+      expect(controller.model.email, 'state@momentum');
+    });
+  });
 }

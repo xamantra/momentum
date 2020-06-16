@@ -16,8 +16,11 @@ Momentum persistedApp({
   bool fakeFailSave = false,
   bool disabledPersistentState = false,
   String sessionId = '',
+  bool testMode = false,
 }) {
   return Momentum(
+    testMode: testMode,
+    testSessionName: sessionId,
     child: PersistedApp(),
     controllers: [
       DummyController(),
@@ -37,7 +40,7 @@ Momentum persistedApp({
         : (context, key, value) async {
             if (fakeFailSave) return false;
             var storage = InMemoryStorage.of('persistedApp$sessionId', context);
-            var result = await storage.setString(key, value);
+            var result = storage.setString(key, value);
             return result;
           },
     persistGet: noPersistGet
