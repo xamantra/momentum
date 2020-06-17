@@ -21,10 +21,10 @@ class PersistError3Model extends MomentumModel<PersistError3Controller> {
   }
 
   @override
-  Map<String, dynamic> toJson() => null;
+  Map<String, dynamic> toMap() => null;
 
   @override
-  PersistError3Model fromJson(Map<String, dynamic> json) {
+  PersistError3Model fromMap(Map<String, dynamic> json) {
     var map;
     return PersistError3Model(
       controller,
@@ -38,13 +38,13 @@ class DummyObject3 {
 
   DummyObject3(this.value);
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'value': value,
     };
   }
 
-  static DummyObject3 fromJson(Map<String, dynamic> map) {
+  static DummyObject3 fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
     return DummyObject3(

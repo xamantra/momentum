@@ -12,13 +12,13 @@ class ApiService extends MomentumService {
 
   Future<AuthResponse> auth({String username, String password}) async {
     var response = await http.post(link, body: {'username': username, 'password': password});
-    var parsed = AuthResponse.fromJson(response.data);
+    var parsed = AuthResponse.fromMap(response.data);
     return parsed;
   }
 
   Future<UserProfile> getProfile({int userId}) async {
     var response = await http.get(link, body: {'userId': userId});
-    var parsed = UserProfile.fromJson(response.data);
+    var parsed = UserProfile.fromMap(response.data);
     return parsed;
   }
 

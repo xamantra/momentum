@@ -347,7 +347,7 @@ void main() {
       expect(controller.model.email, 'state@momentum');
     });
 
-    testWidgets('Misconfigured Code Hit Test: toJson()', (tester) async {
+    testWidgets('Misconfigured Code Hit Test: toMap()', (tester) async {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistErrorController>();
@@ -375,7 +375,7 @@ void main() {
       expect(controller.model.data.value, 99);
     });
 
-    testWidgets('#2 (Restart) Code Hit Test: fromJson()', (tester) async {
+    testWidgets('#2 (Restart) Code Hit Test: fromMap()', (tester) async {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistError3Controller>();
@@ -391,7 +391,7 @@ void main() {
       expect(controller.model.data.value, 99);
     });
 
-    testWidgets('#4 (Restart) Code Hit Test: fromJson()', (tester) async {
+    testWidgets('#4 (Restart) Code Hit Test: fromMap()', (tester) async {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistError4Controller>();

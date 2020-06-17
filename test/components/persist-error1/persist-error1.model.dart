@@ -22,7 +22,7 @@ class PersistErrorModel extends MomentumModel<PersistErrorController> {
   }
 
   @override
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'data': data,
     };

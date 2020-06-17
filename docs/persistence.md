@@ -35,11 +35,11 @@ You have to specify both `persistSave` and `persistGet` parameter on the `Moment
 !> `SharedPreferences` is used in this example but always remember you can use **any** storage provider.
 
 ## JSON Serialization
-The *models* must implement json serialization. You need to be familiar with `.toJson()` and `.fromJson(...)` method to understand this section. Read more about it [here](https://flutter.dev/docs/development/data-and-backend/json).
+The *models* must implement json serialization. You need to be familiar with `.toMap()` and `.fromMap(...)` method to understand this section. Read more about it [here](https://flutter.dev/docs/development/data-and-backend/json).
 
-With momentum, implementing `.toJson()` is the same way with how you do it traditionally. **BUT** with `.fromJson` it is quite different.
+With momentum, implementing `.toMap()` is the same way with how you do it traditionally. **BUT** with `.fromMap` it is quite different.
 
-- Implementing `.toJson()` looks like this:
+- Implementing `.toMap()` looks like this:
 ```dart
   class ExampleModel extends MomentumModel<ExampleController> {
 
@@ -50,7 +50,7 @@ With momentum, implementing `.toJson()` is the same way with how you do it tradi
 
     // ...
 
-    Map<String, dynamic> toJson() {
+    Map<String, dynamic> toMap() {
       return {
         'firstProperty': firstProperty,
         'secondProperty': secondProperty,
@@ -61,7 +61,7 @@ With momentum, implementing `.toJson()` is the same way with how you do it tradi
   }
 ```
 
-- Now, for `.fromJson`, it is different but it still very easy to write:
+- Now, for `.fromMap`, it is different but it still very easy to write:
 ```dart
   class ExampleModel extends MomentumModel<ExampleController> {
 
@@ -72,7 +72,7 @@ With momentum, implementing `.toJson()` is the same way with how you do it tradi
 
     // ...
 
-    ExampleModel fromJson(Map<String, dynamic> json) {
+    ExampleModel fromMap(Map<String, dynamic> json) {
       return ExampleModel(
         controller,
         firstProperty: json['firstProperty'],
@@ -84,7 +84,7 @@ With momentum, implementing `.toJson()` is the same way with how you do it tradi
   }
 ```
 - There are two differences.
-- First, the `.fromJson` is an instance member not *static* or *factory* method which is the traditional way.
+- First, the `.fromMap` is an instance member not *static* or *factory* method which is the traditional way.
 - Second, the `controller` part in the constructor. That is the reason why it should be instance member and not static, you wouldn't be able to access the `controller` property otherwise.
 
 !> `Momentum` will throw an error and stack trace link if the JSON serializer fails. You can easily track them.
@@ -145,8 +145,8 @@ Momentum has a custom router system to enable persistence for the app's navigati
 - Every time you call `model.update(...)`, `persistSave` will be called automatically *after*. So you might want to apply some optimization in here.
 - For `persistGet`, it will only be called when the app starts. If the persisted model is available, the `init()` values inside the controller will be overwritten.
 
-- `persistSave` will use the `.toJson()` serialization.
-- `persistGet` will use the `.fromJson(...)` serialization.
+- `persistSave` will use the `.toMap()` serialization.
+- `persistGet` will use the `.fromMap(...)` serialization.
 
 - `Router` uses both `persistSave` and `persistGet`. So if you want to use persistent navigation you need to implement those two function parameters.
 - The Persistent router saves the `indexes` of the pages. If you added a new page or reordered the items in the list inside the `Router` constructor, it is recommended to clear the data of the app to avoid errors.

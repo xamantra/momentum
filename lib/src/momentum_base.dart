@@ -80,13 +80,11 @@ abstract class MomentumModel<Controller extends MomentumController> {
     controller._setMomentum(this);
   }
 
-  /// This is different from the usual factory `fromJson` method.
-  /// It's an instance member because you wouldn't be able to access
-  /// the `controller` property otherwise.
-  MomentumModel fromJson(Map<String, dynamic> json) => null;
+  /// Method to generate current model from provided map
+  MomentumModel fromMap(Map<String, dynamic> json) => null;
 
   /// Method to generate a map from this model.
-  Map<String, dynamic> toJson() => null;
+  Map<String, dynamic> toMap() => null;
 }
 
 /// The class which holds the logic for your app.
@@ -388,7 +386,7 @@ abstract class MomentumController<M> {
       Map<String, dynamic> json;
       String modelRawJson;
       try {
-        json = (model as MomentumModel).toJson();
+        json = (model as MomentumModel).toMap();
         modelRawJson = jsonEncode(json);
       } on dynamic catch (e, stackTrace) {
         print(e);
@@ -397,7 +395,7 @@ abstract class MomentumController<M> {
       if (modelRawJson == null || modelRawJson.isEmpty) {
         if (_momentumLogging) {
           print(_formatMomentumLog('[$this] "persistSave" is specified '
-              'but the $M\'s "toJson" implementation returns '
+              'but the $M\'s "toMap" implementation returns '
               'a null or empty string when "jsonEncode(...)" '
               'was called. Try to check the implementation.'));
         }
@@ -453,14 +451,14 @@ abstract class MomentumController<M> {
               'The raw json value is ```$modelRawJson```.'));
         } else {
           try {
-            result = (model as MomentumModel).fromJson(json) as M;
+            result = (model as MomentumModel).fromMap(json) as M;
           } on dynamic catch (e, stackTrace) {
             print(e);
             print(stackTrace);
           }
           if (result == null && _momentumLogging) {
-            print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
-                'Try to check your "$M.fromJson()" implementation.'));
+            print(_formatMomentumLog('[$this] "$M.fromMap" returns a null. '
+                'Try to check your "$M.fromMap()" implementation.'));
           }
         }
       }

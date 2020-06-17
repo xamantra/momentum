@@ -96,7 +96,7 @@ print(model.controllerName);
 
 <hr>
 
-## .toJson()
+## .toMap()
 - Category: `Method`
 - Type: `Map<String, dynamic>`
 
@@ -109,7 +109,7 @@ class ExampleModel extends MomentumModel<ExampleController> {
 
   // ...
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'value': value,
     };
@@ -121,11 +121,11 @@ class ExampleModel extends MomentumModel<ExampleController> {
 
 <hr>
 
-## .fromJson(...)
+## .fromMap(...)
 - Category: `Method`
 - Type: `MomentumModel`
 
-The method to create an instance of this model from a JSON/map. This is different from the usual factory fromJson method. It's an instance member because you wouldn't be able to access the controller property otherwise. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
+The method to create an instance of this model from a JSON/map. This is different from the usual factory fromMap method. It's an instance member because you wouldn't be able to access the controller property otherwise. Momentum will automatically call this method. This is required for implementing persistence. If you don't need persistence you can ignore this method.
 ```dart
 class ExampleModel extends MomentumModel<ExampleController> {
   // ...
@@ -134,7 +134,7 @@ class ExampleModel extends MomentumModel<ExampleController> {
 
   // ...
 
-  ExampleModel fromJson(Map<String, dynamic> json) {
+  ExampleModel fromMap(Map<String, dynamic> json) {
     return ExampleModel(
       controller,
       value: json['value'],

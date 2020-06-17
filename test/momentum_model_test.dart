@@ -22,12 +22,12 @@ void main() {
     expect(controller.model.controllerName, 'CounterController');
   });
 
-  group('fromJson(...)', () {
+  group('fromMap(...)', () {
     testWidgets('unimplemented', (tester) async {
       var widget = counter();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<CounterController>();
-      var model = controller.model.fromJson({});
+      var model = controller.model.fromMap({});
       expect(model == null, true);
     });
 
@@ -35,7 +35,7 @@ void main() {
       var widget = persistedApp();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<PersistTestController>();
-      var model = controller.model.fromJson({
+      var model = controller.model.fromMap({
         "username": "momentum",
         "email": "state@momentum",
       });
@@ -44,12 +44,12 @@ void main() {
     });
   });
 
-  group('toJson()', () {
+  group('toMap()', () {
     testWidgets('unimplemented', (tester) async {
       var widget = counter();
       await launch(tester, widget, milliseconds: 4000);
       var controller = widget.getController<CounterController>();
-      var json = controller.model.toJson();
+      var json = controller.model.toMap();
       expect(json == null, true);
     });
 
@@ -61,10 +61,10 @@ void main() {
         "username": "momentum",
         "email": "state@momentum",
       };
-      var model = controller.model.fromJson(map);
+      var model = controller.model.fromMap(map);
       expect(model.username, "momentum");
       expect(model.email, "state@momentum");
-      var json = model.toJson();
+      var json = model.toMap();
       expect(json, map);
     });
   });

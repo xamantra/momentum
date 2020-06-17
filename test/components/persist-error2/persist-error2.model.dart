@@ -24,7 +24,7 @@ class PersistError2Model extends MomentumModel<PersistError2Controller> {
   }
 
   @override
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     var decoded = jsonDecode(jsonEncode(data));
     return {
       'data': decoded,
@@ -32,7 +32,7 @@ class PersistError2Model extends MomentumModel<PersistError2Controller> {
   }
 
   @override
-  PersistError2Model fromJson(Map<String, dynamic> json) {
+  PersistError2Model fromMap(Map<String, dynamic> json) {
     throw FormatException();
   }
 }
