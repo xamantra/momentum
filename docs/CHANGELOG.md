@@ -1,3 +1,6 @@
+## 1.2.4
+- The `pub.dev` package now excluded `docs/` and `test/` folders to speed up `flutter pub get` for environment with limited internet access.
+
 ## 1.2.3
 - Added `testMode` parameter on `Momentum` for easier testing on project level.
 - Fixed bugs related to testing asynchronous code.
