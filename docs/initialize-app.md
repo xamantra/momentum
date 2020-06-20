@@ -51,7 +51,7 @@ class CompanyController extends MomentumController<CompanyModel> {
 
 This is how the default loading widget looks like:
 
-![DefaultLoader](./images/feats/001.png)
+![DefaultLoader](https://i.imgur.com/8HxNDYA.png)
 
 That's it, only two steps! The additional guides below are optional.
 
@@ -99,6 +99,6 @@ class CustomLoader extends StatelessWidget {
 
 Now we got cool looking indefinite linear progress indicator:
 
-![CustomLoader](./images/feats/002.png)
+![CustomLoader](https://i.imgur.com/ftmAm7O.png)
 
 !> This is widgets we are talking about right here, you can put any crazy thing in this parameter. Like loading gif of a cat chasing a mouse or something.

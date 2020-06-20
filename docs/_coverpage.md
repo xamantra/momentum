@@ -1,4 +1,4 @@
-![logo](images/logo.png)
+![logo](https://i.imgur.com/atDeptO.png)
 
 # momentum <small>1.2.2</small>
 
