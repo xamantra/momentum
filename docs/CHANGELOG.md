@@ -1,3 +1,9 @@
+## 1.2.6
+- improve Momentum.restart function.
+
+## 1.2.5
+- fixed image links in docs
+
 ## 1.2.4
 - The `pub.dev` package now excluded `docs/` and `test/` folders to speed up `flutter pub get` for environment with limited internet access.
 
