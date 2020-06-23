@@ -35,5 +35,5 @@
     - [pub.dev](https://pub.dev/packages/momentum)
     - [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code)
     - [Listify - Advance Example](https://github.com/xamantra/listify)
-    - [Download Archive](https://storage.googleapis.com/pub-packages/packages/momentum-1.1.9.tar.gz)
+    - [Download Archive](https://storage.googleapis.com/pub-packages/packages/momentum-1.2.7.tar.gz)
     - [Changelog](CHANGELOG.md "Version History | Momentum")

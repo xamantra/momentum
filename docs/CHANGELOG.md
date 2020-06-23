@@ -1,3 +1,6 @@
+## 1.2.7
+- Added testing guide in official docs: https://xamdev.gq/momentum/#/testing
+
 ## 1.2.6
 - improve Momentum.restart function.
 

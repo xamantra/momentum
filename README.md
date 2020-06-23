@@ -8,7 +8,7 @@
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
 <a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
-<a href="https://xamdev.gq/momentum/#/" target="_blank"><img src="https://img.shields.io/badge/documentation-95%25-blueviolet" alt="documentation" /></a>
+<a href="https://xamdev.gq/momentum/#/" target="_blank"><img src="https://img.shields.io/badge/documentation-98%25-blueviolet" alt="documentation" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=orange&label=popularity&query=popularity&url=http://www.pubscore.gq/all?package=momentum" alt="popularity" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=score&query=overall&url=http://www.pubscore.gq/all?package=momentum" alt="score" /></a>
 <a href="https://pub.dev/packages/momentum#-analysis-tab-" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=maintenance&query=maintenance&url=http://www.pubscore.gq/all?package=momentum" alt="maintenance" /></a>
@@ -21,8 +21,9 @@
 
 ---
 
-- **MAJOR UPDATE**: **v1.1.7**
+- **MAJOR UPDATE**: **v1.1.7** and up.
 - FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
+- Testing Guide: https://xamdev.gq/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
 - Old README can be <a href="https://xamdev.gq/momentum/#/README.old" target="_blank">found here</a>
 
@@ -79,7 +80,7 @@ To get started, `flutter create` an app. Name it however you want.
 1. Add this to your package's `pubspec.yaml` file:
     ```yaml
     dependencies:
-      momentum: ^1.2.6
+      momentum: ^1.2.7
     ```
     It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 
@@ -205,7 +206,8 @@ class HomeWidget extends StatelessWidget {
 
 ## Please Note
 
-- **MAJOR UPDATE**: **v1.1.7**
+- **MAJOR UPDATE**: **v1.1.7** and up.
 - FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
+- Testing Guide: https://xamdev.gq/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
 - Old README can be <a href="https://xamdev.gq/momentum/#/README.old" target="_blank">found here</a>
