@@ -1089,6 +1089,7 @@ class Momentum extends InheritedWidget {
     PersistGet persistGet,
     bool testMode,
     String testSessionName,
+    void Function() restartCallback,
   })  : _controllers = controllers ?? const [],
         _onResetAll = onResetAll,
         _services = services ?? const [],
@@ -1096,10 +1097,12 @@ class Momentum extends InheritedWidget {
         _persistGet = persistGet,
         _testMode = testMode ?? false,
         _testSessionName = testSessionName ?? 'default',
+        _restartCallback = restartCallback,
         super(key: key, child: child);
 
   /// Configure your app with [Momentum] root widget.
   factory Momentum({
+    Key key,
     @required Widget child,
     Widget appLoader,
     @required List<MomentumController> controllers,
@@ -1114,8 +1117,10 @@ class Momentum extends InheritedWidget {
     PersistGet persistGet,
     bool testMode,
     String testSessionName,
+    void Function() restartCallback,
   }) {
     return Momentum._internal(
+      key: key,
       child: _MomentumRoot(
         child: child,
         appLoader: appLoader,
@@ -1135,6 +1140,7 @@ class Momentum extends InheritedWidget {
       persistGet: persistGet,
       testMode: testMode,
       testSessionName: testSessionName,
+      restartCallback: restartCallback,
     );
   }
 
@@ -1180,6 +1186,8 @@ class Momentum extends InheritedWidget {
 
   final bool _testMode;
   final String _testSessionName;
+
+  final void Function() _restartCallback;
 
   bool _syncPersistSave(BuildContext context, String key, String value) {
     var memory = InMemoryStorage.of(_testSessionName, context);
@@ -1273,11 +1281,15 @@ class Momentum extends InheritedWidget {
   /// It uses [Navigator.pushAndRemoveUntil]
   /// so it removes all previous routes.
   static void restart(BuildContext context, Momentum momentum) {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => momentum),
-      (r) => false,
-    );
+    if (momentum._restartCallback != null) {
+      momentum._restartCallback();
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => momentum),
+        (r) => false,
+      );
+    }
   }
 
   /// The static method for getting controllers inside a widget.

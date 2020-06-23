@@ -7,6 +7,7 @@ import 'utilities/launcher.dart';
 import 'widgets/blank_widget.dart';
 import 'widgets/counter_obsolete.dart';
 import 'widgets/counter_restart.dart';
+import 'widgets/counter_restart_callback.dart';
 import 'widgets/error_widget6.dart';
 import 'widgets/error_widget7.dart';
 import 'widgets/error_widget8.dart';
@@ -90,7 +91,22 @@ void main() {
     expect(find.text('0'), findsOneWidget);
   });
 
-    testWidgets('obsolete api: Momentum.of<T>', (tester) async {
+  testWidgets('restart callback', (tester) async {
+    var widget = counterRestartCallback();
+    await launch(tester, widget);
+    await tester.tap(find.byKey(keyCounterIncrementButtonCallback));
+    await tester.pump();
+    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.byKey(keyCounterIncrementButtonCallback));
+    await tester.pump();
+    expect(find.text('1'), findsNothing);
+    expect(find.text('2'), findsOneWidget);
+    await tester.tap(find.byKey(keyRestartButtonCallback));
+    await tester.pumpAndSettle();
+    expect(find.text('2'), findsOneWidget);
+  });
+
+  testWidgets('obsolete api: Momentum.of<T>', (tester) async {
     var widget = counterObsolete();
     await launch(tester, widget);
     await tester.tap(find.byKey(keyCounterObsoleteIncrement));

@@ -30,6 +30,8 @@ void main() {
 
 Momentum momentum() {
   return Momentum(
+    key: UniqueKey(),
+    restartCallback: main,
     child: MyApp(),
     controllers: [
       // ...
@@ -39,6 +41,8 @@ Momentum momentum() {
 }
 ```
 
+- `key` - Uses `UniqueKey()` to force rebuild the entire widget tree from scratch.
+- `restartCallback` - Uses the `main()` method which calls `runApp(...)` to restart the widget from scratch.
 Now, down the tree, we can call the `momentum()` method which returns a fresh copy of `Momentum` instance with the same dependencies.
 
 <hr>
