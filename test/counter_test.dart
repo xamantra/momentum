@@ -5,6 +5,28 @@ import 'utilities/launcher.dart';
 import 'widgets/counter.dart';
 
 void main() {
+  testWidgets('Testing Initialization', (tester) async {
+    var widget = counter();
+    await tester.pumpWidget(widget);
+    await tester.pumpAndSettle();
+
+    var counterController = widget.getController<CounterController>();
+    expect(counterController, isInstanceOf<CounterController>());
+    expect(counterController.model.value, 0);
+  });
+
+  testWidgets('Testing Functions', (tester) async {
+    var widget = counter();
+    await tester.pumpWidget(widget);
+    await tester.pumpAndSettle();
+
+    var counterController = widget.getController<CounterController>();
+    counterController.increment();
+    expect(counterController.model.value, 1);
+    counterController.increment();
+    expect(counterController.model.value, 2);
+  });
+
   testWidgets('Start Widget', (tester) async {
     var widget = counter();
     await launch(tester, widget);
@@ -12,6 +34,7 @@ void main() {
     var incrementFinder = find.byKey(keyIncrementButton);
     expect(valueFinder, findsOneWidget);
     expect(incrementFinder, findsOneWidget);
+    expect(find.text('0'), findsOneWidget);
   });
 
   testWidgets('Click Increment', (tester) async {

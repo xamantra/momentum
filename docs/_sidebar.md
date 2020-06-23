@@ -12,6 +12,7 @@
 
     - [Initialize App](initialize-app.md "Initializing or Bootstrapping your App | Momentum")
     - [Asynchronous](asynchronous.md "Asynchronous State Management | Momentum")
+    - [Testing](testing.md "Unit Tests and Widget Tests | Momentum")
     - [Streams](streams.md "Working with Streams | Momentum")
     - [Extending Controllers](extending-controllers.md "How to handle model with multiple controllers | Momentum")
     - [Event System](event-system.md "Event System from Controllers to Widgets | Momentum")
