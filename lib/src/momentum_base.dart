@@ -52,6 +52,26 @@ class _MomentumListener<M> {
   _MomentumListener({@required this.state, @required this.invoke});
 }
 
+mixin RouterMixin on _ControllerBase {
+  /// Get the current route parameters specified using
+  /// the `params` parameter in `Router.goto(...)` method.
+  ///
+  /// ### Example:
+  /// ```dart
+  /// // setting the route params.
+  /// Router.goto(context, DashboardPage, params: DashboardParams(...));
+  ///
+  /// // accessing the route params inside widgets.
+  /// var params = Router.getParams<DashboardParams>(context);
+  ///
+  /// // accessing the route params inside controllers.
+  /// var params = getParams<DashboardParams>();
+  /// ```
+  T getParams<T>() {
+    return Router.getParams<T>(_mRootContext);
+  }
+}
+
 /// The class which holds the state of your app.
 /// This is tied with [MomentumController].
 @immutable
@@ -89,11 +109,13 @@ abstract class MomentumModel<Controller extends MomentumController> {
   Map<String, dynamic> toJson() => null;
 }
 
+mixin _ControllerBase {
+  BuildContext _mRootContext;
+}
+
 /// The class which holds the logic for your app.
 /// This is tied with [MomentumModel].
-abstract class MomentumController<M> {
-  BuildContext _mRootContext;
-
+abstract class MomentumController<M> with _ControllerBase {
   /// Dependency injection method for getting other controllers.
   /// Useful for accessing other controllers' function
   /// and model properties without dragging the widget context around.
