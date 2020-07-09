@@ -20,7 +20,8 @@ class Router extends MomentumService {
         _enablePersistence = enablePersistence ?? true;
   final List<Widget> _pages;
   final bool _enablePersistence;
-  dynamic _currentRouteParams;
+  dynamic _currentRouteParamTyped;
+  Map<String, dynamic> _currentRouteParams;
 
   BuildContext _rootContext;
   PersistSaver _persistSaver;
@@ -55,12 +56,12 @@ class Router extends MomentumService {
   /// navigation history.
   bool get isRoutesEmpty => _history.isEmpty;
 
-  void _goto(
+  Future<void> _goto(
     BuildContext context,
     Type route, {
     Route Function(BuildContext, Widget) transition,
     dynamic params,
-  }) {
+  }) async {
     var findWidgetOfType = _pages.firstWhere(
       (e) => e.runtimeType == route,
       orElse: () => null,
@@ -91,8 +92,18 @@ class Router extends MomentumService {
       } else {
         r = MaterialPageRoute(builder: (_) => findWidgetOfType);
       }
-      _currentRouteParams = params;
-      Navigator.pushAndRemoveUntil(context, r, (r) => false);
+      try {
+        if (params != null) {
+          var success = await _registerParams(context, params);
+          if (success) {
+            Navigator.pushAndRemoveUntil(context, r, (r) => false);
+          }
+        } else {
+          Navigator.pushAndRemoveUntil(context, r, (r) => false);
+        }
+      } on dynamic catch (e) {
+        print(e);
+      }
     } else {
       print('[$MomentumService -> $Router]: Unable to '
           'find page widget of type "$route".');
@@ -261,10 +272,31 @@ class Router extends MomentumService {
     return routeResult;
   }
 
-  T _getParams<T>(BuildContext context) {
+  Future<bool> _registerParams(BuildContext context, dynamic params) async {
     try {
-      if (_currentRouteParams is T) {
-        return _currentRouteParams as T;
+      if (_canPersist && _enablePersistence) {
+        var rawJson = jsonEncode(params);
+        if (rawJson != null) {
+          var json = jsonDecode(rawJson);
+          _currentRouteParamTyped = params;
+          _currentRouteParams = json;
+        }
+      }
+      return true;
+    } on dynamic catch (e, stackTrace) {
+      print(stackTrace);
+      throw MomentumError('Momentum Router: $e');
+    }
+  }
+
+  T _getParams<T>(
+    T Function(Map<String, dynamic>) json,
+  ) {
+    try {
+      if (_currentRouteParamTyped != null) {
+        if (_currentRouteParamTyped is T) {
+          return json(_currentRouteParams);
+        }
       }
       throw 'Invalid type: The active/current route param is of type "${_currentRouteParams.runtimeType}" while the parameter you want to access is of type "$T"';
     } on dynamic catch (e, stackTrace) {
@@ -287,9 +319,13 @@ class Router extends MomentumService {
   /// // accessing the route params inside controllers.
   /// var params = getParams<DashboardParams>();
   /// ```
-  static T getParams<T>(BuildContext context) {
+  static T getParams<T>(
+    BuildContext context,
+    T Function(Map<String, dynamic>) json,
+  ) {
     var service = Momentum.service<Router>(context);
-    return service._getParams<T>(context);
+    var result = service._getParams<T>(json);
+    return result;
   }
 
   /// Get the active widget from the router.

@@ -331,7 +331,7 @@ void main() {
   });
 
   testWidgets('Router params test', (tester) async {
-    var widget = routerParamsTest();
+    var widget = routerParamsTest('Router params test');
     await launch(tester, widget);
     expect(find.text('RouterParamsTestA'), findsOneWidget);
     expect(find.text('fail test'), findsNothing);
@@ -342,7 +342,7 @@ void main() {
   });
 
   testWidgets('Router params error test', (tester) async {
-    var widget = routerParamsTest();
+    var widget = routerParamsTest('Router params error test');
     await launch(tester, widget);
     expect(find.text('RouterParamsTestA'), findsOneWidget);
     expect(find.text('fail test'), findsNothing);
@@ -354,11 +354,16 @@ void main() {
   });
 
   testWidgets('Router params controller test', (tester) async {
-    var widget = routerParamsTest();
+    var widget = routerParamsTest('Router params controller test');
     await launch(tester, widget);
     expect(find.text('RouterParamsTestA'), findsOneWidget);
     expect(find.text('fail test'), findsNothing);
     await tester.tap(find.byKey(routerParamsDTestButtonKey));
+    await tester.pumpAndSettle();
+    expect(find.text('RouterParamsTestA'), findsNothing);
+    expect(find.text('Hello World'), findsNothing);
+    expect(find.text('Flutter is awesome!'), findsOneWidget);
+    await tester.tap(find.byKey(routerParamsDErrorButtonKey));
     await tester.pumpAndSettle();
     expect(find.text('RouterParamsTestA'), findsNothing);
     expect(find.text('Hello World'), findsNothing);

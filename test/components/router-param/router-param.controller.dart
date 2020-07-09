@@ -13,7 +13,7 @@ class RouterParamController extends MomentumController<RouterParamModel> with Ro
   }
 
   String getParamValue() {
-    var value = getParams<TestRouterParamsC>().value;
+    var value = getParams(TestRouterParamsC.fromJson).value;
     return value;
   }
 }
