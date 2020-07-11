@@ -44,7 +44,7 @@ Momentum routerParamsTest([String sessionKey]) {
   );
 }
 
-class TestRouterParamsB {
+class TestRouterParamsB extends RouteParam {
   final String value;
 
   TestRouterParamsB(this.value);
@@ -58,7 +58,7 @@ class TestRouterParamsB {
   }
 }
 
-class TestRouterParamsC {
+class TestRouterParamsC extends RouteParam {
   final String value;
 
   TestRouterParamsC(this.value);
@@ -72,7 +72,7 @@ class TestRouterParamsC {
   }
 }
 
-class TestRouterParamsD {
+class TestRouterParamsD extends RouteParam {
   final String value;
 
   TestRouterParamsD(this.value);
@@ -149,10 +149,7 @@ class RouterParamsTestB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParams<TestRouterParamsB>(
-      context,
-      TestRouterParamsB.fromJson,
-    );
+    var params = Router.getParam<TestRouterParamsB>(context);
     return Scaffold(
       body: Text(params.value),
     );
@@ -164,10 +161,7 @@ class RouterParamsTestC extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParams<TestRouterParamsC>(
-      context,
-      TestRouterParamsC.fromJson,
-    );
+    var params = Router.getParam<TestRouterParamsC>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -194,7 +188,7 @@ class RouterParamsTestD extends StatelessWidget {
               Router.goto(
                 context,
                 RouterParamsTestE,
-                params: TestRouterParamsD('error test'),
+                params: TestRouterParamsD('12345'),
               );
             },
             child: Text(''),
@@ -210,10 +204,7 @@ class RouterParamsTestE extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParams<TestRouterParamsD>(
-      context,
-      TestRouterParamsD.fromJson,
-    );
+    var params = Router.getParam<TestRouterParamsD>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[

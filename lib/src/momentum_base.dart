@@ -67,10 +67,8 @@ mixin RouterMixin on _ControllerBase {
   /// // accessing the route params inside controllers.
   /// var params = getParams<DashboardParams>();
   /// ```
-  T getParams<T>(
-    T Function(Map<String, dynamic>) json,
-  ) {
-    var result = Router.getParams<T>(_mRootContext, json);
+  T getParam<T extends RouteParam>() {
+    var result = Router.getParam<T>(_mRootContext);
     return result;
   }
 }

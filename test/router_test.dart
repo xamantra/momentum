@@ -367,6 +367,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('RouterParamsTestA'), findsNothing);
     expect(find.text('Hello World'), findsNothing);
-    expect(find.text('Flutter is awesome!'), findsOneWidget);
+    expect(find.text('12345'), findsOneWidget);
   });
 }
