@@ -10,6 +10,13 @@ The logic inside controller:
 
    // ...
 
+  @override
+  void bootstrap() {
+    loadSomeData(); // only loaded once in the app's lifecycle.
+    // you can also call "loadSomeData()" from "initState()" if you
+    // want to reload the data whenever the widget gets reloaded too.
+  }
+
   Future<void> loadSomeData() async {
     model.update(loadingData: true);
     var result = await apiService.loadSomeBigData();
