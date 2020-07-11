@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import 'momentum_base.dart';
 import 'momentum_error.dart';
+import 'momentum_event.dart';
 import 'momentum_types.dart';
 
 Type _getType<T>() => T;
@@ -34,6 +35,8 @@ class Router extends MomentumService {
 
   bool get _canPersist => _persistSaver != null && _persistGet != null;
 
+  MomentumEvent _momentumEvent;
+
   /// You don't have to call this method.
   /// This is automatically called by the
   /// library.
@@ -43,12 +46,14 @@ class Router extends MomentumService {
     PersistGet persistGet,
     PersistSaverSync persistSaverSync,
     PersistGetSync persistGetSync,
+    MomentumEvent momentumEvent,
   ) {
     _rootContext = context;
     _persistSaver = persistSaver;
     _persistGet = persistGet;
     _persistSaverSync = persistSaverSync;
     _persistGetSync = persistGetSync;
+    _momentumEvent = momentumEvent;
   }
 
   List<int> _history = [];
@@ -94,6 +99,7 @@ class Router extends MomentumService {
         r = MaterialPageRoute(builder: (_) => findWidgetOfType);
       }
       _currentRouteParam = params;
+      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       Navigator.pushAndRemoveUntil(context, r, (r) => false);
     } else {
       print('[$MomentumService -> $Router]: Unable to '
@@ -358,3 +364,14 @@ class RouterPage extends StatelessWidget {
 /// data class as a router param model.
 @immutable
 abstract class RouteParam {}
+
+/// An class used by momentum for notifying RouterMixin
+/// of any router parameter changes.
+class RouterSignal {
+  /// The parameter that is provided while navigating to pages.
+  final RouteParam param;
+
+  /// An class used by momentum for notifying RouterMixin
+  /// of any router parameter changes.
+  const RouterSignal(this.param);
+}

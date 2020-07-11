@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import '../momentum.dart';
 import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
-
 import 'momentum_types.dart';
 
 Type _getType<T>() => T;
@@ -71,6 +72,8 @@ mixin RouterMixin on _ControllerBase {
     var result = Router.getParam<T>(_mRootContext);
     return result;
   }
+
+  void onRouteParamReceived(RouteParam param) {}
 }
 
 /// The class which holds the state of your app.
@@ -986,6 +989,7 @@ class _MomentumRoot extends StatefulWidget {
 }
 
 class _MomentumRootState extends State<_MomentumRoot> {
+  final _momentumEvent = MomentumEvent();
   bool _mErrorFound = false;
 
   Future<bool> _init() async {
@@ -1018,13 +1022,22 @@ class _MomentumRootState extends State<_MomentumRoot> {
     for (var service in services) {
       if (service != null) {
         if (service is Router) {
+          _momentumEvent.add<RouterSignal>().listen((event) {
+            for (var controller in widget.controllers) {
+              if (controller is RouterMixin) {
+                (controller as RouterMixin).onRouteParamReceived(event.param);
+              }
+            }
+          });
           service.setFunctions(
             context,
             momentum._persistSave,
             momentum._persistGet,
             momentum._syncPersistSave,
             momentum._syncPersistGet,
+            _momentumEvent,
           );
+
           if (widget.testMode) {
             service.initSync(testMode: widget.testMode);
           } else {
