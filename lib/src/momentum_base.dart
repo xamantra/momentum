@@ -62,10 +62,10 @@ mixin RouterMixin on _ControllerBase {
   /// Router.goto(context, DashboardPage, params: DashboardParams(...));
   ///
   /// // accessing the route params inside widgets.
-  /// var params = Router.getParams<DashboardParams>(context);
+  /// var params = Router.getParam<DashboardParams>(context);
   ///
   /// // accessing the route params inside controllers.
-  /// var params = getParams<DashboardParams>();
+  /// var params = getParam<DashboardParams>();
   /// ```
   T getParam<T extends RouteParam>() {
     var result = Router.getParam<T>(_mRootContext);

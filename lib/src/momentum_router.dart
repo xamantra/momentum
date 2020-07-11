@@ -284,10 +284,10 @@ class Router extends MomentumService {
   /// Router.goto(context, DashboardPage, params: DashboardParams(...));
   ///
   /// // accessing the route params inside widgets.
-  /// var params = Router.getParams<DashboardParams>(context);
+  /// var params = Router.getParam<DashboardParams>(context);
   ///
   /// // accessing the route params inside controllers.
-  /// var params = getParams<DashboardParams>();
+  /// var params = getParam<DashboardParams>();
   /// ```
   static T getParam<T extends RouteParam>(BuildContext context) {
     var service = Momentum.service<Router>(context);
