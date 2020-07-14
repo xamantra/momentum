@@ -1003,10 +1003,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
   bool _mErrorFound = false;
 
   Future<bool> _init() async {
+    await _initServices(widget.services);
     await _initControllerModel(widget.controllers);
     _bootstrapControllers(widget.controllers);
     await _bootstrapControllersAsync(widget.controllers);
-    await _initServices(widget.services);
     return true;
   }
 
