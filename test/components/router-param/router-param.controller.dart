@@ -18,7 +18,7 @@ class RouterParamController extends MomentumController<RouterParamModel> with Ro
   }
 
   @override
-  void onRouteParamReceived(RouterParam param) {
+  void onRouteChanged(RouterParam param) {
     if (param is TestRouterParamsC) {
       print("onRouteParamReceived: ${param.value}");
     }

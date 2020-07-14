@@ -73,7 +73,7 @@ mixin RouterMixin on _ControllerBase {
     return result;
   }
 
-  void onRouteParamReceived(RouterParam param) {}
+  void onRouteChanged(RouterParam param) {}
 }
 
 /// The class which holds the state of your app.
@@ -1025,7 +1025,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
           _momentumEvent.add<RouterSignal>().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
-                (controller as RouterMixin).onRouteParamReceived(event.param);
+                (controller as RouterMixin).onRouteChanged(event.param);
               }
             }
           });
