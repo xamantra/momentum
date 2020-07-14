@@ -398,7 +398,7 @@ DA:1096,1
 DA:1098,10
 DA:1099,10
 DA:1101,10
-DA:1102,10
+DA:1102,20
 DA:1103,20
 DA:1105,20
 DA:1106,10
@@ -488,6 +488,13 @@ DA:1381,2
 DA:1384,1
 LF:487
 LH:487
+end_of_record
+SF:lib\src\momentum_error.dart
+DA:9,5
+DA:11,5
+DA:12,10
+LF:3
+LH:3
 end_of_record
 SF:lib\src\momentum_router.dart
 DA:11,1
@@ -634,13 +641,6 @@ DA:32,6
 DA:33,4
 LF:12
 LH:12
-end_of_record
-SF:lib\src\momentum_error.dart
-DA:9,5
-DA:11,5
-DA:12,10
-LF:3
-LH:3
 end_of_record
 SF:lib\src\momentum_event.dart
 DA:17,4

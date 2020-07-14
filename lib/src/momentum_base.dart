@@ -1099,7 +1099,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       future: _init(),
       initialData: false,
       builder: (context, snapshot) {
-        if (snapshot.data) {
+        if (snapshot.hasData && snapshot.data) {
           return widget.child;
         }
         return widget.appLoader ??
