@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import 'package:momentum/src/in_memory_storage.dart';
 
+import '../components/router-param-mixin/index.dart';
 import '../components/router-param/index.dart';
 
 const routerParamsBTestButtonKey = Key('routerParamsBTestButtonKey');
@@ -14,6 +15,7 @@ Momentum routerParamsTest([String sessionKey]) {
     child: BasePage(),
     controllers: [
       RouterParamController(),
+      RouterParamMixinController(),
     ],
     services: [
       Router([
@@ -44,7 +46,7 @@ Momentum routerParamsTest([String sessionKey]) {
   );
 }
 
-class TestRouterParamsB extends RouteParam {
+class TestRouterParamsB extends RouterParam {
   final String value;
 
   TestRouterParamsB(this.value);
@@ -58,7 +60,7 @@ class TestRouterParamsB extends RouteParam {
   }
 }
 
-class TestRouterParamsC extends RouteParam {
+class TestRouterParamsC extends RouterParam {
   final String value;
 
   TestRouterParamsC(this.value);
@@ -72,7 +74,7 @@ class TestRouterParamsC extends RouteParam {
   }
 }
 
-class TestRouterParamsD extends RouteParam {
+class TestRouterParamsD extends RouterParam {
   final String value;
 
   TestRouterParamsD(this.value);
