@@ -68,12 +68,12 @@ mixin RouterMixin on _ControllerBase {
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
   /// ```
-  T getParam<T extends RouteParam>() {
+  T getParam<T extends RouterParam>() {
     var result = Router.getParam<T>(_mRootContext);
     return result;
   }
 
-  void onRouteParamReceived(RouteParam param) {}
+  void onRouteParamReceived(RouterParam param) {}
 }
 
 /// The class which holds the state of your app.

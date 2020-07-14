@@ -23,7 +23,7 @@ class Router extends MomentumService {
         _enablePersistence = enablePersistence ?? true;
   final List<Widget> _pages;
   final bool _enablePersistence;
-  RouteParam _currentRouteParam;
+  RouterParam _currentRouteParam;
 
   BuildContext _rootContext;
   PersistSaver _persistSaver;
@@ -66,7 +66,7 @@ class Router extends MomentumService {
     BuildContext context,
     Type route, {
     Route Function(BuildContext, Widget) transition,
-    RouteParam params,
+    RouterParam params,
   }) async {
     var findWidgetOfType = _pages.firstWhere(
       (e) => e.runtimeType == route,
@@ -269,7 +269,7 @@ class Router extends MomentumService {
     return routeResult;
   }
 
-  T _getParam<T extends RouteParam>() {
+  T _getParam<T extends RouterParam>() {
     try {
       if (_currentRouteParam.runtimeType == _getType<T>()) {
         return _currentRouteParam;
@@ -295,7 +295,7 @@ class Router extends MomentumService {
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
   /// ```
-  static T getParam<T extends RouteParam>(BuildContext context) {
+  static T getParam<T extends RouterParam>(BuildContext context) {
     var service = Momentum.service<Router>(context);
     var result = service._getParam<T>();
     return result;
@@ -363,13 +363,13 @@ class RouterPage extends StatelessWidget {
 /// An abstract class required for marking a certain
 /// data class as a router param model.
 @immutable
-abstract class RouteParam {}
+abstract class RouterParam {}
 
 /// An class used by momentum for notifying RouterMixin
 /// of any router parameter changes.
 class RouterSignal {
   /// The parameter that is provided while navigating to pages.
-  final RouteParam param;
+  final RouterParam param;
 
   /// An class used by momentum for notifying RouterMixin
   /// of any router parameter changes.
