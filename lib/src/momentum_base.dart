@@ -707,7 +707,17 @@ abstract class MomentumController<M> with _ControllerBase {
 /// to inject them into the `services` parameter
 /// of [Momentum] root widget and use them
 /// down the tree.
-abstract class MomentumService {}
+abstract class MomentumService {
+  BuildContext _context;
+
+  /// A method for getting a service marked with
+  /// [MomentumService] that are injected into
+  /// [Momentum] root widget.
+  T getService<T extends MomentumService>() {
+    var momentum = Momentum._getMomentumInstance(_context);
+    return momentum._getService<T>();
+  }
+}
 
 /// A [State] class with additional properties.
 /// Also allows you to add listeners for controllers.
@@ -1021,6 +1031,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var momentum = Momentum._getMomentumInstance(context);
     for (var service in services) {
       if (service != null) {
+        service._context = context;
         if (service is Router) {
           _momentumEvent.add<RouterSignal>().listen((event) {
             for (var controller in widget.controllers) {
