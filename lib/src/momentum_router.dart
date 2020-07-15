@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'momentum_base.dart';
-import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_types.dart';
 
@@ -278,15 +277,11 @@ class Router extends MomentumService {
   }
 
   T _getParam<T extends RouterParam>() {
-    try {
-      if (_currentRouteParam.runtimeType == _getType<T>()) {
-        return _currentRouteParam;
-      }
-      throw 'Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T"';
-    } on dynamic catch (e, stackTrace) {
-      print(stackTrace);
-      throw MomentumError(e);
+    if (_currentRouteParam.runtimeType == _getType<T>()) {
+      return _currentRouteParam;
     }
+    print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+    return null;
   }
 
   /// Get the current route parameters specified using

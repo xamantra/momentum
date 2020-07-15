@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
-import 'package:momentum/src/momentum_error.dart';
 
 import 'utilities/launcher.dart';
 import 'widgets/router_error_widget.dart';
@@ -348,7 +347,7 @@ void main() {
     expect(find.text('fail test'), findsNothing);
     await tester.tap(find.byKey(routerParamsCTestButtonKey));
     await tester.pumpAndSettle();
-    expect(tester.takeException(), isInstanceOf<MomentumError>());
+    expect(tester.takeException(), isInstanceOf<NoSuchMethodError>());
     expect(find.text('RouterParamsTestA'), findsNothing);
     expect(find.text('Hello World'), findsNothing);
   });
