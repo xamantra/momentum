@@ -53,6 +53,8 @@ class _MomentumListener<M> {
   _MomentumListener({@required this.state, @required this.invoke});
 }
 
+/// A mixin for [MomentumController] that adds the capability to
+/// handle route changes from momentum's built-in routing system.
 mixin RouterMixin on _ControllerBase {
   /// Get the current route parameters specified using
   /// the `params` parameter in `Router.goto(...)` method.
@@ -73,6 +75,8 @@ mixin RouterMixin on _ControllerBase {
     return result;
   }
 
+  /// A callback whenever [Router.goto] or [Router.pop] is called.
+  /// The [RouterParam] is also provided.
   void onRouteChanged(RouterParam param) {}
 }
 
