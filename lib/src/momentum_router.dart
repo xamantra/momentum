@@ -251,7 +251,7 @@ class Router extends MomentumService {
     BuildContext context,
     Type route, {
     Route Function(BuildContext, Widget) transition,
-    dynamic params,
+    RouterParam params,
   }) {
     var service = Momentum.service<Router>(context);
     service._goto(
