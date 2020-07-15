@@ -9,6 +9,7 @@ const routerParamsBTestButtonKey = Key('routerParamsBTestButtonKey');
 const routerParamsCTestButtonKey = Key('routerParamsCTestButtonKey');
 const routerParamsDTestButtonKey = Key('routerParamsDTestButtonKey');
 const routerParamsDErrorButtonKey = Key('routerParamsDErrorButtonKey');
+const routerParamsPopButtonKey = Key('routerParamsPopButtonKey');
 
 Momentum routerParamsTest([String sessionKey]) {
   return Momentum(
@@ -211,6 +212,16 @@ class RouterParamsTestE extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Text(params.value),
+          FlatButton(
+            key: routerParamsPopButtonKey,
+            onPressed: () {
+              Router.pop(
+                context,
+                result: TestRouterParamsC('789'),
+              );
+            },
+            child: Text(''),
+          ),
         ],
       ),
     );

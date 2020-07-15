@@ -110,6 +110,7 @@ class Router extends MomentumService {
   void _pop(
     BuildContext context, {
     Route Function(BuildContext, Widget) transition,
+    RouterParam result,
   }) async {
     trycatch(() => _history.removeLast());
     if (_canPersist && _enablePersistence) {
@@ -137,6 +138,8 @@ class Router extends MomentumService {
       } else {
         r = MaterialPageRoute(builder: (_) => activePage);
       }
+      _currentRouteParam = result;
+      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       await Navigator.pushAndRemoveUntil(context, r, (r) => false);
     }
   }
@@ -263,9 +266,14 @@ class Router extends MomentumService {
   static void pop(
     BuildContext context, {
     Route Function(BuildContext, Widget) transition,
+    RouterParam result,
   }) {
     var service = Momentum.service<Router>(context);
-    var routeResult = service._pop(context, transition: transition);
+    var routeResult = service._pop(
+      context,
+      transition: transition,
+      result: result,
+    );
     return routeResult;
   }
 
