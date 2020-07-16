@@ -19,7 +19,7 @@ class InMemoryStorage extends MomentumService {
     }
   }
 
-  /// Saves a string [value] to memory which 
+  /// Saves a string [value] to memory which
   /// will be gone when the program is terminated.
   bool setString(String key, String value) {
     _stringStore.addAll({key: value});
