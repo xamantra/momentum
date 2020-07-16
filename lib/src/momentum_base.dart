@@ -12,6 +12,13 @@ import 'momentum_types.dart';
 
 Type _getType<T>() => T;
 
+MomentumError _invalidService = const MomentumError(
+  'You are not allowed to grab '
+  '"InjectService" directly. You might have done one of these:\n'
+  '1. Momentum.service<InjectService>(...)\n'
+  '2. getService<InjectService>(...)',
+);
+
 /// Used internally.
 /// Simplify trycatch blocks.
 T trycatch<T>(T Function() body, [T defaultValue]) {
@@ -1113,33 +1120,34 @@ class _MomentumRootState extends State<_MomentumRoot> {
     if (!_mErrorFound && error != null) {
       _mErrorFound = true;
       throw MomentumError(error);
-    }
-    return FutureBuilder<bool>(
-      future: _init(),
-      initialData: false,
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data) {
-          return widget.child;
-        }
-        return widget.appLoader ??
-            MaterialApp(
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              debugShowCheckedModeBanner: false,
-              home: Scaffold(
-                backgroundColor: Colors.white,
-                body: Center(
-                  child: SizedBox(
-                    height: 36,
-                    width: 36,
-                    child: CircularProgressIndicator(),
+    } else {
+      return FutureBuilder<bool>(
+        future: _init(),
+        initialData: false,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data) {
+            return widget.child;
+          }
+          return widget.appLoader ??
+              MaterialApp(
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                debugShowCheckedModeBanner: false,
+                home: Scaffold(
+                  backgroundColor: Colors.white,
+                  body: Center(
+                    child: SizedBox(
+                      height: 36,
+                      width: 36,
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 ),
-              ),
-            );
-      },
-    );
+              );
+        },
+      );
+    }
   }
 }
 
@@ -1293,6 +1301,12 @@ class Momentum extends InheritedWidget {
 
   T _getService<T extends MomentumService>({dynamic alias}) {
     var type = _getType<T>();
+    if (type == _getType<InjectService<MomentumService>>()) {
+      throw _invalidService;
+    }
+    if (type == _getType<InjectService<dynamic>>()) {
+      throw _invalidService;
+    }
     T result;
     if (alias == null) {
       result = _services.firstWhere(

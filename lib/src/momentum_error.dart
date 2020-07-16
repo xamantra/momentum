@@ -6,7 +6,7 @@ class MomentumError implements Exception {
 
   /// The type that momentum throws when an error
   /// occurs.
-  MomentumError(this.cause);
+  const MomentumError(this.cause);
 
   @override
   String toString() => 'MomentumError: $cause';

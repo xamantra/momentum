@@ -8,6 +8,8 @@ import '../utilities/dummy.dart';
 
 const errorKey1 = Key('errorKey1');
 const errorKey2 = Key('errorKey2');
+const errorKey3 = Key('errorKey3');
+const errorKey4 = Key('errorKey4');
 
 class CalculatorService extends MomentumService {
   final bool enableLogs;
@@ -71,6 +73,20 @@ class CounterApp extends StatelessWidget {
                 );
               },
               child: Text('Error Test 2'),
+            ),
+            FlatButton(
+              key: errorKey3,
+              onPressed: () {
+                Momentum.service<InjectService>(context);
+              },
+              child: Text('Error Test 3'),
+            ),
+            FlatButton(
+              key: errorKey4,
+              onPressed: () {
+                Momentum.service<InjectService<dynamic>>(context);
+              },
+              child: Text('Error Test 4'),
             ),
           ],
         ),

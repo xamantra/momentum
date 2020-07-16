@@ -42,6 +42,12 @@ void main() {
     await tester.tap(find.byKey(errorKey2));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isInstanceOf<MomentumError>());
+    await tester.tap(find.byKey(errorKey3));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
+    await tester.tap(find.byKey(errorKey4));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
   });
 
   testWidgets('Grab services from injector: from controller', (tester) async {
