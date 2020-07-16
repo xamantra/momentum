@@ -1,7 +1,14 @@
+## 1.3.0
+Fixed changelog.md formatting after it got messed up with new pub.dev redesign.
+
+<hr>
+
 ## 1.2.9
 Updated changelog.md to follow new pub.dev guidelines.
 
-## 1.2.8 - New features
+<hr>
+
+## 1.2.8
 - `Router` now supports parameters.
   - Updated `Router.goto` and `Router.pop` [docs](https://xamdev.gq/momentum/#/router?id=goto).
   - New `RouterMixin` [docs](https://xamdev.gq/momentum/#/router_mixin).
@@ -65,7 +72,8 @@ Updated changelog.md to follow new pub.dev guidelines.
 
 <hr>
 
-## 1.1.9 - Critical
+## 1.1.9
+**Critical**
 - Fixed [#5](https://github.com/xamantra/momentum/issues/5)
 - Improve types system for dependency injection
 - Fix extending controllers that cause bug for `snapshot<T>()`. Click [here](https://xamdev.gq/momentum/#/extending-controllers) for the docs.
@@ -73,7 +81,7 @@ Updated changelog.md to follow new pub.dev guidelines.
 
 <hr>
 
-## 1.1.8 - Important
+## 1.1.8
 <a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
 
@@ -92,7 +100,7 @@ Updated changelog.md to follow new pub.dev guidelines.
 
 <hr>
 
-## 1.1.7 - Major Update
+## 1.1.7
 Major changes:
 - Persistent state.
 - Persistent navigation/routing.
