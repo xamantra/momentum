@@ -1,6 +1,6 @@
 name: momentum
 description: A super-powerful flutter state management library inspired with MVC pattern with very flexible dependency injection.
-version: 1.2.7
+version: 1.2.8
 homepage: https://github.com/xamantra/momentum
 
 environment:
