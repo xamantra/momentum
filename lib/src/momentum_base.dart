@@ -148,9 +148,9 @@ abstract class MomentumController<M> with _ControllerBase {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
-  T getService<T extends MomentumService>() {
+  T getService<T extends MomentumService>({dynamic alias}) {
     try {
-      var result = Momentum.getService<T>(_mRootContext);
+      var result = Momentum.service<T>(_mRootContext, alias: alias);
       return result;
     } on dynamic catch (e) {
       if (_momentumLogging) {
@@ -717,10 +717,25 @@ abstract class MomentumService {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
-  T getService<T extends MomentumService>() {
+  T getService<T extends MomentumService>({dynamic alias}) {
     var momentum = Momentum._getMomentumInstance(_context);
-    return momentum._getService<T>();
+    return momentum._getService<T>(alias: alias);
   }
+}
+
+/// Use this class to inject multiple services of the
+/// same type with different configurations using alias.
+class InjectService<S extends MomentumService> extends MomentumService {
+  final dynamic _alias;
+  final S _service;
+
+  /// Use this class to inject multiple services of the
+  /// same type with different configurations using alias.
+  InjectService(
+    dynamic alias,
+    S service,
+  )   : _alias = alias,
+        _service = service;
 }
 
 /// A [State] class with additional properties.
@@ -1272,17 +1287,48 @@ class Momentum extends InheritedWidget {
   }
 
   /// Method for testing only.
-  T serviceForTest<T extends MomentumService>() {
-    return _getService<T>();
+  T serviceForTest<T extends MomentumService>({dynamic alias}) {
+    return _getService<T>(alias: alias);
   }
 
-  T _getService<T extends MomentumService>() {
+  T _getService<T extends MomentumService>({dynamic alias}) {
     var type = _getType<T>();
-    var service = _services.firstWhere(
-      (c) => c.runtimeType == type,
-      orElse: () => null,
-    );
-    if (service == null) {
+    T result;
+    if (alias == null) {
+      result = _services.firstWhere(
+        (c) => c.runtimeType == type,
+        orElse: () => null,
+      );
+      if (result == null) {
+        var injectors = _services
+            .where(
+              (s) => s.runtimeType == _getType<InjectService<T>>(),
+            )
+            .cast<InjectService>()
+            .toList();
+        if (injectors.isNotEmpty) {
+          result = injectors
+              .firstWhere(
+                (i) => i._service.runtimeType == type,
+              )
+              ?._service;
+        }
+      }
+    } else {
+      var injectors = _services
+          .where(
+            (s) => s.runtimeType == _getType<InjectService<T>>(),
+          )
+          .cast<InjectService>()
+          .toList();
+      result = injectors
+          .firstWhere(
+            (i) => i._alias == alias && i._service.runtimeType == type,
+            orElse: () => null,
+          )
+          ?._service;
+    }
+    if (result == null) {
       if (_testMode && type == _getType<InMemoryStorage>()) {
         return InMemoryStorage() as T;
       }
@@ -1290,7 +1336,7 @@ class Momentum extends InheritedWidget {
           'was not initialized from the "services" parameter '
           'in the Momentum constructor.');
     }
-    return service as T;
+    return result;
   }
 
   T _getControllerOfType<T extends MomentumController>([Type t]) {
@@ -1373,8 +1419,11 @@ class Momentum extends InheritedWidget {
   /// The static method for getting services inside a widget.
   /// The service must be marked with [MomentumService] and
   /// injected into [Momentum] root widget.
-  static T service<T extends MomentumService>(BuildContext context) {
-    return _getMomentumInstance(context)._getService<T>();
+  static T service<T extends MomentumService>(
+    BuildContext context, {
+    dynamic alias,
+  }) {
+    return _getMomentumInstance(context)._getService<T>(alias: alias);
   }
 
   static T _ofType<T extends MomentumController>(BuildContext context, Type t) {

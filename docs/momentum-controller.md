@@ -154,6 +154,13 @@ class ExampleController extends MomentumController<ExampleModel> {
   // ...
 }
 ```
+If you are using the new `InjectService` to add your services. You can also use the `alias` parameter to get a specific service with matching alias.
+```dart
+var apiService = getService<ApiService>(alias: ApiAlias.logsEnabled);
+```
+`alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
+
+Refer to the full documentation for `InjectService` [here](https://xamdev.gq/momentum/#/inject_service).
 
 <hr>
 

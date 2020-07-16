@@ -27,6 +27,7 @@
     - [MomentumController](momentum-controller.md "MomentumController - Holds the logic | Momentum")
     - [MomentumState](momentum-state.md "MomentumState - For event system | Momentum")
     - [MomentumService](momentum-service.md "MomentumService - Services Dependency Injection | Momentum")
+    - [InjectService](inject_service.md "InjectService - Indentical Services Dependency Injection | Momentum")
     - [Router](router.md "Router - For persistent routing | Momentum")
     - [RouterMixin](router_mixin.md "Router - Handling route parameters | Momentum")
 
