@@ -60,4 +60,10 @@ void main() {
     var calculatorWithLogs = controller.getServiceWithLogs();
     expect(calculatorWithLogs.enableLogs, true);
   });
+
+  testWidgets('Inject Service: duplicate alias', (tester) async {
+    var widget = injectService(duplicate: true);
+    await launch(tester, widget);
+    expect(tester.takeException(), isInstanceOf<MomentumError>());
+  });
 }

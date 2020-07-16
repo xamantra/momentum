@@ -1117,6 +1117,9 @@ class _MomentumRootState extends State<_MomentumRoot> {
     var error = Momentum._getMomentumInstance(context)._validateControllers(
       widget.controllers,
     );
+    error ??= Momentum._getMomentumInstance(context)._validateInjectService(
+      widget.services,
+    );
     if (!_mErrorFound && error != null) {
       _mErrorFound = true;
       throw MomentumError(error);
@@ -1244,6 +1247,26 @@ class Momentum extends InheritedWidget {
             '"${controller.runtimeType}" is found. You passed '
             'in "$count" instance of "${controller.runtimeType}".'
             '\n\nControllers config:\n\n$passedIn';
+      }
+    }
+    return null;
+  }
+
+  String _validateInjectService(List<MomentumService> services) {
+    var injectedServices = services.where(
+      (s) {
+        return trycatch(() => (s as InjectService)._alias) != null;
+      },
+    ).cast<InjectService>();
+    for (var inject in injectedServices) {
+      var count = injectedServices
+          .where(
+            (x) => x._alias == inject._alias,
+          )
+          .length;
+      if (count > 1) {
+        return '[$Momentum] -> Duplicate alias is found. You passed '
+            'in $count "${inject._alias}"';
       }
     }
     return null;

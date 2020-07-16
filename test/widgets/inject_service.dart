@@ -33,17 +33,27 @@ enum CalcAlias {
   disableLogs,
 }
 
-Momentum injectService() {
+Momentum injectService({bool duplicate = false}) {
   return Momentum(
     child: CounterApp(),
     controllers: [
       InjectServiceController(),
     ],
-    services: [
-      InjectService(CalcAlias.disableLogs, CalculatorService()),
-      InjectService(CalcAlias.enableLogs, CalculatorService(enableLogs: true)),
-      DummyService(),
-    ],
+    services: duplicate
+        ? [
+            InjectService(CalcAlias.disableLogs, CalculatorService()),
+            InjectService(CalcAlias.disableLogs, DummyService()),
+          ]
+        : [
+            InjectService(CalcAlias.disableLogs, CalculatorService()),
+            InjectService(
+              CalcAlias.enableLogs,
+              CalculatorService(
+                enableLogs: true,
+              ),
+            ),
+            DummyService(),
+          ],
   );
 }
 
