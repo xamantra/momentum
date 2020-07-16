@@ -1,14 +1,37 @@
+## 1.2.8
+- `Router` now supports parameters.
+  - Updated `Router.goto` and `Router.pop` [docs](https://xamdev.gq/momentum/#/router?id=goto).
+  - New `RouterMixin` [docs](https://xamdev.gq/momentum/#/router_mixin).
+  - Issue reference for this feature: [#16](https://github.com/xamantra/momentum/issues/16).
+- Services now has dependency injection between each other.
+  - New `.getService<T>()` method [docs](https://xamdev.gq/momentum/#/momentum-service?id=getservicelttgt).
+  - Issue reference for this feature: [#19](https://github.com/xamantra/momentum/issues/19)
+- Momentum now initializes services first before anything else.
+  - No breaking changes in existing test files.
+  - No breaking changes in existing example projects.
+  - Refer to [docs](https://xamdev.gq/momentum/#/initialization_order).
+
+<hr>
+
 ## 1.2.7
 - Added testing guide in official docs: https://xamdev.gq/momentum/#/testing
+
+<hr>
 
 ## 1.2.6
 - improve Momentum.restart function.
 
+<hr>
+
 ## 1.2.5
 - fixed image links in docs
 
+<hr>
+
 ## 1.2.4
 - The `pub.dev` package now excluded `docs/` and `test/` folders to speed up `flutter pub get` for environment with limited internet access.
+
+<hr>
 
 ## 1.2.3
 - Added `testMode` parameter on `Momentum` for easier testing on project level.

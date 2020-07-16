@@ -48,3 +48,26 @@ class AuthController extends MomentumController<AuthModel> {
 ```
 
 !> Head to this [section](/momentum?id=services) to know how to set up a service.
+
+<hr>
+
+## .getService\<T\>()
+- Category: `Method`
+- Type: `T` extends `MomentumService`
+
+Dependency injection between services. Get a specific service from inside another service.
+
+```dart
+class ServiceA extends MomentumService {
+  int increment(int value) => value + 1;
+
+  double times2(double value) {
+    var serviceB = getService<ServiceB>();
+    return serviceB.times2(value);
+  }
+}
+
+class ServiceB extends MomentumService {
+  double times2(double value) => value * 2;
+}
+```
