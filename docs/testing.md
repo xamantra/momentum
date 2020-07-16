@@ -124,6 +124,3 @@ testWidgets('Testing Widget Functions', (tester) async {
 ```
 - We are calling the `.tap()` the method from flutter_test here to test the increment button which calls `increment()` function from the controller.
 - After calling `.tap()`, we also called `.pump()`. It is very important because, during testing, widgets don't rebuild automatically.
-
-## Flutter Driver (Coming Soon)
-Guide for testing momentum with flutter driver.
