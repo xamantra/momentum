@@ -611,13 +611,12 @@ abstract class MomentumController<M> with _ControllerBase {
     @required MomentumState state,
     @required void Function(T data) invoke,
   }) {
-    _eventHandlers.add(
-      state._eventHandler
-        ..add<T>().listen((data) {
-          invoke(data);
-          _lastEventReceived = data;
-        }),
-    );
+    var newHandler = MomentumEvent<T>(state);
+    newHandler.on().listen((data) {
+      invoke(data);
+      _lastEventReceived = data;
+    });
+    _eventHandlers.add(newHandler);
   }
 
   /// Send event data to all listeners of data type `T`.
@@ -625,9 +624,13 @@ abstract class MomentumController<M> with _ControllerBase {
   /// This should be used for notifying the widgets to show
   /// dialogs/snackbars/toast/alerts/etc.
   void sendEvent<T>(T data) {
-    _eventHandlers.removeWhere((x) => x.streamController.isClosed);
-    for (var event in _eventHandlers) {
-      event.trigger(data);
+    _eventHandlers.removeWhere(
+      (x) => x.streamController.isClosed || !x.state.mounted,
+    );
+    // ignore: prefer_iterable_wheretype
+    var targetHandlers = _eventHandlers.where((x) => x is MomentumEvent<T>);
+    for (var event in targetHandlers) {
+      (event as MomentumEvent<T>).trigger(data);
     }
   }
 
@@ -748,7 +751,7 @@ class InjectService<S extends MomentumService> extends MomentumService {
 /// A [State] class with additional properties.
 /// Also allows you to add listeners for controllers.
 abstract class MomentumState<T extends StatefulWidget> extends State<T> {
-  final MomentumEvent _eventHandler = MomentumEvent();
+  MomentumEvent _eventHandler;
   bool _stateDeactivated = false;
 
   /// A property that indicates if the [StatefulWidget] for this [State]
@@ -786,6 +789,7 @@ abstract class MomentumState<T extends StatefulWidget> extends State<T> {
   void didChangeDependencies() {
     if (!___momentumInitialized) {
       ___momentumInitialized = true;
+      _eventHandler = MomentumEvent(this);
       initMomentumState();
     }
     super.didChangeDependencies();
@@ -1025,10 +1029,11 @@ class _MomentumRoot extends StatefulWidget {
 }
 
 class _MomentumRootState extends State<_MomentumRoot> {
-  final _momentumEvent = MomentumEvent();
+  MomentumEvent<RouterSignal> _momentumEvent;
   bool _mErrorFound = false;
 
   Future<bool> _init() async {
+    _momentumEvent = MomentumEvent<RouterSignal>(this);
     await _initServices(widget.services);
     await _initControllerModel(widget.controllers);
     _bootstrapControllers(widget.controllers);
@@ -1059,7 +1064,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       if (service != null) {
         service._context = context;
         if (service is Router) {
-          _momentumEvent.add<RouterSignal>().listen((event) {
+          _momentumEvent.on().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
                 (controller as RouterMixin).onRouteChanged(event.param);
