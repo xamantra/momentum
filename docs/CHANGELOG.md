@@ -1,3 +1,8 @@
+## 1.3.1
+Fixed event bug where "sendEvent\<T\>()" was only called once but the "listen\<T\>" callback invokes twice.
+
+<hr>
+
 ## 1.3.0
 Fixed changelog.md formatting after it got messed up with new pub.dev redesign.
 

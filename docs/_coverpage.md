@@ -1,6 +1,6 @@
 ![logo](https://i.imgur.com/atDeptO.png)
 
-# momentum <small>1.3.0</small>
+# momentum <small>1.3.1</small>
 
 > Full-featured flutter state management library.
 
