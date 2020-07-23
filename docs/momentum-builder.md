@@ -26,7 +26,7 @@
 ## controllers
 - Type: `List<Type>`
 - Default: `[]` *// empty list*
-- Required: `YES`
+- Required: `NO`
 
 List of controllers to inject. You inject them using *type* not an instance. Momentum will automatically look up the instance for the types you provided. Throws an error if one of the controller types provided is not found.
   ```dart
