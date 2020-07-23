@@ -1045,7 +1045,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     } on dynamic catch (e, stackTrace) {
       // Print the stacktrace of the caught exception
       debugPrintStack(stackTrace: stackTrace);
-      // Rethrow it to stop execution. This usually will be
+      // Rethrow it to stop execution. This will be
       // a FutureBuilder assertion error
       rethrow;
     }
