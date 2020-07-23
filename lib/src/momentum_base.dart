@@ -1031,14 +1031,28 @@ class _MomentumRoot extends StatefulWidget {
 class _MomentumRootState extends State<_MomentumRoot> {
   MomentumEvent<RouterSignal> _momentumEvent;
   bool _mErrorFound = false;
+  String _error;
 
   Future<bool> _init() async {
-    _momentumEvent = MomentumEvent<RouterSignal>(this);
-    await _initServices(widget.services);
-    await _initControllerModel(widget.controllers);
-    _bootstrapControllers(widget.controllers);
-    await _bootstrapControllersAsync(widget.controllers);
-    return true;
+    try {
+      _momentumEvent = MomentumEvent<RouterSignal>(this);
+      await _initServices(widget.services);
+      await _initControllerModel(widget.controllers);
+      _bootstrapControllers(widget.controllers);
+      await _bootstrapControllersAsync(widget.controllers);
+      return true;
+    } on dynamic catch (e, stackTrace) {
+      // Print the stacktrace of the caught exception
+      debugPrint(e?.toString());
+      debugPrint(stackTrace?.toString());
+      // Rethrow it to stop execution. This will be
+      // a FutureBuilder assertion error
+      setState(() {
+        _error = '[Momentum]: Failed to initialize your app. '
+            'Check the above stacktrace for details.';
+      });
+      return false;
+    }
   }
 
   Future<void> _initControllerModel(
@@ -1119,15 +1133,15 @@ class _MomentumRootState extends State<_MomentumRoot> {
 
   @override
   Widget build(BuildContext context) {
-    var error = Momentum._getMomentumInstance(context)._validateControllers(
+    _error ??= Momentum._getMomentumInstance(context)._validateControllers(
       widget.controllers,
     );
-    error ??= Momentum._getMomentumInstance(context)._validateInjectService(
+    _error ??= Momentum._getMomentumInstance(context)._validateInjectService(
       widget.services,
     );
-    if (!_mErrorFound && error != null) {
+    if (!_mErrorFound && _error != null) {
       _mErrorFound = true;
-      throw MomentumError(error);
+      throw MomentumError(_error);
     } else {
       return FutureBuilder<bool>(
         future: _init(),

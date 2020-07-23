@@ -16,6 +16,7 @@ import 'utilities/dummy.dart';
 import 'utilities/launcher.dart';
 import 'widgets/async.dart';
 import 'widgets/counter.dart';
+import 'widgets/error_widget9.dart';
 import 'widgets/persistence.dart';
 import 'widgets/reset.dart';
 import 'widgets/sync.dart';
@@ -397,6 +398,13 @@ void main() {
       var controller = widget.getController<PersistError4Controller>();
       expect(controller.model.data.value, 0);
     });
+  });
+
+  testWidgets('FutureBuilder error test', (tester) async {
+    var widget = errorWidget9();
+    await launch(tester, widget);
+    var error = tester.takeException();
+    expect(error != null, true);
   });
 
   group('Persistence State Test: disabledPersistentState', () {
