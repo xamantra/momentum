@@ -178,6 +178,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// If lazy loading is disabled this will be called right when
   /// the app starts. Use `bootstrapAsync()` if you want asynchronous.
   void bootstrap() {}
+
   void _bootstrap() {
     if (!_booted) {
       _booted = true;
@@ -194,6 +195,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// the app starts and displays a loading widget until the async
   /// operation is finished.
   Future<void> bootstrapAsync() async {}
+
   Future<void> _bootstrapAsync() async {
     if (!_bootedAsync) {
       _bootedAsync = true;
@@ -1024,6 +1026,7 @@ class _MomentumRoot extends StatefulWidget {
     this.minimumBootstrapTime,
     this.testMode,
   }) : super(key: key);
+
   @override
   _MomentumRootState createState() => _MomentumRootState();
 }
@@ -1033,12 +1036,19 @@ class _MomentumRootState extends State<_MomentumRoot> {
   bool _mErrorFound = false;
 
   Future<bool> _init() async {
-    _momentumEvent = MomentumEvent<RouterSignal>(this);
-    await _initServices(widget.services);
-    await _initControllerModel(widget.controllers);
-    _bootstrapControllers(widget.controllers);
-    await _bootstrapControllersAsync(widget.controllers);
-    return true;
+    try {
+      await _initServices(widget.services);
+      await _initControllerModel(widget.controllers);
+      _bootstrapControllers(widget.controllers);
+      await _bootstrapControllersAsync(widget.controllers);
+      return true;
+    } on dynamic catch (e, stackTrace) {
+      // Print the stacktrace of the caught exception
+      debugPrintStack(stackTrace: stackTrace);
+      // Rethrow it to stop execution. This usually will be
+      // a FutureBuilder assertion error
+      rethrow;
+    }
   }
 
   Future<void> _initControllerModel(
