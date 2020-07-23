@@ -831,11 +831,11 @@ class MomentumBuilder extends StatefulWidget {
   ])) builder;
 
   /// Create a widget to display your model properties.
-  /// Parameter `controllers` and `builder` is required.
+  /// Parameter `builder` is required.
   const MomentumBuilder({
     Key key,
     this.owner,
-    @required this.controllers,
+    this.controllers,
     @required this.builder,
     this.dontRebuildIf,
   }) : super(key: key);
