@@ -27,6 +27,8 @@ Configure this controller to set some custom behaviors.
 
   - `lazy` - If `false`, this controller will be bootstrapped when the app starts. Defaults to `true`.
 
+  - `strategy` - Set the bootstrap behavior for controllers if lazy mode is `true`.
+
   - `enableLogging` - Whether to print detailed verbose logs or not. Defaults to `false`.
 ```dart
     Momentum(
@@ -35,6 +37,7 @@ Configure this controller to set some custom behaviors.
         ExampleControllerA()..config(
           maxTimeTravelSteps: 30, // maximum of 30 undo/redo steps.
           lazy: false, // bootstrap this controller when the app starts.
+          strategy: BootstrapStrategy.lazyFirstCall, // This controller will bootstrap on first "Momentum.controller<ExampleControllerA>(context)" call.
           enableLogging: true, // print verbose logs.
         ),
         ExampleControllerB()..config(lazy: false),

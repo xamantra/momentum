@@ -12,6 +12,24 @@ import 'momentum_types.dart';
 
 Type _getType<T>() => T;
 
+/// Set the bootstrap behavior for controllers if lazy mode is `true`.
+enum BootstrapStrategy {
+  /// *(default)*. Bootstrap will be called on first
+  /// `MomentumBuilder` usage of a controller if lazy mode is `true`.
+  lazyFirstBuild,
+
+  /// Bootstrap will be called on first `Momentum.controller<T>(context)`
+  /// call if `lazy` mode is `true`.
+  ///
+  /// ```dart
+  /// var someController = Momentum.controller<SomeController>(context); // will bootstrap.
+  ///
+  /// // in other widget ...
+  /// var someController = Momentum.controller<SomeController>(context); // will NOT bootstrap.
+  /// ```
+  lazyFirstCall,
+}
+
 MomentumError _invalidService = const MomentumError(
   'You are not allowed to grab '
   '"InjectService" directly. You might have done one of these:\n'
@@ -686,17 +704,38 @@ abstract class MomentumController<M> with _ControllerBase {
   bool get isLazy => _lazy;
   bool _configMethodCalled = false;
 
+  /// The bootstrap behavior for controllers if lazy is `true`.
+  ///
+  /// #### lazyFirstBuild
+  /// *(default)*. Bootstrap will be called on first
+  /// `MomentumBuilder` usage of a controller.
+  ///
+  /// #### lazyFirstCall
+  /// Bootstrap will be called on first
+  /// `Momentum.controller<T>(context)` call.
+  ///
+  /// ```dart
+  /// var someController = Momentum.controller<SomeController>(context); // will bootstrap.
+  ///
+  /// // in other widget ...
+  /// var someController = Momentum.controller<SomeController>(context); // will NOT bootstrap.
+  /// ```
+  BootstrapStrategy get strategy => _strategy;
+  BootstrapStrategy _strategy;
+
   /// Configure this controller to set some custom behaviors.
   void config({
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
+    BootstrapStrategy strategy,
   }) {
     if (!_configMethodCalled) {
       _configMethodCalled = true;
       _momentumLogging = enableLogging;
       _maxTimeTravelSteps = maxTimeTravelSteps?.clamp(1, 250);
       _lazy = lazy;
+      _strategy = strategy;
     }
   }
 
@@ -705,11 +744,13 @@ abstract class MomentumController<M> with _ControllerBase {
     bool enableLogging,
     int maxTimeTravelSteps,
     bool lazy,
+    BootstrapStrategy strategy,
   }) {
     _disablePersistentState = disabledPersistentState ?? false;
     _momentumLogging ??= enableLogging ?? false;
     _maxTimeTravelSteps ??= (maxTimeTravelSteps ?? 1).clamp(1, 250);
     _lazy ??= lazy ?? true;
+    _strategy ??= strategy ?? BootstrapStrategy.lazyFirstBuild;
   }
 
   String _formatMomentumLog(String log) {
@@ -888,9 +929,9 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       }
     }
     if (ctrls.isNotEmpty) {
-      // _models.addAll(ctrls.map((_) => null));
       for (var i = 0; i < ctrls.length; i++) {
-        if (ctrls[i]._lazy) {
+        var bootstrap = ctrls[i].strategy == BootstrapStrategy.lazyFirstBuild;
+        if (ctrls[i]._lazy && bootstrap) {
           ctrls[i]._bootstrap();
           ctrls[i]._bootstrapAsync();
         }
@@ -1009,20 +1050,22 @@ class _MomentumRoot extends StatefulWidget {
   final int maxTimeTravelSteps;
   final bool lazy;
   final int minimumBootstrapTime;
+  final BootstrapStrategy strategy;
   final bool testMode;
 
   const _MomentumRoot({
     Key key,
     @required this.child,
-    this.appLoader,
+    @required this.appLoader,
     @required this.controllers,
     @required this.services,
-    this.disabledPersistentState,
-    this.enableLogging,
-    this.maxTimeTravelSteps,
-    this.lazy,
-    this.minimumBootstrapTime,
-    this.testMode,
+    @required this.disabledPersistentState,
+    @required this.enableLogging,
+    @required this.maxTimeTravelSteps,
+    @required this.lazy,
+    @required this.minimumBootstrapTime,
+    @required this.strategy,
+    @required this.testMode,
   }) : super(key: key);
   @override
   _MomentumRootState createState() => _MomentumRootState();
@@ -1105,12 +1148,12 @@ class _MomentumRootState extends State<_MomentumRoot> {
   }
 
   void _bootstrapControllers(List<MomentumController> controllers) {
-    var lazyControllers = widget.controllers.where((e) {
+    var nonLazyControllers = widget.controllers.where((e) {
       return e != null && !e._lazy;
     });
-    for (var lazyController in lazyControllers) {
-      if (lazyController != null) {
-        lazyController._bootstrap();
+    for (var nonLazyController in nonLazyControllers) {
+      if (nonLazyController != null) {
+        nonLazyController._bootstrap();
       }
     }
   }
@@ -1209,6 +1252,7 @@ class Momentum extends InheritedWidget {
     int maxTimeTravelSteps,
     bool lazy,
     int minimumBootstrapTime,
+    BootstrapStrategy strategy,
     PersistSaver persistSave,
     PersistGet persistGet,
     bool testMode,
@@ -1228,6 +1272,7 @@ class Momentum extends InheritedWidget {
         lazy: lazy,
         minimumBootstrapTime: minimumBootstrapTime,
         testMode: testMode ?? false,
+        strategy: strategy,
       ),
       controllers: controllers,
       services: services,
@@ -1452,14 +1497,19 @@ class Momentum extends InheritedWidget {
   /// **NOTE:** Please use `Momentum.controller<T>` for consistency.
   /// `Momentum.of<T>` will be deprecated in the future.
   static T of<T extends MomentumController>(BuildContext context) {
-    return _getMomentumInstance(context)._getController<T>();
+    var controller = _getMomentumInstance(context)._getController<T>();
+    if (controller.strategy == BootstrapStrategy.lazyFirstCall) {
+      controller._bootstrap();
+      controller._bootstrapAsync();
+    }
+    return controller;
   }
 
   /// The static method for getting controllers inside a widget.
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {
-    return _getMomentumInstance(context)._getController<T>();
+    return Momentum.of<T>(context);
   }
 
   /// The static method for getting services inside a widget.

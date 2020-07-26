@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/src/in_memory_storage.dart';
 
@@ -19,6 +20,7 @@ import 'widgets/counter.dart';
 import 'widgets/error_widget9.dart';
 import 'widgets/persistence.dart';
 import 'widgets/reset.dart';
+import 'widgets/strategy.dart';
 import 'widgets/sync.dart';
 import 'widgets/time_travel.dart';
 
@@ -462,6 +464,39 @@ void main() {
       var controller = widget.getController<PersistTestController>();
       expect(controller.model.username, 'momentum');
       expect(controller.model.email, 'state@momentum');
+    });
+  });
+
+  group("BootstrapStrategy test", () {
+    testWidgets('lazyFirstCall', (tester) async {
+      await tester.runAsync(() async {
+        var widget = bootstrapStrategy();
+        await tester.pumpWidget(widget);
+        await Future.delayed(Duration(milliseconds: 1000));
+        await tester.pump();
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.byType(FlatButton), findsOneWidget);
+        await tester.tap(find.byType(FlatButton));
+        await Future.delayed(Duration(milliseconds: 1000));
+        await tester.pump();
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.byType(FlatButton), findsNothing);
+      });
+    });
+    testWidgets('lazyFirstCall - inline config', (tester) async {
+      await tester.runAsync(() async {
+        var widget = bootstrapStrategy(inlineConfig: true);
+        await tester.pumpWidget(widget);
+        await Future.delayed(Duration(milliseconds: 1000));
+        await tester.pump();
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.byType(FlatButton), findsOneWidget);
+        await tester.tap(find.byType(FlatButton));
+        await Future.delayed(Duration(milliseconds: 1000));
+        await tester.pump();
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.byType(FlatButton), findsNothing);
+      });
     });
   });
 }

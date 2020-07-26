@@ -7,6 +7,7 @@ export 'src/momentum_base.dart'
         Momentum,
         MomentumModel,
         MomentumController,
+        BootstrapStrategy,
         MomentumBuilder,
         MomentumState,
         MomentumService,
