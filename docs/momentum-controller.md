@@ -27,7 +27,7 @@ Configure this controller to set some custom behaviors.
 
   - `lazy` - If `false`, this controller will be bootstrapped when the app starts. Defaults to `true`.
 
-  - `strategy` - Set the bootstrap behavior for controllers if lazy mode is `true`.
+  - `strategy` - Set the bootstrap behavior for this controller if lazy mode is `true`.
 
   - `enableLogging` - Whether to print detailed verbose logs or not. Defaults to `false`.
 ```dart

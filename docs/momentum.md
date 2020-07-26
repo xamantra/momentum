@@ -124,6 +124,24 @@ If set to `false`, all controllers will be bootstrapped when the app starts.
 
 <hr>
 
+## strategy
+- Category: `Constructor Parameter`
+- Type: `BootstrapStrategy` *[enum]*
+- Default: `BootstrapStrategy.lazyFirstBuild`
+- Required: `NO`
+
+Set the bootstrap behavior for all controllers if lazy mode is `true`.
+  ```dart
+    Momentum(
+      // child: ...,
+      // controllers: [...],
+      // Bootstrap the controllers the first time they are accessed using "Momentum.controller<T>(context)"
+      strategy: BootstrapStrategy.lazyFirstCall,
+    ),
+  ```
+
+<hr>
+
 ## maxTimeTravelSteps
 - Category: `Constructor Parameter`
 - Type: `int`
