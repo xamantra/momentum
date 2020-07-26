@@ -1,5 +1,7 @@
 ## 1.3.1
-Fixed event bug where "sendEvent\<T\>()" was only called once but the "listen\<T\>" callback invokes twice.
+- Fixed event bug where "sendEvent\<T\>()" was only called once but the "listen\<T\>" callback invokes twice.
+- Implemented [Make controllers in momentum builder optional #22](https://github.com/xamantra/momentum/issues/22)
+- Implemented [Add try..catch while initing controllers and services #23](https://github.com/xamantra/momentum/issues/23)
 
 <hr>
 
