@@ -16,3 +16,11 @@ doc/api/
 /.idea/dictionaries/xamantra.xml
 example/lib/temp.dart
 CODECOV_TOKEN
+
+# ignore in pub publish
+docs/
+test/
+coverage/
+.vscode/
+.idea/
+.github/
