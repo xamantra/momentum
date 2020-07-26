@@ -1109,6 +1109,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
           enableLogging: widget.enableLogging,
           maxTimeTravelSteps: widget.maxTimeTravelSteps,
           lazy: widget.lazy,
+          strategy: widget.strategy,
         );
         await controller._initializeMomentumController();
       }
@@ -1498,7 +1499,8 @@ class Momentum extends InheritedWidget {
   /// `Momentum.of<T>` will be deprecated in the future.
   static T of<T extends MomentumController>(BuildContext context) {
     var controller = _getMomentumInstance(context)._getController<T>();
-    if (controller.strategy == BootstrapStrategy.lazyFirstCall) {
+    var lazyFirstCall = controller.strategy == BootstrapStrategy.lazyFirstCall;
+    if (controller.isLazy && lazyFirstCall) {
       controller._bootstrap();
       controller._bootstrapAsync();
     }
