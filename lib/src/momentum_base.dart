@@ -97,10 +97,12 @@ mixin RouterMixin on _ControllerBase {
   /// ```
   T getParam<T extends RouterParam>() {
     if (_mRootContext == null && _tester != null) {
-      if (_tester._currentMockRouteParams.runtimeType == _getType<T>()) {
-        return _tester._currentMockRouteParams as T;
+      if (_tester._currentMockRouteParams != null) {
+        if (_tester._currentMockRouteParams?.runtimeType == _getType<T>()) {
+          return _tester._currentMockRouteParams as T;
+        }
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_tester._currentMockRouteParams.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
-      print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_tester._currentMockRouteParams.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       return null;
     }
     var result = Router.getParam<T>(_mRootContext);
@@ -168,10 +170,10 @@ abstract class MomentumController<M> with _ControllerBase {
           'allowed to do that.'));
     }
     T result;
-    if (_mRootContext == null && _tester != null) {
-      result = _tester.controller<T>();
-    } else {
+    if (_mRootContext != null) {
       result = Momentum._ofInternal<T>(_mRootContext);
+    } else if (_tester != null) {
+      result = _tester.controller<T>();
     }
     if (result == null) {
       throw MomentumError(_formatMomentumLog('[$this]: called '
@@ -462,9 +464,10 @@ abstract class MomentumController<M> with _ControllerBase {
     var skip = !(await _shouldPersistState());
     if (skip || !_persistenceConfigured()) return;
 
+    Momentum momentum;
     PersistSaver _persistSave;
     if (_mRootContext != null) {
-      var momentum = Momentum._getMomentumInstance(_mRootContext);
+      momentum = Momentum._getMomentumInstance(_mRootContext);
       _persistSave = momentum._persistSave;
     } else if (_tester != null) {
       _persistSave = _tester.persistSave;
@@ -488,13 +491,19 @@ abstract class MomentumController<M> with _ControllerBase {
         }
       } else {
         var isSaved = false;
-        if (momentum._testMode) {
+        if (momentum != null && momentum._testMode) {
           isSaved = momentum._syncPersistSave(
             _mRootContext,
             persistenceKey,
             modelRawJson,
           );
-        } else {}
+        } else if (_persistSave != null) {
+          isSaved = await _persistSave(
+            _mRootContext,
+            persistenceKey,
+            modelRawJson,
+          );
+        }
         if (!isSaved && _momentumLogging) {
           print(_formatMomentumLog('[$this] wasn\'t able '
               'to save your model state using "persistSave". '
@@ -508,14 +517,21 @@ abstract class MomentumController<M> with _ControllerBase {
     var skip = !(await _shouldPersistState());
     if (skip || !_persistenceConfigured()) return null;
     M result;
-    var momentum = Momentum._getMomentumInstance(_mRootContext);
-    if (momentum._persistGet != null) {
+    Momentum momentum;
+    PersistGet _persistGet;
+    if (_mRootContext != null) {
+      momentum = Momentum._getMomentumInstance(_mRootContext);
+      _persistGet = momentum._persistGet;
+    } else if (_tester != null) {
+      _persistGet = _tester.persistGet;
+    }
+    if (_persistGet != null) {
       String modelRawJson;
-      if (momentum._testMode) {
+      if (momentum != null && momentum._testMode) {
         modelRawJson = momentum._syncPersistGet(_mRootContext, persistenceKey);
-      } else {
+      } else if (_persistGet != null) {
         modelRawJson = await tryasync(
-          () async => await momentum._persistGet(_mRootContext, persistenceKey),
+          () async => await _persistGet(_mRootContext, persistenceKey),
         );
       }
       if (modelRawJson == null || modelRawJson.isEmpty) {

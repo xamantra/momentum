@@ -17,6 +17,7 @@ void main() {
     var controller1 = tester.controller<Tester1Controller>();
     expect(controller1 != null, true);
     expect(controller1, isInstanceOf<Tester1Controller>());
+    expect(controller1.model.counter, 0);
     return;
   });
 }
