@@ -17,6 +17,11 @@ class RouterParamController extends MomentumController<RouterParamModel> with Ro
     return value;
   }
 
+  String getParamErrorTest() {
+    var value = getParam<TestRouterParamsB>()?.value;
+    return value;
+  }
+
   @override
   void onRouteChanged(RouterParam param) {
     if (param is TestRouterParamsC) {

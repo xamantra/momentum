@@ -97,11 +97,13 @@ mixin RouterMixin on _ControllerBase {
   /// ```
   T getParam<T extends RouterParam>() {
     if (_mRootContext == null && _tester != null) {
-      if (_tester._currentMockRouteParams != null) {
-        if (_tester._currentMockRouteParams?.runtimeType == _getType<T>()) {
-          return _tester._currentMockRouteParams as T;
+      var router = _tester._getRouterIfPresent();
+      if (router != null) {
+        var param = router.getCurrentParam<T>();
+        if (param != null && param.runtimeType == _getType<T>()) {
+          return param;
         }
-        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_tester._currentMockRouteParams.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -1616,8 +1618,6 @@ class MomentumTester {
   // ignore: public_member_api_docs
   final PersistGet persistGet;
 
-  dynamic _currentMockRouteParams;
-
   /// Testing tool for momentum.
   MomentumTester({
     @required this.controllers,
@@ -1759,5 +1759,15 @@ class MomentumTester {
           'in the Momentum constructor.');
     }
     return result;
+  }
+
+  Router _getRouterIfPresent() {
+    var result = trycatch(() => service<Router>());
+    return result;
+  }
+
+  void mockRouterParam(RouterParam param) {
+    service<Router>().mockParam(param);
+    print('Mock params has been set (${param.runtimeType}): $param');
   }
 }
