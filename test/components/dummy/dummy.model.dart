@@ -3,12 +3,20 @@ import 'package:momentum/momentum.dart';
 import 'index.dart';
 
 class DummyModel extends MomentumModel<DummyController> {
-  DummyModel(DummyController controller) : super(controller);
+  DummyModel(
+    DummyController controller, {
+    this.value,
+  }) : super(controller);
+
+  final String value;
 
   @override
-  void update() {
+  void update({
+    String value,
+  }) {
     DummyModel(
       controller,
+      value: value ?? this.value,
     ).updateMomentum();
   }
 }

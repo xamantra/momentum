@@ -1766,6 +1766,14 @@ class MomentumTester {
     return result;
   }
 
+  /// Mock call `bootstrap()` and `bootstrapAsync()`
+  /// for a specific lazy *controller* for testing.
+  Future<void> mockLazyBootstrap<T extends MomentumController>() async {
+    var ctrl = controller<T>();
+    ctrl._bootstrap();
+    await ctrl._bootstrapAsync();
+  }
+
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
     service<Router>().mockParam(param);

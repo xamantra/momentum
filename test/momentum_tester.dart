@@ -35,6 +35,20 @@ void main() {
     expect(counter.model.value, 3);
   });
 
+  test('Momentum Tester Tool: Counter', () async {
+    var tester = MomentumTester(
+      controllers: [
+        DummyController(),
+      ],
+    );
+
+    await tester.init();
+
+    var controller = tester.controller<DummyController>();
+    await tester.mockLazyBootstrap<DummyController>();
+    expect(controller.model.value, 'hello world!');
+  });
+
   test('Momentum Tester Tool: Router Param', () async {
     var tester = MomentumTester(
       controllers: [

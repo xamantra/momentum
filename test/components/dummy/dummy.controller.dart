@@ -9,11 +9,17 @@ class DummyController extends MomentumController<DummyModel> {
   DummyModel init() {
     return DummyModel(
       this,
+      value: '',
     );
   }
 
   @override
   Future<bool> skipPersist() async => true;
+
+  @override
+  void bootstrap() {
+    model.update(value: 'hello world!');
+  }
 
   int getCounterValue() {
     var counter = dependOn<CounterController>();
