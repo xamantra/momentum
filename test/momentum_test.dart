@@ -2,11 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 import 'package:momentum/src/in_memory_storage.dart';
 import 'package:momentum/src/momentum_base.dart';
+import 'package:momentum/src/momentum_error.dart';
 
 import 'components/counter/counter.controller.dart';
 import 'components/dummy/dummy.controller.dart';
 import 'components/router-param/index.dart';
 import 'utilities/dummy.dart';
+import 'widgets/inject_service.dart';
 import 'widgets/router_params.dart';
 
 void main() {
@@ -75,7 +77,26 @@ void main() {
     expect(dummy.getCounterValue(), 2);
   });
 
-  test('Momentum Tester Tool: getService<T>()', () async {
+  test('Momentum Tester Tool: MomentumController.getService<T>()', () async {
+    var tester = MomentumTester(
+      controllers: [],
+      services: [
+        DummyService(),
+        DummyService2(),
+      ],
+    );
+
+    await tester.init();
+
+    var service = tester.service<DummyService>();
+    var service2 = tester.service<DummyService2>();
+    var sum = service2.sum(2, 2);
+    expect(sum, 4);
+    var difference = service.difference(4, 2);
+    expect(difference, 2);
+  });
+
+  test('Momentum Tester Tool: MomentumService.getService<T>()', () async {
     var tester = MomentumTester(
       controllers: [
         DummyController(),
@@ -91,6 +112,52 @@ void main() {
     expect(dummy, isInstanceOf<DummyController>());
     var sum = dummy.getSum(10, 11);
     expect(sum, 21);
+  });
+
+  test('Momentum Tester Tool: InjectService', () async {
+    var tester = MomentumTester(
+      controllers: [],
+      services: [
+        InjectService(CalcAlias.disableLogs, CalculatorService()),
+        InjectService(
+          CalcAlias.enableLogs,
+          CalculatorService(
+            enableLogs: true,
+          ),
+        ),
+        DummyService(),
+      ],
+    );
+
+    await tester.init();
+
+    var calculatorWithoutLogs = tester.service<CalculatorService>();
+    expect(calculatorWithoutLogs.enableLogs, false);
+    var calculatorWithLogs = tester.service<CalculatorService>(
+      alias: CalcAlias.enableLogs,
+    );
+    expect(calculatorWithLogs.enableLogs, true);
+    calculatorWithoutLogs = tester.service<CalculatorService>(
+      alias: CalcAlias.disableLogs,
+    );
+    expect(calculatorWithoutLogs.enableLogs, false);
+  });
+
+  test('Momentum Tester Tool: Init Error test.', () async {
+    var tester = MomentumTester(
+      controllers: [
+        DummyPersistedController(errorTest: true)..config(lazy: false),
+      ],
+    );
+
+    try {
+      await tester.init();
+      expect(false, true); // force fail. this unit test should throw an error.
+    } on dynamic catch (e) {
+      expect(e, isA<MomentumError>());
+    }
+    var controller = tester.controller<DummyController>();
+    expect(controller, null);
   });
 
   test('Momentum Tester Tool: Persistent State', () async {
@@ -112,6 +179,46 @@ void main() {
     await restartedTester.init();
     counter = restartedTester.controller<DummyPersistedController>();
     expect(counter.model.counter, 4);
+  });
+
+  test('Momentum Tester Tool: InMemoryStorage', () async {
+    var tester = MomentumTester(controllers: []);
+    await tester.init();
+    var storage = tester.service<InMemoryStorage>();
+    storage.setString('mock-test', 'hello world');
+    expect(storage.getString('mock-test'), 'hello world');
+  });
+
+  test('Momentum Tester Tool: Service Error Test', () async {
+    var tester = MomentumTester(
+      controllers: [],
+      services: [DummyService()],
+    );
+    await tester.init();
+    try {
+      tester.service<CalculatorService>();
+      expect(false, true); // force fail, this test should throw an error.
+    } on dynamic catch (e) {
+      expect(e, isA<MomentumError>());
+    }
+    try {
+      tester.service<InjectService>();
+      expect(false, true); // force fail, this test should throw an error.
+    } on dynamic catch (e) {
+      expect(e, isA<MomentumError>());
+    }
+    try {
+      tester.service<InjectService<dynamic>>();
+      expect(false, true); // force fail, this test should throw an error.
+    } on dynamic catch (e) {
+      expect(e, isA<MomentumError>());
+    }
+    try {
+      tester.service<DummyService>(alias: 'none');
+      expect(false, true); // force fail, this test should throw an error.
+    } on dynamic catch (e) {
+      expect(e, isA<MomentumError>());
+    }
   });
 }
 

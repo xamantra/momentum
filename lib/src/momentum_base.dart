@@ -1643,8 +1643,8 @@ class MomentumTester {
       await _bootstrapControllersAsync();
       return true;
     } on dynamic catch (e, stackTrace) {
-      debugPrint(e?.toString());
-      debugPrint(stackTrace?.toString());
+      print(e?.toString());
+      print(stackTrace?.toString());
       throw MomentumError('[Momentum]: Failed to initialize your app. '
           'Check the above stacktrace for details.');
     }
@@ -1766,6 +1766,7 @@ class MomentumTester {
     return result;
   }
 
+  /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
     service<Router>().mockParam(param);
     print('Mock params has been set (${param.runtimeType}): $param');

@@ -27,6 +27,11 @@ class DummyController extends MomentumController<DummyModel> {
 }
 
 class DummyPersistedController extends MomentumController<DummyPersistedModel> {
+  DummyPersistedController({
+    this.errorTest = false,
+  });
+  final bool errorTest;
+
   @override
   DummyPersistedModel init() {
     return DummyPersistedModel(
@@ -35,7 +40,18 @@ class DummyPersistedController extends MomentumController<DummyPersistedModel> {
     );
   }
 
+  @override
+  void bootstrap() {
+    if (errorTest) {
+      dummyError();
+    }
+  }
+
   void increment() {
     model.update(counter: model.counter + 1);
+  }
+
+  void dummyError() {
+    throw 'dummy error only for testing';
   }
 }
