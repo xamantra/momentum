@@ -6,7 +6,7 @@ import 'momentum_builder.dart' as momentum_builder_test;
 import 'momentum_controller.dart' as momentum_controller_test;
 import 'momentum_model.dart' as momentum_model_test;
 import 'momentum_service.dart' as momentum_service_test;
-import 'momentum_test.dart' as momentum_tester_test;
+import 'momentum_tester.dart' as momentum_tester_test;
 import 'router.dart' as router_test;
 import 'types.dart' as types;
 import 'types_one_builder.dart' as types_one_builder_test;
