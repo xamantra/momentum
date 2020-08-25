@@ -55,7 +55,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Testing Initialization', (tester) async {
-    var widget = counter();
+    var widget = momentum();
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
 
@@ -76,7 +76,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Testing Functions', (tester) async {
-    var widget = counter();
+    var widget = momentum();
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
 
@@ -94,10 +94,10 @@ void main() {
 <hr>
 
 ## MomentumTester
-The new testing tool from momentum for unit testing controllers, models and services.
+The new testing tool for unit testing controllers, models and services.
 
-- `MomentumTester` has exact same parameters with the root widget `Momentum`.
-- The difference is `MomentumTester` doesn't have `child` and `appLoader` parameter. It is only for unit testing.
+- `MomentumTester` requires an instance of `Momentum`.
+- It re-uses the parameter from `Momentum` config for testing.
 - Because there are no widgets involve, asynchronous code works fine in `MomentumTester`.
 
 #### Example:
@@ -105,13 +105,7 @@ The new testing tool from momentum for unit testing controllers, models and serv
 ```dart
   test('Momentum Tester Tool: Counter', () async {
     // create tester instance.
-    var tester = MomentumTester(
-      controllers: [
-        CounterController(),
-      ],
-      services: // ...
-      // other parameters here.
-    );
+    var tester = MomentumTester(momentum());
 
     await tester.init(); // initialize the tester (calls bootstrap methods)
 
@@ -141,7 +135,7 @@ Now we are done with unit testing and confident with our controllers working pro
 #### Testing Widget Initialization
 ```dart
 testWidgets('Testing Widget Initialization', (tester) async {
-  var widget = counter();
+  var widget = momentum();
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 
@@ -152,14 +146,14 @@ testWidgets('Testing Widget Initialization', (tester) async {
   expect(find.text('0'), findsOneWidget);
 });
 ```
-- The only thing that is related to momentum here is the `counter()` method which returns an instance of `Momentum`.
+- The only thing that is related to momentum here is the `momentum()` method which returns an instance of `Momentum`.
 - The remaining code lines below are all from the `flutter_test` library. Refer to the official [flutter testing guide](https://flutter.dev/docs/cookbook/testing/widget/introduction#6-verify-the-widget-using-a-matcher).
 - We are only testing if the momentum root widget properly initializes the `child` parameter.
 
 #### Testing Widget Functions
 ```dart
 testWidgets('Testing Widget Functions', (tester) async {
-  var widget = counter();
+  var widget = momentum();
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 

@@ -1,5 +1,7 @@
 ## 1.3.2
 - Fixed [Global lazy strategy not being applied to controllers #27](https://github.com/xamantra/momentum/issues/27)
+- Added `MomentumTester` tool for unit testing.
+- The `child` parameter in `Momentum` constructor is no longer `@required`. But it is still required for the app to run, it is only not required in unit testing.
 
 <hr>
 
