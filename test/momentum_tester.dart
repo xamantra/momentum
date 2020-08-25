@@ -14,9 +14,7 @@ import 'widgets/router_params.dart';
 void main() {
   test('Momentum Tester Tool: Counter', () async {
     var tester = MomentumTester(
-      controllers: [
-        CounterController(),
-      ],
+      Momentum(controllers: [CounterController()]),
     );
 
     await tester.init();
@@ -35,11 +33,9 @@ void main() {
     expect(counter.model.value, 3);
   });
 
-  test('Momentum Tester Tool: Counter', () async {
+  test('Momentum Tester Tool: mockLazyBootstrap', () async {
     var tester = MomentumTester(
-      controllers: [
-        DummyController(),
-      ],
+      Momentum(controllers: [DummyController()]),
     );
 
     await tester.init();
@@ -51,12 +47,14 @@ void main() {
 
   test('Momentum Tester Tool: Router Param', () async {
     var tester = MomentumTester(
-      controllers: [
-        RouterParamController(),
-      ],
-      services: [
-        Router([]),
-      ],
+      Momentum(
+        controllers: [
+          RouterParamController(),
+        ],
+        services: [
+          Router([]),
+        ],
+      ),
     );
 
     await tester.init();
@@ -73,10 +71,12 @@ void main() {
 
   test('Momentum Tester Tool: dependOn<T>()', () async {
     var tester = MomentumTester(
-      controllers: [
-        DummyController(),
-        CounterController(),
-      ],
+      Momentum(
+        controllers: [
+          DummyController(),
+          CounterController(),
+        ],
+      ),
     );
 
     await tester.init();
@@ -93,11 +93,13 @@ void main() {
 
   test('Momentum Tester Tool: MomentumController.getService<T>()', () async {
     var tester = MomentumTester(
-      controllers: [],
-      services: [
-        DummyService(),
-        DummyService2(),
-      ],
+      Momentum(
+        controllers: [],
+        services: [
+          DummyService(),
+          DummyService2(),
+        ],
+      ),
     );
 
     await tester.init();
@@ -112,12 +114,14 @@ void main() {
 
   test('Momentum Tester Tool: MomentumService.getService<T>()', () async {
     var tester = MomentumTester(
-      controllers: [
-        DummyController(),
-      ],
-      services: [
-        DummyService(),
-      ],
+      Momentum(
+        controllers: [
+          DummyController(),
+        ],
+        services: [
+          DummyService(),
+        ],
+      ),
     );
 
     await tester.init();
@@ -130,17 +134,19 @@ void main() {
 
   test('Momentum Tester Tool: InjectService', () async {
     var tester = MomentumTester(
-      controllers: [],
-      services: [
-        InjectService(CalcAlias.disableLogs, CalculatorService()),
-        InjectService(
-          CalcAlias.enableLogs,
-          CalculatorService(
-            enableLogs: true,
+      Momentum(
+        controllers: [],
+        services: [
+          InjectService(CalcAlias.disableLogs, CalculatorService()),
+          InjectService(
+            CalcAlias.enableLogs,
+            CalculatorService(
+              enableLogs: true,
+            ),
           ),
-        ),
-        DummyService(),
-      ],
+          DummyService(),
+        ],
+      ),
     );
 
     await tester.init();
@@ -159,9 +165,11 @@ void main() {
 
   test('Momentum Tester Tool: Init Error test.', () async {
     var tester = MomentumTester(
-      controllers: [
-        DummyPersistedController(errorTest: true)..config(lazy: false),
-      ],
+      Momentum(
+        controllers: [
+          DummyPersistedController(errorTest: true)..config(lazy: false),
+        ],
+      ),
     );
 
     try {
@@ -196,7 +204,7 @@ void main() {
   });
 
   test('Momentum Tester Tool: InMemoryStorage', () async {
-    var tester = MomentumTester(controllers: []);
+    var tester = MomentumTester(Momentum(controllers: []));
     await tester.init();
     var storage = tester.service<InMemoryStorage>();
     storage.setString('mock-test', 'hello world');
@@ -205,8 +213,7 @@ void main() {
 
   test('Momentum Tester Tool: Service Error Test', () async {
     var tester = MomentumTester(
-      controllers: [],
-      services: [DummyService()],
+      Momentum(controllers: [], services: [DummyService()]),
     );
     await tester.init();
     try {
@@ -238,21 +245,23 @@ void main() {
 
 MomentumTester persistedTester() {
   return MomentumTester(
-    controllers: [
-      DummyPersistedController(),
-    ],
-    services: [
-      InMemoryStorage(),
-    ],
-    persistSave: (context, key, value) async {
-      var storage = InMemoryStorage.of('Momentum Tester Tool', null);
-      var result = storage.setString(key, value);
-      return result;
-    },
-    persistGet: (context, key) async {
-      var storage = InMemoryStorage.of('Momentum Tester Tool', null);
-      var result = storage.getString(key);
-      return result;
-    },
+    Momentum(
+      controllers: [
+        DummyPersistedController(),
+      ],
+      services: [
+        InMemoryStorage(),
+      ],
+      persistSave: (context, key, value) async {
+        var storage = InMemoryStorage.of('Momentum Tester Tool', null);
+        var result = storage.setString(key, value);
+        return result;
+      },
+      persistGet: (context, key) async {
+        var storage = InMemoryStorage.of('Momentum Tester Tool', null);
+        var result = storage.getString(key);
+        return result;
+      },
+    ),
   );
 }

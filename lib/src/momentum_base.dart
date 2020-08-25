@@ -422,8 +422,8 @@ abstract class MomentumController<M> with _ControllerBase {
       hasSaver = momentum._persistSave != null;
       hasGet = momentum._persistGet != null;
     } else if (_tester != null) {
-      hasSaver = _tester.persistSave != null;
-      hasGet = _tester.persistGet != null;
+      hasSaver = _tester._momentum._persistSave != null;
+      hasGet = _tester._momentum._persistGet != null;
     }
     if (hasSaver && !hasGet) {
       if (_momentumLogging && printLog) {
@@ -472,7 +472,7 @@ abstract class MomentumController<M> with _ControllerBase {
       momentum = Momentum._getMomentumInstance(_mRootContext);
       _persistSave = momentum._persistSave;
     } else if (_tester != null) {
-      _persistSave = _tester.persistSave;
+      _persistSave = _tester._momentum._persistSave;
     }
     if (_persistSave != null) {
       Map<String, dynamic> json;
@@ -525,7 +525,7 @@ abstract class MomentumController<M> with _ControllerBase {
       momentum = Momentum._getMomentumInstance(_mRootContext);
       _persistGet = momentum._persistGet;
     } else if (_tester != null) {
-      _persistGet = _tester.persistGet;
+      _persistGet = _tester._momentum._persistGet;
     }
     if (_persistGet != null) {
       String modelRawJson;
@@ -1270,6 +1270,12 @@ class Momentum extends InheritedWidget {
     @required Widget child,
     List<MomentumController> controllers,
     List<MomentumService> services,
+    bool disabledPersistentState,
+    bool enableLogging,
+    int maxTimeTravelSteps,
+    bool lazy,
+    BootstrapStrategy strategy,
+    int minimumBootstrapTime,
     ResetAll onResetAll,
     PersistSaver persistSave,
     PersistGet persistGet,
@@ -1279,6 +1285,12 @@ class Momentum extends InheritedWidget {
   })  : _controllers = controllers ?? const [],
         _onResetAll = onResetAll,
         _services = services ?? const [],
+        _disabledPersistentState = disabledPersistentState ?? false,
+        _enableLogging = enableLogging ?? false,
+        _maxTimeTravelSteps = maxTimeTravelSteps ?? 1,
+        _lazy = lazy ?? true,
+        _strategy = strategy ?? BootstrapStrategy.lazyFirstBuild,
+        _minimumBootstrapTime = minimumBootstrapTime ?? 0,
         _persistSave = persistSave,
         _persistGet = persistGet,
         _testMode = testMode ?? false,
@@ -1287,9 +1299,11 @@ class Momentum extends InheritedWidget {
         super(key: key, child: child);
 
   /// Configure your app with [Momentum] root widget.
+  ///
+  /// The parameter `child` is not required for *unit testing*.
   factory Momentum({
     Key key,
-    @required Widget child,
+    Widget child,
     Widget appLoader,
     @required List<MomentumController> controllers,
     List<MomentumService> services,
@@ -1323,6 +1337,12 @@ class Momentum extends InheritedWidget {
       ),
       controllers: controllers,
       services: services,
+      disabledPersistentState: disabledPersistentState,
+      enableLogging: enableLogging,
+      maxTimeTravelSteps: maxTimeTravelSteps,
+      lazy: lazy,
+      strategy: strategy,
+      minimumBootstrapTime: minimumBootstrapTime,
       onResetAll: onResetAll,
       persistSave: persistSave,
       persistGet: persistGet,
@@ -1386,6 +1406,13 @@ class Momentum extends InheritedWidget {
   final List<MomentumController> _controllers;
 
   final List<MomentumService> _services;
+
+  final bool _disabledPersistentState;
+  final bool _enableLogging;
+  final int _maxTimeTravelSteps;
+  final bool _lazy;
+  final BootstrapStrategy _strategy;
+  final int _minimumBootstrapTime;
 
   final ResetAll _onResetAll;
 
@@ -1595,43 +1622,18 @@ class Momentum extends InheritedWidget {
 
 /// Testing tool for momentum.
 class MomentumTester {
-  // ignore: public_member_api_docs
-  final List<MomentumController> controllers;
-  // ignore: public_member_api_docs
-  final List<MomentumService> services;
-  // ignore: public_member_api_docs
-  final ResetAll onResetAll;
-  // ignore: public_member_api_docs
-  final bool disabledPersistentState;
-  // ignore: public_member_api_docs
-  final bool enableLogging;
-  // ignore: public_member_api_docs
-  final int maxTimeTravelSteps;
-  // ignore: public_member_api_docs
-  final bool lazy;
-  // ignore: public_member_api_docs
-  final int minimumBootstrapTime;
-  // ignore: public_member_api_docs
-  final BootstrapStrategy strategy;
-  // ignore: public_member_api_docs
-  final PersistSaver persistSave;
-  // ignore: public_member_api_docs
-  final PersistGet persistGet;
-
   /// Testing tool for momentum.
-  MomentumTester({
-    @required this.controllers,
-    this.services = const [],
-    this.onResetAll,
-    this.disabledPersistentState,
-    this.enableLogging,
-    this.maxTimeTravelSteps,
-    this.lazy,
-    this.minimumBootstrapTime,
-    this.strategy,
-    this.persistSave,
-    this.persistGet,
-  });
+  MomentumTester(Momentum momentum) : _momentum = momentum;
+  final Momentum _momentum;
+
+  List<MomentumController> get _controllers => _momentum._controllers;
+  List<MomentumService> get _services => _momentum._services;
+  bool get _disabledPersistentState => _momentum._disabledPersistentState;
+  bool get _enableLogging => _momentum._enableLogging;
+  int get _maxTimeTravelSteps => _momentum._maxTimeTravelSteps;
+  bool get _lazy => _momentum._lazy;
+  BootstrapStrategy get _strategy => _momentum._strategy;
+  int get _minimumBootstrapTime => _momentum._minimumBootstrapTime;
 
   /// Initialize the dependencies the same way
   /// they are initialized in root widget.
@@ -1651,21 +1653,21 @@ class MomentumTester {
   }
 
   void _initServices() {
-    for (var service in services) {
+    for (var service in _services) {
       service._tester = this;
     }
   }
 
   Future<void> _initControllerModel() async {
-    for (var controller in controllers) {
+    for (var controller in _controllers) {
       if (controller != null) {
         controller._tester = this;
         controller._configInternal(
-          disabledPersistentState: disabledPersistentState,
-          enableLogging: enableLogging,
-          maxTimeTravelSteps: maxTimeTravelSteps,
-          lazy: lazy,
-          strategy: strategy,
+          disabledPersistentState: _disabledPersistentState,
+          enableLogging: _enableLogging,
+          maxTimeTravelSteps: _maxTimeTravelSteps,
+          lazy: _lazy,
+          strategy: _strategy,
         );
         await controller._initializeMomentumController();
       }
@@ -1673,7 +1675,7 @@ class MomentumTester {
   }
 
   void _bootstrapControllers() {
-    var nonLazyControllers = controllers.where((e) {
+    var nonLazyControllers = _controllers.where((e) {
       return e != null && !e._lazy;
     });
     for (var nonLazyController in nonLazyControllers) {
@@ -1685,21 +1687,21 @@ class MomentumTester {
 
   Future<void> _bootstrapControllersAsync() async {
     var started = DateTime.now().millisecondsSinceEpoch;
-    var nonLazyControllers = controllers.where((e) {
+    var nonLazyControllers = _controllers.where((e) {
       return e != null && !e._lazy;
     });
     var futures = nonLazyControllers.map<Future>((e) => e._bootstrapAsync());
     await Future.wait(futures);
     var finished = DateTime.now().millisecondsSinceEpoch;
     var diff = finished - started;
-    var min = (minimumBootstrapTime ?? 0).clamp(0, 9999999);
+    var min = (_minimumBootstrapTime ?? 0).clamp(0, 9999999);
     var waitTime = (min - diff).clamp(0, min);
     await Future.delayed(Duration(milliseconds: waitTime));
   }
 
   /// Get a controller of type `T`.
   T controller<T extends MomentumController>() {
-    var result = controllers.firstWhere(
+    var result = _controllers.firstWhere(
       (c) => c.runtimeType == _getType<T>(),
       orElse: () => null,
     );
@@ -1717,12 +1719,12 @@ class MomentumTester {
     }
     T result;
     if (alias == null) {
-      result = services.firstWhere(
+      result = _services.firstWhere(
         (c) => c.runtimeType == type,
         orElse: () => null,
       );
       if (result == null) {
-        var injectors = services
+        var injectors = _services
             .where(
               (s) => s.runtimeType == _getType<InjectService<T>>(),
             )
@@ -1737,7 +1739,7 @@ class MomentumTester {
         }
       }
     } else {
-      var injectors = services
+      var injectors = _services
           .where(
             (s) => s.runtimeType == _getType<InjectService<T>>(),
           )
@@ -1770,8 +1772,10 @@ class MomentumTester {
   /// for a specific lazy *controller* for testing.
   Future<void> mockLazyBootstrap<T extends MomentumController>() async {
     var ctrl = controller<T>();
-    ctrl._bootstrap();
-    await ctrl._bootstrapAsync();
+    if (ctrl.isLazy) {
+      ctrl._bootstrap();
+      await ctrl._bootstrapAsync();
+    }
   }
 
   /// Mock router params for testing.
