@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/counter/index.dart';
@@ -20,7 +21,7 @@ Momentum routerTestWidget({
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      Router([
+      momentum.Router([
         PageA(),
         PageB(),
         PageC(),
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -66,14 +67,14 @@ class PageA extends StatelessWidget {
             FlatButton(
               key: gotoPageBKey,
               onPressed: () {
-                Router.goto(context, PageB);
+                momentum.Router.goto(context, PageB);
               },
               child: Text('Goto PageB'),
             ),
             FlatButton(
               key: resetHistoryButton,
               onPressed: () {
-                Router.resetWithContext<PageB>(context);
+                momentum.Router.resetWithContext<PageB>(context);
               },
               child: Text('Reset Router'),
             ),
@@ -94,7 +95,7 @@ class PageB extends StatelessWidget {
         child: FlatButton(
           key: gotoPageCKey,
           onPressed: () {
-            Router.goto(context, PageC);
+            momentum.Router.goto(context, PageC);
           },
           child: Text('Goto PageC'),
         ),
@@ -115,14 +116,14 @@ class PageC extends StatelessWidget {
             FlatButton(
               key: fromPageCPop,
               onPressed: () {
-                Router.pop(context);
+                momentum.Router.pop(context);
               },
               child: Text('Pop From PageC'),
             ),
             FlatButton(
               key: clearHistoryButton,
               onPressed: () {
-                Router.clearHistoryWithContext(context);
+                momentum.Router.clearHistoryWithContext(context);
               },
               child: Text('Clear History'),
             ),

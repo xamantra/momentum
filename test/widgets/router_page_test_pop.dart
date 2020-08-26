@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/counter/index.dart';
@@ -12,7 +13,7 @@ Momentum routerPageTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      Router([
+      momentum.Router([
         RouterPageA(),
         RouterPageB(),
       ]),
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -59,7 +60,7 @@ class RouterPageA extends StatelessWidget {
               FlatButton(
                 key: gotoRouterPageB,
                 onPressed: () {
-                  Router.goto(context, RouterPageB);
+                  momentum.Router.goto(context, RouterPageB);
                 },
                 child: Text('Goto PageB'),
               ),
@@ -80,7 +81,7 @@ class RouterPageB extends StatelessWidget {
   Widget build(BuildContext context) {
     return RouterPage(
       onWillPop: () async {
-        Router.pop(context);
+        momentum.Router.pop(context);
         return false;
       },
       child: Scaffold(
@@ -90,7 +91,7 @@ class RouterPageB extends StatelessWidget {
               FlatButton(
                 key: gotoRouterPopKey,
                 onPressed: () {
-                  Router.pop(context);
+                  momentum.Router.pop(context);
                 },
                 child: Text('Pop'),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/counter/index.dart';
@@ -13,7 +14,7 @@ Momentum routerTransitionTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      Router([
+      momentum.Router([
         TransitionPageA(),
         TransitionPageB(),
         TransitionPageC(),
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -57,9 +58,13 @@ class TransitionPageA extends StatelessWidget {
         child: FlatButton(
           key: transitionToBKey,
           onPressed: () {
-            Router.goto(context, TransitionPageB, transition: (context, page) {
-              return MaterialPageRoute(builder: (context) => page);
-            });
+            momentum.Router.goto(
+              context,
+              TransitionPageB,
+              transition: (context, page) {
+                return MaterialPageRoute(builder: (context) => page);
+              },
+            );
           },
           child: Text('Goto PageB'),
         ),
@@ -78,9 +83,13 @@ class TransitionPageB extends StatelessWidget {
         child: FlatButton(
           key: transitionToCKey,
           onPressed: () {
-            Router.goto(context, TransitionPageC, transition: (context, page) {
-              return MaterialPageRoute(builder: (context) => page);
-            });
+            momentum.Router.goto(
+              context,
+              TransitionPageC,
+              transition: (context, page) {
+                return MaterialPageRoute(builder: (context) => page);
+              },
+            );
           },
           child: Text('Goto PageC'),
         ),
@@ -99,7 +108,7 @@ class TransitionPageC extends StatelessWidget {
         child: FlatButton(
           key: transitionCPop,
           onPressed: () {
-            Router.pop(context, transition: (context, page) {
+            momentum.Router.pop(context, transition: (context, page) {
               return MaterialPageRoute(builder: (context) => page);
             });
           },

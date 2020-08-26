@@ -8,6 +8,7 @@ import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
+import 'momentum_router.dart' as momentum_router;
 import 'momentum_types.dart';
 
 Type _getType<T>() => T;
@@ -107,11 +108,12 @@ mixin RouterMixin on _ControllerBase {
       }
       return null;
     }
-    var result = Router.getParam<T>(_mRootContext);
+    var result = momentum_router.Router.getParam<T>(_mRootContext);
     return result;
   }
 
-  /// A callback whenever [Router.goto] or [Router.pop] is called.
+  /// A callback whenever [momentum_router.Router.goto]
+  /// or [momentum_router.Router.pop] is called.
   /// The [RouterParam] is also provided.
   void onRouteChanged(RouterParam param) {}
 }
@@ -1167,7 +1169,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     for (var service in services) {
       if (service != null) {
         service._context = context;
-        if (service is Router) {
+        if (service is momentum_router.Router) {
           _momentumEvent.on().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
@@ -1763,8 +1765,8 @@ class MomentumTester {
     return result;
   }
 
-  Router _getRouterIfPresent() {
-    var result = trycatch(() => service<Router>());
+  momentum_router.Router _getRouterIfPresent() {
+    var result = trycatch(() => service<momentum_router.Router>());
     return result;
   }
 
@@ -1780,7 +1782,7 @@ class MomentumTester {
 
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
-    service<Router>().mockParam(param);
+    service<momentum_router.Router>().mockParam(param);
     print('Mock params has been set (${param.runtimeType}): $param');
   }
 }

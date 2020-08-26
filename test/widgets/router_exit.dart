@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/counter/index.dart';
@@ -11,7 +12,7 @@ Momentum routerExitApp() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      Router([
+      momentum.Router([
         PageExitTest(),
       ]),
       InMemoryStorage(),
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -53,7 +54,7 @@ class PageExitTest extends StatelessWidget {
         child: FlatButton(
           key: routerExitButtonKey,
           onPressed: () {
-            Router.pop(context);
+            momentum.Router.pop(context);
           },
           child: Text('Exit'),
         ),

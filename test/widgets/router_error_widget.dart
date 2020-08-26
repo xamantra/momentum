@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/momentum.dart';
 import 'package:momentum/src/in_memory_storage.dart';
 
@@ -11,18 +12,18 @@ Momentum routerErrorTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      Router([
+      momentum.Router([
         PageErrorTestA(),
       ]),
       InMemoryStorage(),
     ],
     persistSave: (context, key, value) async {
-      var storage = InMemoryStorage.of('routerErrorTest',context);
+      var storage = InMemoryStorage.of('routerErrorTest', context);
       var result = await storage.setString(key, value);
       return result;
     },
     persistGet: (context, key) async {
-      var storage = InMemoryStorage.of('routerErrorTest',context);
+      var storage = InMemoryStorage.of('routerErrorTest', context);
       var result = storage.getString(key);
       return result;
     },
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -53,7 +54,7 @@ class PageErrorTestA extends StatelessWidget {
         child: FlatButton(
           key: errorTestGotoPageBKey,
           onPressed: () {
-            Router.goto(context, PageErrorTestB);
+            momentum.Router.goto(context, PageErrorTestB);
           },
           child: Text('Goto PageB'),
         ),

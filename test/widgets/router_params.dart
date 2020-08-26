@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
+import 'package:momentum/momentum.dart' as momentum;
 import 'package:momentum/src/in_memory_storage.dart';
 
 import '../components/router-param-mixin/index.dart';
@@ -19,7 +20,7 @@ Momentum routerParamsTest([String sessionKey]) {
       RouterParamMixinController(),
     ],
     services: [
-      Router([
+      momentum.Router([
         RouterParamsTestA(),
         RouterParamsTestB(),
         RouterParamsTestC(),
@@ -94,7 +95,7 @@ class BasePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'BasePage',
-      home: Router.getActivePage(context),
+      home: momentum.Router.getActivePage(context),
     );
   }
 }
@@ -111,7 +112,7 @@ class RouterParamsTestA extends StatelessWidget {
           FlatButton(
             key: routerParamsBTestButtonKey,
             onPressed: () {
-              Router.goto(
+              momentum.Router.goto(
                 context,
                 RouterParamsTestB,
                 params: TestRouterParamsB('Hello World'),
@@ -122,7 +123,7 @@ class RouterParamsTestA extends StatelessWidget {
           FlatButton(
             key: routerParamsCTestButtonKey,
             onPressed: () {
-              Router.goto(
+              momentum.Router.goto(
                 context,
                 RouterParamsTestC,
                 params: TestRouterParamsB('Hello World'),
@@ -133,7 +134,7 @@ class RouterParamsTestA extends StatelessWidget {
           FlatButton(
             key: routerParamsDTestButtonKey,
             onPressed: () {
-              Router.goto(
+              momentum.Router.goto(
                 context,
                 RouterParamsTestD,
                 params: TestRouterParamsC('Flutter is awesome!'),
@@ -152,7 +153,7 @@ class RouterParamsTestB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParam<TestRouterParamsB>(context);
+    var params = momentum.Router.getParam<TestRouterParamsB>(context);
     return Scaffold(
       body: Text(params.value),
     );
@@ -164,7 +165,7 @@ class RouterParamsTestC extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParam<TestRouterParamsC>(context);
+    var params = momentum.Router.getParam<TestRouterParamsC>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -188,7 +189,7 @@ class RouterParamsTestD extends StatelessWidget {
           FlatButton(
             key: routerParamsDErrorButtonKey,
             onPressed: () {
-              Router.goto(
+              momentum.Router.goto(
                 context,
                 RouterParamsTestE,
                 params: TestRouterParamsD('12345'),
@@ -207,7 +208,7 @@ class RouterParamsTestE extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var params = Router.getParam<TestRouterParamsD>(context);
+    var params = momentum.Router.getParam<TestRouterParamsD>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -215,7 +216,7 @@ class RouterParamsTestE extends StatelessWidget {
           FlatButton(
             key: routerParamsPopButtonKey,
             onPressed: () {
-              Router.pop(
+              momentum.Router.pop(
                 context,
                 result: TestRouterParamsC('789'),
               );
