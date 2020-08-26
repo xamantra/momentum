@@ -6,7 +6,7 @@
 
 <p align="center">
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
-<a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
+<a href="https://github.com/xamantra/momentum/actions" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg" alt="Test" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
 <a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=likes&query=likes&url=http://www.pubscore.gq/likes?package=momentum" alt="likes" /></a>
 <a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=health&query=pub_points&url=http://www.pubscore.gq/pub-points?package=momentum" alt="health" /></a>
