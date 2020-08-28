@@ -127,6 +127,8 @@ The new testing tool for unit testing controllers, models and services.
 - `.controller<T>()` is a tester method for grabbing a specific controller to test.
 - There's also `.service<T>()` which is for a service.
 
+!> Full ***documentation*** for `MomentumTester` [is here](/momentum-tester).
+
 <hr>
 
 ## Widget Test

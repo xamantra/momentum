@@ -30,6 +30,7 @@
     - [InjectService](inject_service.md "InjectService - Indentical Services Dependency Injection | Momentum")
     - [Router](router.md "Router - For persistent routing | Momentum")
     - [RouterMixin](router_mixin.md "Router - Handling route parameters | Momentum")
+    - [MomentumTester](momentum-tester.md "MomentumTester - Testing tool | Momentum")
 
 - More
 
