@@ -12,5 +12,6 @@ export 'src/momentum_base.dart'
         MomentumState,
         MomentumService,
         InjectService,
+        MomentumTester,
         RouterMixin;
 export 'src/momentum_router.dart' show Router, RouterPage, RouterParam;
