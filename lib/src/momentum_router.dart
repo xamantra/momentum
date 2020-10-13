@@ -36,6 +36,12 @@ class Router extends MomentumService {
 
   MomentumEvent _momentumEvent;
 
+  // ignore: use_setters_to_change_properties
+  /// For testing only.
+  void mockParam(RouterParam param) {
+    _currentRouteParam = param;
+  }
+
   /// You don't have to call this method.
   /// This is automatically called by the
   /// library.
@@ -276,12 +282,12 @@ class Router extends MomentumService {
     return routeResult;
   }
 
-  T _getParam<T extends RouterParam>() {
+  /// Get the current route param without using context.
+  T getCurrentParam<T extends RouterParam>() {
     if (_currentRouteParam.runtimeType == _getType<T>()) {
-      return _currentRouteParam;
+      return _currentRouteParam as T;
     }
-    print(
-        'getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+    print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
     return null;
   }
 
@@ -301,7 +307,7 @@ class Router extends MomentumService {
   /// ```
   static T getParam<T extends RouterParam>(BuildContext context) {
     var service = Momentum.service<Router>(context);
-    var result = service._getParam<T>();
+    var result = service.getCurrentParam<T>();
     return result;
   }
 

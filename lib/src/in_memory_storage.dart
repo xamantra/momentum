@@ -13,9 +13,14 @@ class InMemoryStorage extends MomentumService {
     if (_persistedStorage.containsKey(sessionKey)) {
       return _persistedStorage[sessionKey];
     } else {
-      var inMemoryStorage = Momentum.getService<InMemoryStorage>(context);
-      _persistedStorage.addAll({sessionKey: inMemoryStorage});
-      return inMemoryStorage;
+      InMemoryStorage inMemoryStorage;
+      if (context != null) {
+        inMemoryStorage = Momentum.getService<InMemoryStorage>(context);
+      } else {
+        inMemoryStorage = InMemoryStorage();
+      }
+      _persistedStorage.putIfAbsent(sessionKey, () => inMemoryStorage);
+      return _persistedStorage[sessionKey];
     }
   }
 

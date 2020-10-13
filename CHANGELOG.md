@@ -1,8 +1,16 @@
+## 1.3.2
+- Fixed [Global lazy strategy not being applied to controllers #27](https://github.com/xamantra/momentum/issues/27)
+- Added `MomentumTester` tool for unit testing.
+- The `child` parameter in `Momentum` constructor is no longer `@required`. But it is still required for the app to run, it is only not required in unit testing.
+
+<hr>
+
 ## 1.3.1
 - Fixed event bug where "sendEvent\<T\>()" was only called once but the "listen\<T\>" callback invokes twice.
 - Implemented [Make controllers in momentum builder optional #22](https://github.com/xamantra/momentum/issues/22)
 - Implemented [Add try..catch while initing controllers and services #23](https://github.com/xamantra/momentum/issues/23)
 - Implemented [Add a way (and or option) to allow lazy loading of controller's bootstrapping when called via Momentum.controller<T>() #26](https://github.com/xamantra/momentum/issues/26)
+
 <hr>
 
 ## 1.3.0
