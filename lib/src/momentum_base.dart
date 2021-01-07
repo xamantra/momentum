@@ -1438,7 +1438,7 @@ class Momentum extends InheritedWidget {
     return result;
   }
 
-  /// Method for testing controllers.
+  /// Get a specific controller for testing.
   T getController<T extends MomentumController>() {
     return _getController<T>(true);
   }
@@ -1570,8 +1570,8 @@ class Momentum extends InheritedWidget {
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   ///
-  /// **NOTE:** Please use `Momentum.controller<T>` for consistency.
-  /// `Momentum.of<T>` will be deprecated in the future.
+  /// **NOTE:** This will be removed in the future.
+  @Deprecated('Use `Momentum.controller<T>(context)` instead')
   static T of<T extends MomentumController>(BuildContext context) {
     var controller = _getMomentumInstance(context)._getController<T>();
     var lazyFirstCall = controller.strategy == BootstrapStrategy.lazyFirstCall;
@@ -1586,15 +1586,21 @@ class Momentum extends InheritedWidget {
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {
-    return Momentum.of<T>(context);
+    var controller = _getMomentumInstance(context)._getController<T>();
+    var lazyFirstCall = controller.strategy == BootstrapStrategy.lazyFirstCall;
+    if (controller.isLazy && lazyFirstCall) {
+      controller._bootstrap();
+      controller._bootstrapAsync();
+    }
+    return controller;
   }
 
   /// The static method for getting services inside a widget.
   /// The service must be marked with [MomentumService] and
   /// injected into [Momentum] root widget.
   ///
-  /// **NOTE:** Please use `Momentum.service<T>` for consistency.
-  /// `Momentum.getService<T>` will be deprecated in the future.
+  /// **NOTE:** This will be removed in the future.
+  @Deprecated('Use `Momentum.service<T>(context)` instead')
   static T getService<T extends MomentumService>(BuildContext context) {
     return _getMomentumInstance(context)._getService<T>();
   }
