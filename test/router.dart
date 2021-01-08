@@ -14,7 +14,7 @@ void main() {
     testWidgets('Initialize', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
     });
@@ -22,7 +22,7 @@ void main() {
     testWidgets('#1 goto(...)', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(gotoPageBKey));
@@ -33,7 +33,7 @@ void main() {
     testWidgets('Restart', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
     });
@@ -41,7 +41,7 @@ void main() {
     testWidgets('#2 goto(...)', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
       await tester.tap(find.byKey(gotoPageCKey));
@@ -52,7 +52,7 @@ void main() {
     testWidgets('pop', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
       await tester.tap(find.byKey(fromPageCPop));
@@ -63,7 +63,7 @@ void main() {
     testWidgets('#3 goto(...): error test', (tester) async {
       var widget = routerErrorTest();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageErrorTestA, true);
       await tester.tap(find.byKey(errorTestGotoPageBKey));
@@ -75,7 +75,7 @@ void main() {
     testWidgets('#2 pop(...): exit app', (tester) async {
       var widget = routerExitApp();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageExitTest, true);
       await tester.tap(find.byKey(routerExitButtonKey));
@@ -86,7 +86,7 @@ void main() {
     testWidgets('#1 transition goto(...)', (tester) async {
       var widget = routerTransitionTest();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageA, true);
       await tester.tap(find.byKey(transitionToBKey));
@@ -97,7 +97,7 @@ void main() {
     testWidgets('transition Restart', (tester) async {
       var widget = routerTransitionTest();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageB, true);
     });
@@ -105,7 +105,7 @@ void main() {
     testWidgets('#2 transition goto(...)', (tester) async {
       var widget = routerTransitionTest();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is TransitionPageB, true);
       await tester.tap(find.byKey(transitionToCKey));
@@ -119,7 +119,7 @@ void main() {
     testWidgets('goto and clear history', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
       await tester.tap(find.byKey(gotoPageCKey));
@@ -133,7 +133,7 @@ void main() {
     testWidgets('#1 router reset', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(gotoPageBKey));
@@ -146,7 +146,7 @@ void main() {
     testWidgets('#2 router reset', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
     });
@@ -154,7 +154,7 @@ void main() {
     testWidgets('clearHistoryWithContext', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
       await tester.tap(find.byKey(clearHistoryButton));
@@ -165,7 +165,7 @@ void main() {
     testWidgets('resetWithContext', (tester) async {
       var widget = routerTestWidget();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(resetHistoryButton));
@@ -176,7 +176,7 @@ void main() {
     testWidgets('RouterPage Test', (tester) async {
       var widget = routerPageTest();
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is RouterPageA, true);
       await tester.tap(find.byKey(gotoRouterPageB));
@@ -198,7 +198,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
     });
@@ -209,7 +209,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(gotoPageBKey));
@@ -223,7 +223,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
     });
@@ -234,7 +234,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
       await tester.tap(find.byKey(gotoPageCKey));
@@ -248,7 +248,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
       await tester.tap(find.byKey(fromPageCPop));
@@ -262,7 +262,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageB, true);
       await tester.tap(find.byKey(gotoPageCKey));
@@ -279,7 +279,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(gotoPageBKey));
@@ -295,7 +295,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
     });
@@ -306,7 +306,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageC, true);
       await tester.tap(find.byKey(clearHistoryButton));
@@ -320,7 +320,7 @@ void main() {
         sessionName: 'routerTestWidget: testModeParam',
       );
       await launch(tester, widget);
-      var router = widget.serviceForTest<Router>();
+      var router = widget.serviceForTest<MomentumRouter>();
       expect(router == null, false);
       expect(router.getActive() is PageA, true);
       await tester.tap(find.byKey(resetHistoryButton));

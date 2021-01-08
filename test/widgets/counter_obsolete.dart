@@ -33,6 +33,7 @@ class CounterObsoleteApp extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           key: keyCounterObsoleteIncrement,
           onPressed: () {
+            // ignore: deprecated_member_use_from_same_package
             Momentum.of<CounterController>(context).increment();
           },
         ),

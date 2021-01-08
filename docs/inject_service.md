@@ -62,4 +62,4 @@ InjectService(ApiAlias.withLogs, ApiService(enableLogs: true)),
 ```
 Momentum will just basically return the one tagged with `ApiAlias.withoutLogs` because it if the first instance.
 
-!> `InjectService` is also a built in `MomentumService` like the `Router`.
+!> `InjectService` is also a built in `MomentumService` like the `MomentumRouter`.

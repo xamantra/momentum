@@ -51,10 +51,10 @@ Momentum momentum() {
 Here's the two line code you're waiting for:
 
 ```dart
-await Router.resetWithContext<Home>(context);
+await MomentumRouter.resetWithContext<Home>(context);
 Momentum.restart(context, momentum());
 ```
 
-- If you are using persistent navigation, we need to call `Router.resetWithContext<Home>` to set the initial page when the app restarts.
+- If you are using persistent navigation, we need to call `MomentumRouter.resetWithContext<Home>` to set the initial page when the app restarts.
 - `Momentum.restart(...)` called the method `momentum()`.
 - Requires context so you need to call this inside a widget like a button click.

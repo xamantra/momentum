@@ -14,7 +14,7 @@ Momentum routerTransitionTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      momentum.Router([
+      momentum.MomentumRouter([
         TransitionPageA(),
         TransitionPageB(),
         TransitionPageC(),
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: momentum.Router.getActivePage(context),
+      home: momentum.MomentumRouter.getActivePage(context),
     );
   }
 }
@@ -58,7 +58,7 @@ class TransitionPageA extends StatelessWidget {
         child: FlatButton(
           key: transitionToBKey,
           onPressed: () {
-            momentum.Router.goto(
+            momentum.MomentumRouter.goto(
               context,
               TransitionPageB,
               transition: (context, page) {
@@ -83,7 +83,7 @@ class TransitionPageB extends StatelessWidget {
         child: FlatButton(
           key: transitionToCKey,
           onPressed: () {
-            momentum.Router.goto(
+            momentum.MomentumRouter.goto(
               context,
               TransitionPageC,
               transition: (context, page) {
@@ -108,7 +108,7 @@ class TransitionPageC extends StatelessWidget {
         child: FlatButton(
           key: transitionCPop,
           onPressed: () {
-            momentum.Router.pop(context, transition: (context, page) {
+            momentum.MomentumRouter.pop(context, transition: (context, page) {
               return MaterialPageRoute(builder: (context) => page);
             });
           },

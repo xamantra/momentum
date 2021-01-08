@@ -10,12 +10,12 @@ import 'momentum_types.dart';
 Type _getType<T>() => T;
 
 /// A built-in momentum service for persistent navigation system.
-class Router extends MomentumService {
-  /// Create an instance of [Router]
+class MomentumRouter extends MomentumService {
+  /// Create an instance of [MomentumRouter]
   /// that can be injected to momentum
   /// as a service. Takes a list of
   /// widgets as routes.
-  Router(
+  MomentumRouter(
     List<Widget> pages, {
     bool enablePersistence,
   })  : _pages = pages,
@@ -107,7 +107,7 @@ class Router extends MomentumService {
       _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       Navigator.pushAndRemoveUntil(context, r, (r) => false);
     } else {
-      print('[$MomentumService -> $Router]: Unable to '
+      print('[$MomentumService -> $MomentumRouter]: Unable to '
           'find page widget of type "$route".');
     }
   }
@@ -258,7 +258,7 @@ class Router extends MomentumService {
     Route Function(BuildContext, Widget) transition,
     RouterParam params,
   }) {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     service._goto(
       context,
       route,
@@ -273,7 +273,7 @@ class Router extends MomentumService {
     Route Function(BuildContext, Widget) transition,
     RouterParam result,
   }) {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     var routeResult = service._pop(
       context,
       transition: transition,
@@ -292,21 +292,21 @@ class Router extends MomentumService {
   }
 
   /// Get the current route parameters specified using
-  /// the `params` parameter in `Router.goto(...)` method.
+  /// the `params` parameter in `MomentumRouter.goto(...)` method.
   ///
   /// ### Example:
   /// ```dart
   /// // setting the route params.
-  /// Router.goto(context, DashboardPage, params: DashboardParams(...));
+  /// MomentumRouter.goto(context, DashboardPage, params: DashboardParams(...));
   ///
   /// // accessing the route params inside widgets.
-  /// var params = Router.getParam<DashboardParams>(context);
+  /// var params = MomentumRouter.getParam<DashboardParams>(context);
   ///
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
   /// ```
   static T getParam<T extends RouterParam>(BuildContext context) {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     var result = service.getCurrentParam<T>();
     return result;
   }
@@ -315,14 +315,14 @@ class Router extends MomentumService {
   /// You may want this to be your initial
   /// widget when your app starts.
   static Widget getActivePage(BuildContext context) {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     var page = service.getActive();
     return page;
   }
 
   /// Clear navigation history using context.
   static Future<void> clearHistoryWithContext(BuildContext context) async {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     await service.clearHistory();
   }
 
@@ -330,7 +330,7 @@ class Router extends MomentumService {
   static Future<void> resetWithContext<T extends Widget>(
     BuildContext context,
   ) async {
-    var service = Momentum.service<Router>(context);
+    var service = Momentum.service<MomentumRouter>(context);
     await service.reset<T>();
   }
 }
@@ -362,7 +362,7 @@ class RouterPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: onWillPop ??
           () async {
-            Router.pop(context);
+            MomentumRouter.pop(context);
             return false;
           },
       child: child,

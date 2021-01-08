@@ -15,10 +15,10 @@ class ExampleController extends MomentumController<ExampleModel> with RouterMixi
 - Category: `Method`
 - Type: `T` extends `RouterParam`
 
-Get the current route parameters specified using the `params` parameter in `Router.goto(...)` or `Router.pop` method. Returns `null` if no parameter is provided.
+Get the current route parameters specified using the `params` parameter in `MomentumRouter.goto(...)` or `MomentumRouter.pop` method. Returns `null` if no parameter is provided.
 ```dart
 // setting the route params.
-Router.goto(context, DashboardPage, params: ExampleParam(...));
+MomentumRouter.goto(context, DashboardPage, params: ExampleParam(...));
 
 // accessing the route params inside controllers.
 var params = getParam<ExampleParam>();
@@ -30,7 +30,7 @@ var params = getParam<ExampleParam>();
 - Category: `Virtual Method`
 - Type: `void`
 
-A callback whenever `Router.goto` or `Router.pop` is called. The `RouterParam` is also injected here, will be `null` if not provided.
+A callback whenever `MomentumRouter.goto` or `MomentumRouter.pop` is called. The `RouterParam` is also injected here, will be `null` if not provided.
 
 Example:
 ```dart

@@ -172,7 +172,7 @@ FlatButton(
     var chatController = Momentum.controller<ChatController>(context);
     await chatController.disposeStream();
     // set the router to clear history and assign login page as initial page in the route.
-    await Router.resetWithContext<LoginPage>(context);
+    await MomentumRouter.resetWithContext<LoginPage>(context);
     // restart the app (this will show login page).
     Momentum.restart(context, momentum());
   },

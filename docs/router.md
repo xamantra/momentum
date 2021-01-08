@@ -1,4 +1,4 @@
-# Router
+# MomentumRouter
 A built-in `MomentumService` for persistent navigation system.
 ```dart
 void main() {
@@ -6,7 +6,7 @@ void main() {
     Momentum(
       // child: ...,
       services: [
-        Router([
+        MomentumRouter([
           LoginPage(),
           HomePage(),
           SettingsPage(),
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: // ...,
       theme: // ...,
-      home: Router.getActivePage(context),
+      home: MomentumRouter.getActivePage(context),
       // ...
     );
   }
@@ -48,13 +48,13 @@ class MyApp extends StatelessWidget {
 The function to navigate to a specific route. You specify the route using a `type` NOT a string route name or a MaterialPageRoute. You can also create a custom transition animation using the `transition` parameter. This is equivalent to `Navigator.push(...)`. You can also optionally pass in a route param and access it anywhere.
 ```dart
 // go to home page
-Router.goto(context, HomePage);
+MomentumRouter.goto(context, HomePage);
 
 // with parameters
-Router.goto(context, HomePage, params: HomeParam(title: 'Hello World'));
+MomentumRouter.goto(context, HomePage, params: HomeParam(title: 'Hello World'));
 
 // access the parameters using context
-var param = Router.getParam<HomeParam>(context);
+var param = MomentumRouter.getParam<HomeParam>(context);
 print(param.title); // or display it in a widget ...
 
 // access the parameters inside the controller
@@ -62,7 +62,7 @@ var param = getParam<HomeParam>();
 print(param.title); // or bind this in your model ...
 
 // with custom animation
-Router.goto(
+MomentumRouter.goto(
   context,
   HomePage,
   transition: (context, page) {
@@ -79,16 +79,16 @@ Router.goto(
 - Category: `Static Method`
 - Type: `void`
 
-Equivalent to `Navigator.pop(...)`. For closing dialogs, do not use this one, use `Navigator.pop(...)` instead. Similar to `Router.goto`, you can also pass in parameters optionally but the name is `result`. The reason why it's named `result` is to follow flutter's original convention for `Navigator.pop` which also has `result` parameter.
+Equivalent to `Navigator.pop(...)`. For closing dialogs, do not use this one, use `Navigator.pop(...)` instead. Similar to `MomentumRouter.goto`, you can also pass in parameters optionally but the name is `result`. The reason why it's named `result` is to follow flutter's original convention for `Navigator.pop` which also has `result` parameter.
 ```dart
 // go back to the previous page.
-Router.pop(context);
+MomentumRouter.pop(context);
 
 // with parameters, assuming you are from HomePage.
-Router.pop(context, result: LoginParam(action: 'User had logged out.'));
+MomentumRouter.pop(context, result: LoginParam(action: 'User had logged out.'));
 
 // access the parameters using context
-var param = Router.getParam<LoginParam>(context);
+var param = MomentumRouter.getParam<LoginParam>(context);
 print(param.action); // or display it in a widget ...
 
 // access the parameters inside the controller
@@ -96,7 +96,7 @@ var param = getParam<LoginParam>();
 print(param.action); // or bind this in your model ...
 
 // with custom animation
-Router.goto(
+MomentumRouter.goto(
   context,
   transition: (context, page) {
     // MaterialPageRoute is not the one you need here :)
@@ -123,7 +123,7 @@ class ExampleParam extends RouterParam {
 
 // usage
 
-Router.goto(context, HomePage, params: ExampleParam('Hello', 'World'));
+MomentumRouter.goto(context, HomePage, params: ExampleParam('Hello', 'World'));
 ```
 
 <hr>
@@ -132,7 +132,7 @@ Router.goto(context, HomePage, params: ExampleParam('Hello', 'World'));
 - Category: `Static Method`
 - Type: `T` extends `RouterParam`
 
-Get the current route parameters specified using the params parameter in Router.goto(...) method.
+Get the current route parameters specified using the params parameter in MomentumRouter.goto(...) method.
 
 ```dart
 class ExamplePage extends StatelessWidget {
@@ -140,7 +140,7 @@ class ExamplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var param = Router.getParam<ExampleParam>(context);
+    var param = MomentumRouter.getParam<ExampleParam>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -161,7 +161,7 @@ class ExamplePage extends StatelessWidget {
 
 Clear the navigation history. Popping will close the app.
 ```dart
-var router = Momentum.service<Router>(context);
+var router = Momentum.service<MomentumRouter>(context);
 await router.clearHistory();
 ```
 
@@ -173,7 +173,7 @@ await router.clearHistory();
 
 Shorthand for `.clearHistory()`.
 ```dart
-await Router.clearHistoryWithContext(context);
+await MomentumRouter.clearHistoryWithContext(context);
 ```
 
 <hr>
@@ -184,7 +184,7 @@ await Router.clearHistoryWithContext(context);
 
 Clear navigation history and set an initial page. The recommended use case for this is when you want to restart your app.
 ```dart
-var router = Momentum.service<Router>(context);
+var router = Momentum.service<MomentumRouter>(context);
 // this will not automatically go to the login page.
 await router.reset<LoginPage>();
 // will be restarted in the login page.
@@ -200,7 +200,7 @@ Momentum.restart(context, momentum());
 Shorthand for `.reset<T>()`.
 ```dart
 // this will not automatically go to login page.
-await Router.resetWithContext<LoginPage>(context);
+await MomentumRouter.resetWithContext<LoginPage>(context);
 // will be restarted in login page.
 Momentum.restart(context, momentum());
 ```

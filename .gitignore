@@ -16,3 +16,4 @@ doc/api/
 /.idea/dictionaries/xamantra.xml
 example/lib/temp.dart
 CODECOV_TOKEN
+sandbox/

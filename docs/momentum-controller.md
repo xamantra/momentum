@@ -273,7 +273,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
         // "event" is of type "LoginEvent".
         if (event.success) {
           // go to home page for example.
-          Router.goto(context, Home);
+          MomentumRouter.goto(context, Home);
         } else {
           showSnackbar(message: event.message, error: true);
         }

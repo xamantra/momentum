@@ -82,7 +82,7 @@ class _LoginWidgetState extends MomentumState<LoginWidget> {
       invoke: (event) {
         switch (event.action) {
           case LoginEventAction.LoginSuccess:
-            Router.goto(context, Home);
+            MomentumRouter.goto(context, Home);
             break;
           case LoginEventAction.UsernameDoesntExists:
             showSnackbar(message: event.message);

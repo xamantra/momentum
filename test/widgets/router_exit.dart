@@ -12,7 +12,7 @@ Momentum routerExitApp() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      momentum.Router([
+      momentum.MomentumRouter([
         PageExitTest(),
       ]),
       InMemoryStorage(),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: momentum.Router.getActivePage(context),
+      home: momentum.MomentumRouter.getActivePage(context),
     );
   }
 }
@@ -54,7 +54,7 @@ class PageExitTest extends StatelessWidget {
         child: FlatButton(
           key: routerExitButtonKey,
           onPressed: () {
-            momentum.Router.pop(context);
+            momentum.MomentumRouter.pop(context);
           },
           child: Text('Exit'),
         ),

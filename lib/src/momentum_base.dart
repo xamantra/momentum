@@ -8,7 +8,6 @@ import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
-import 'momentum_router.dart' as momentum_router;
 import 'momentum_types.dart';
 
 Type _getType<T>() => T;
@@ -83,15 +82,15 @@ class _MomentumListener<M> {
 /// handle route changes from momentum's built-in routing system.
 mixin RouterMixin on _ControllerBase {
   /// Get the current route parameters specified using
-  /// the `params` parameter in `Router.goto(...)` method.
+  /// the `params` parameter in `MomentumRouter.goto(...)` method.
   ///
   /// ### Example:
   /// ```dart
   /// // setting the route params.
-  /// Router.goto(context, DashboardPage, params: DashboardParams(...));
+  /// MomentumRouter.goto(context, DashboardPage, params: DashboardParams(...));
   ///
   /// // accessing the route params inside widgets.
-  /// var params = Router.getParam<DashboardParams>(context);
+  /// var params = MomentumRouter.getParam<DashboardParams>(context);
   ///
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
@@ -108,12 +107,12 @@ mixin RouterMixin on _ControllerBase {
       }
       return null;
     }
-    var result = momentum_router.Router.getParam<T>(_mRootContext);
+    var result = MomentumRouter.getParam<T>(_mRootContext);
     return result;
   }
 
-  /// A callback whenever [momentum_router.Router.goto]
-  /// or [momentum_router.Router.pop] is called.
+  /// A callback whenever [momentum_router.MomentumRouter.goto]
+  /// or [momentum_router.MomentumRouter.pop] is called.
   /// The [RouterParam] is also provided.
   void onRouteChanged(RouterParam param) {}
 }
@@ -1169,7 +1168,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     for (var service in services) {
       if (service != null) {
         service._context = context;
-        if (service is momentum_router.Router) {
+        if (service is MomentumRouter) {
           _momentumEvent.on().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
@@ -1771,8 +1770,8 @@ class MomentumTester {
     return result;
   }
 
-  momentum_router.Router _getRouterIfPresent() {
-    var result = trycatch(() => service<momentum_router.Router>());
+  MomentumRouter _getRouterIfPresent() {
+    var result = trycatch(() => service<MomentumRouter>());
     return result;
   }
 
@@ -1788,7 +1787,7 @@ class MomentumTester {
 
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
-    service<momentum_router.Router>().mockParam(param);
+    service<MomentumRouter>().mockParam(param);
     print('Mock params has been set (${param.runtimeType}): $param');
   }
 }
