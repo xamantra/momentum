@@ -1585,13 +1585,8 @@ class Momentum extends InheritedWidget {
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {
-    var controller = _getMomentumInstance(context)._getController<T>();
-    var lazyFirstCall = controller.strategy == BootstrapStrategy.lazyFirstCall;
-    if (controller.isLazy && lazyFirstCall) {
-      controller._bootstrap();
-      controller._bootstrapAsync();
-    }
-    return controller;
+    // ignore: deprecated_member_use_from_same_package
+    return Momentum.of<T>(context);
   }
 
   /// The static method for getting services inside a widget.
