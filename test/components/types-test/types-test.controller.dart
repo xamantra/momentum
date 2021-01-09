@@ -69,7 +69,9 @@ mixin TypesTestMixinCtrl on TypesTestCtrl {
 }
 
 // ignore: lines_longer_than_80_chars
-class ImplementsABCTypesCtrl extends TypesTestCtrl with TypesTestMixinCtrl implements ATypesTestCtrl, BTypesTestCtrl, CTypesTestCtrl {
+class ImplementsABCTypesCtrl extends TypesTestCtrl
+    with TypesTestMixinCtrl
+    implements ATypesTestCtrl, BTypesTestCtrl, CTypesTestCtrl {
   @override
   ATypesTestModel init() {
     return ATypesTestModel(

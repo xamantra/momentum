@@ -23,8 +23,8 @@ class PersistError4Model extends MomentumModel<PersistError4Controller> {
 
   @override
   Map<String, dynamic> toJson() => {
-    'data': data.toJson(),
-  };
+        'data': data.toJson(),
+      };
 
   @override
   PersistError4Model fromJson(Map<String, dynamic> json) {

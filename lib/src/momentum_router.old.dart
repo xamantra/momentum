@@ -10,12 +10,16 @@ import 'momentum_types.dart';
 Type _getType<T>() => T;
 
 /// A built-in momentum service for persistent navigation system.
-class MomentumRouter extends MomentumService {
-  /// Create an instance of [MomentumRouter]
+@Deprecated('Use "MomentumRouter" instead. This will be removed in the future')
+class Router extends MomentumService {
+  /// Create an instance of [Router]
   /// that can be injected to momentum
   /// as a service. Takes a list of
   /// widgets as routes.
-  MomentumRouter(
+  @Deprecated(
+    'Use "MomentumRouter" instead. This will be removed in the future',
+  )
+  Router(
     List<Widget> pages, {
     bool enablePersistence,
   })  : _pages = pages,
@@ -107,7 +111,7 @@ class MomentumRouter extends MomentumService {
       _momentumEvent.trigger(RouterSignal(_currentRouteParam));
       Navigator.pushAndRemoveUntil(context, r, (r) => false);
     } else {
-      print('[$MomentumService -> $MomentumRouter]: Unable to '
+      print('[$MomentumService -> $Router]: Unable to '
           'find page widget of type "$route".');
     }
   }
@@ -258,7 +262,7 @@ class MomentumRouter extends MomentumService {
     Route Function(BuildContext, Widget) transition,
     RouterParam params,
   }) {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     service._goto(
       context,
       route,
@@ -273,7 +277,7 @@ class MomentumRouter extends MomentumService {
     Route Function(BuildContext, Widget) transition,
     RouterParam result,
   }) {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     var routeResult = service._pop(
       context,
       transition: transition,
@@ -307,7 +311,7 @@ class MomentumRouter extends MomentumService {
   /// var params = getParam<DashboardParams>();
   /// ```
   static T getParam<T extends RouterParam>(BuildContext context) {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     var result = service.getCurrentParam<T>();
     return result;
   }
@@ -316,14 +320,14 @@ class MomentumRouter extends MomentumService {
   /// You may want this to be your initial
   /// widget when your app starts.
   static Widget getActivePage(BuildContext context) {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     var page = service.getActive();
     return page;
   }
 
   /// Clear navigation history using context.
   static Future<void> clearHistoryWithContext(BuildContext context) async {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     await service.clearHistory();
   }
 
@@ -331,7 +335,7 @@ class MomentumRouter extends MomentumService {
   static Future<void> resetWithContext<T extends Widget>(
     BuildContext context,
   ) async {
-    var service = Momentum.service<MomentumRouter>(context);
+    var service = Momentum.service<Router>(context);
     await service.reset<T>();
   }
 }
@@ -363,7 +367,8 @@ class RouterPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: onWillPop ??
           () async {
-            MomentumRouter.pop(context);
+            // ignore: deprecated_member_use_from_same_package
+            Router.pop(context);
             return false;
           },
       child: child,
