@@ -119,14 +119,14 @@ class ExampleController extends MomentumController<ExampleModel> {
 
 ## Dependency Injection
 With momentum, you can easily access almost everything. Take a look at these codes:
-- Access another controller inside a controller using `dependOn<T>()` method:
+- Access another controller inside a controller using `controller<T>()` method:
   ```dart
   class AuthController extends MomentumController<AuthModel> {
 
     // ...
 
     void login() {
-      var sessionController = dependOn<SessionController>();
+      var sessionController = controller<SessionController>();
       // do anything with "sessionController" here.
       // you can access "sessionController.model.propertyName".
       // you can also call functions like "sessionController.createSession()".
@@ -163,14 +163,14 @@ With momentum, you can easily access almost everything. Take a look at these cod
     }
   )
   ```
-- Access a service inside a controller using `getService<T>()` method:
+- Access a service inside a controller using `service<T>()` method:
   ```dart
   class AuthController extends MomentumController<AuthModel> {
 
     // ...
 
     void login() async {
-      var apiService = getService<ApiService>();
+      var apiService = service<ApiService>();
       var result = await apiService.auth(
         username: model.username,
         password: model.password,

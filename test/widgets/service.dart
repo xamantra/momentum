@@ -28,7 +28,7 @@ class ServiceA extends MomentumService {
   int increment(int value) => value + 1;
 
   double times2(double value) {
-    var serviceB = getService<ServiceB>();
+    var serviceB = service<ServiceB>();
     return serviceB._times2(value);
   }
 }

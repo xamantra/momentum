@@ -178,32 +178,32 @@ void main() {
     expect(controller.model.value, 3);
     expect(controller.model.name, 'momentum3');
   });
-  testWidgets('dependOn<T>()', (tester) async {
+  testWidgets('controller<T>()', (tester) async {
     var widget = asyncApp();
     await launch(tester, widget, milliseconds: 3000);
     var controller = widget.getController<AsyncTestController>();
-    var dummyController = controller.dependOn<DummyController>();
+    var dummyController = controller.controller<DummyController>();
     expect(dummyController is DummyController, true);
     try {
-      controller.dependOn<AsyncTestController>();
+      controller.controller<AsyncTestController>();
     } on dynamic catch (e) {
       expect(e is Exception, true);
     }
     try {
-      controller.dependOn<CounterController>();
+      controller.controller<CounterController>();
     } on dynamic catch (e) {
       expect(e is Exception, true);
     }
   });
-  testWidgets('getService<T>()', (tester) async {
+  testWidgets('service<T>()', (tester) async {
     var widget = persistedApp();
     await launch(tester, widget, milliseconds: 3000);
     var controller = widget.getController<DummyController>();
     expect(controller is DummyController, true);
-    var service = controller.getService<InMemoryStorage>();
+    var service = controller.service<InMemoryStorage>();
     expect(service is InMemoryStorage, true);
     try {
-      controller.getService<DummyService>();
+      controller.service<DummyService>();
     } on dynamic catch (e) {
       expect(e is Exception, true);
     }

@@ -1,14 +1,11 @@
 # Momentum
-Closest `MVC` implementation for flutter state management.
+`MVC` pattern for flutter. Works as *state management*, *dependency injection* and *service locator*.
 
-### Features
-- Model View Controller pattern.
-- Immutable. *(only one way to update values)*
-- Service locator.
-- Dependency injection.
-- Routing.
+### Other Features
+- Routing. *(persistence support)*
 - Event system. *(alerts, dialogs, navigations, etc.)*
 - Persistence state. *(configurable)*
+- Immutable. *(only one way to update values)*
 - Modular code.
 - Highly testable.
 

@@ -32,7 +32,7 @@ class AuthController extends MomentumController<AuthModel> {
   // ...
 
   Future<void> login() async {
-    var apiService = getService<ApiService>();
+    var apiService = service<ApiService>();
     var response = await apiService.auth(
       username: model.username, 
       password: model.password
@@ -51,7 +51,7 @@ class AuthController extends MomentumController<AuthModel> {
 
 <hr>
 
-## .getService\<T\>()
+## .service\<T\>()
 - Category: `Method`
 - Type: `T` extends `MomentumService`
 
@@ -62,7 +62,7 @@ class ServiceA extends MomentumService {
   int increment(int value) => value + 1;
 
   double times2(double value) {
-    var serviceB = getService<ServiceB>();
+    var serviceB = service<ServiceB>();
     return serviceB.times2(value);
   }
 }
@@ -74,7 +74,7 @@ class ServiceB extends MomentumService {
 
 If you are using the new `InjectService` to add your services. You can also use the `alias` parameter to get a specific service with matching alias.
 ```dart
-var serviceB = getService<ServiceB>(alias: ServiceAlias.noLogs);
+var serviceB = service<ServiceB>(alias: ServiceAlias.noLogs);
 ```
 `alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
 

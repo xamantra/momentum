@@ -137,7 +137,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
 <hr>
 
-## .getService\<T\>()
+## .service\<T\>()
 - Category: `Method`
 - Return Type: `T` *where T extends MomentumService*
 
@@ -149,7 +149,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   Future<void> loadProfile() async {
-    var apiService = getService<ApiService>(); // or this.getService<T>()
+    var apiService = service<ApiService>(); // or this.service<T>()
     var profile = await apiService.getProfile();
     model.update(profile: profile);
   }
@@ -159,7 +159,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 ```
 If you are using the new `InjectService` to add your services. You can also use the `alias` parameter to get a specific service with matching alias.
 ```dart
-var apiService = getService<ApiService>(alias: ApiAlias.logsEnabled);
+var apiService = service<ApiService>(alias: ApiAlias.logsEnabled);
 ```
 `alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
 
@@ -167,7 +167,7 @@ Refer to the full documentation for `InjectService` [here](https://xamdev.gq/mom
 
 <hr>
 
-## .dependOn\<T\>()
+## .controller\<T\>()
 - Category: `Method`
 - Return Type: `T` *where T extends MomentumController*
 
@@ -179,7 +179,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   void logout() {
-    var sessionController = dependOn<SessionController>(); // or this.dependOn<T>();
+    var sessionController = controller<SessionController>(); // or this.controller<T>();
     sessionController.destroySession();
     model.updated(loggedOut: true);
   }

@@ -36,7 +36,7 @@ class LoginController extends Momentum<LoginModel> {
   // ...
 
   void login() async {
-    var apiService = getService<ApiService>();
+    var apiService = service<ApiService>();
     var response = await apiService.auth(
       username: model.username,
       password: model.password,

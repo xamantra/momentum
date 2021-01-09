@@ -103,8 +103,7 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print(
-            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -166,6 +165,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// Dependency injection method for getting other controllers.
   /// Useful for accessing other controllers' function
   /// and model properties without dragging the widget context around.
+  @Deprecated('Use "controller<T>()" instead')
   T dependOn<T extends MomentumController>() {
     var type = _getType<T>();
     if (runtimeType == type) {
@@ -189,9 +189,18 @@ abstract class MomentumController<M> with _ControllerBase {
     return result;
   }
 
+  /// Dependency injection method for getting other controllers.
+  /// Useful for accessing other controllers' function
+  /// and model properties without dragging the widget context around.
+  T controller<T extends MomentumController>() {
+    // ignore: deprecated_member_use_from_same_package
+    return dependOn<T>();
+  }
+
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
+  @Deprecated('Use "service<T>()" instead')
   T getService<T extends MomentumService>({dynamic alias}) {
     try {
       if (_mRootContext == null && _tester != null) {
@@ -209,6 +218,14 @@ abstract class MomentumController<M> with _ControllerBase {
           'root widget implementation if the service "$T" '
           'was instantiated there.'));
     }
+  }
+
+  /// A method for getting a service marked with
+  /// [MomentumService] that are injected into
+  /// [Momentum] root widget.
+  T service<T extends MomentumService>({dynamic alias}) {
+    // ignore: deprecated_member_use_from_same_package
+    return getService<T>(alias: alias);
   }
 
   bool _booted = false;
@@ -813,12 +830,21 @@ abstract class MomentumService {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
+  @Deprecated('Use "service<T>()" instead')
   T getService<T extends MomentumService>({dynamic alias}) {
     if (_context == null && _tester != null) {
       return _tester.service<T>(alias: alias);
     }
     var momentum = Momentum._getMomentumInstance(_context);
     return momentum._getService<T>(alias: alias);
+  }
+
+  /// A method for getting a service marked with
+  /// [MomentumService] that are injected into
+  /// [Momentum] root widget.
+  T service<T extends MomentumService>({dynamic alias}) {
+    // ignore: deprecated_member_use_from_same_package
+    return getService<T>(alias: alias);
   }
 }
 

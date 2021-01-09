@@ -22,13 +22,13 @@ class DummyController extends MomentumController<DummyModel> {
   }
 
   int getCounterValue() {
-    var counter = dependOn<CounterController>();
+    var counter = controller<CounterController>();
     return counter.model.value;
   }
 
   double getSum(double a, double b) {
-    var service = getService<DummyService>();
-    return service.sum(a, b);
+    var s = service<DummyService>();
+    return s.sum(a, b);
   }
 }
 
