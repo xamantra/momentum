@@ -1,3 +1,4 @@
+import 'package:example/src/widgets/pages/example-timer/index.dart';
 import 'package:flutter/material.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -26,9 +27,7 @@ class HomePage extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
-                  ExampleItem(
-                    name: 'Simple Timer Example',
-                  ),
+                  ExampleItem(name: 'Simple Timer Example', page: TimerExamplePage()),
                 ],
               ),
             ),

@@ -5,9 +5,11 @@ class ExampleItem extends StatelessWidget {
   const ExampleItem({
     Key key,
     @required this.name,
+    @required this.page,
   }) : super(key: key);
 
   final String name;
+  final Widget page;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,9 @@ class ExampleItem extends StatelessWidget {
           child: FlatButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             padding: EdgeInsets.zero,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+            },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: sy(8), vertical: sy(4)),
               child: Row(

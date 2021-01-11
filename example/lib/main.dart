@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
+import 'src/components/timer-example/index.dart';
 import 'src/widgets/pages/home/index.dart';
 
 void main() {
@@ -10,7 +11,9 @@ void main() {
 Momentum momentum() {
   return Momentum(
     child: MyApp(),
-    controllers: [],
+    controllers: [
+      TimerExampleController(),
+    ],
   );
 }
 
