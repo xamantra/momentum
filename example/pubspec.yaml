@@ -33,6 +33,7 @@ dependencies:
       url: https://github.com/xamantra/momentum.git
       ref: d15ea3fdf6113b9eedd6d2f44414c86a7d4c1514
   relative_scale: any
+  dio: 3.0.10
 
 dev_dependencies:
   flutter_test:
