@@ -21,7 +21,7 @@ Momentum routerTestWidget({
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      momentum.Router([
+      momentum.MomentumRouter([
         PageA(),
         PageB(),
         PageC(),
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: momentum.Router.getActivePage(context),
+      home: momentum.MomentumRouter.getActivePage(context),
     );
   }
 }
@@ -67,14 +67,14 @@ class PageA extends StatelessWidget {
             FlatButton(
               key: gotoPageBKey,
               onPressed: () {
-                momentum.Router.goto(context, PageB);
+                momentum.MomentumRouter.goto(context, PageB);
               },
               child: Text('Goto PageB'),
             ),
             FlatButton(
               key: resetHistoryButton,
               onPressed: () {
-                momentum.Router.resetWithContext<PageB>(context);
+                momentum.MomentumRouter.resetWithContext<PageB>(context);
               },
               child: Text('Reset Router'),
             ),
@@ -95,7 +95,7 @@ class PageB extends StatelessWidget {
         child: FlatButton(
           key: gotoPageCKey,
           onPressed: () {
-            momentum.Router.goto(context, PageC);
+            momentum.MomentumRouter.goto(context, PageC);
           },
           child: Text('Goto PageC'),
         ),
@@ -116,14 +116,14 @@ class PageC extends StatelessWidget {
             FlatButton(
               key: fromPageCPop,
               onPressed: () {
-                momentum.Router.pop(context);
+                momentum.MomentumRouter.pop(context);
               },
               child: Text('Pop From PageC'),
             ),
             FlatButton(
               key: clearHistoryButton,
               onPressed: () {
-                momentum.Router.clearHistoryWithContext(context);
+                momentum.MomentumRouter.clearHistoryWithContext(context);
               },
               child: Text('Clear History'),
             ),

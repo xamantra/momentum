@@ -52,7 +52,7 @@ void main() {
           RouterParamController(),
         ],
         services: [
-          Router([]),
+          MomentumRouter([]),
         ],
       ),
     );

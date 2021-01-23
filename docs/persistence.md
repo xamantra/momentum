@@ -98,13 +98,13 @@ Momentum has a custom router system to enable persistence for the app's navigati
 - The featured example app for momentum implements this feature. See this [preview](/?id=preview).
 
 - #### Guide
-  1. You need to instantiate the built-in service called `Router` in the momentum root widget in the `services` parameter. The `Router` class has a parameter which is a list of widgets and those widgets must be a screen or page type widgets:
+  1. You need to instantiate the built-in service called `MomentumRouter` in the momentum root widget in the `services` parameter. The `MomentumRouter` class has a parameter which is a list of widgets and those widgets must be a screen or page type widgets:
   ```dart
     Momentum(
       // ...
       services: [
         // ...
-        Router([
+        MomentumRouter([
           PageA(),
           PageB(),
           PageC(),
@@ -131,13 +131,13 @@ Momentum has a custom router system to enable persistence for the app's navigati
       }
     }
   ```
-  3. Now you can navigate between pages using `Router.goto(...)` and `Router.pop(context)`:
+  3. Now you can navigate between pages using `MomentumRouter.goto(...)` and `MomentumRouter.pop(context)`:
   ```dart
     // "PageC". use type not an instance or string route name.
-    Router.goto(context, PageC);
+    MomentumRouter.goto(context, PageC);
 
     // Go back to previous page
-    Router.pop(context);
+    MomentumRouter.pop(context);
   ```
 - As you can see in the guide section above, you navigate between pages using *types* not instance or string route name. That is one of the best parts of momentum.
 
@@ -148,5 +148,5 @@ Momentum has a custom router system to enable persistence for the app's navigati
 - `persistSave` will use the `.toJson()` serialization.
 - `persistGet` will use the `.fromJson(...)` serialization.
 
-- `Router` uses both `persistSave` and `persistGet`. So if you want to use persistent navigation you need to implement those two function parameters.
-- The Persistent router saves the `indexes` of the pages. If you added a new page or reordered the items in the list inside the `Router` constructor, it is recommended to clear the data of the app to avoid errors.
+- `MomentumRouter` uses both `persistSave` and `persistGet`. So if you want to use persistent navigation you need to implement those two function parameters.
+- The Persistent router saves the `indexes` of the pages. If you added a new page or reordered the items in the list inside the `MomentumRouter` constructor, it is recommended to clear the data of the app to avoid errors.

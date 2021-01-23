@@ -12,7 +12,7 @@ Momentum routerErrorTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      momentum.Router([
+      momentum.MomentumRouter([
         PageErrorTestA(),
       ]),
       InMemoryStorage(),
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: momentum.Router.getActivePage(context),
+      home: momentum.MomentumRouter.getActivePage(context),
     );
   }
 }
@@ -54,7 +54,7 @@ class PageErrorTestA extends StatelessWidget {
         child: FlatButton(
           key: errorTestGotoPageBKey,
           onPressed: () {
-            momentum.Router.goto(context, PageErrorTestB);
+            momentum.MomentumRouter.goto(context, PageErrorTestB);
           },
           child: Text('Goto PageB'),
         ),

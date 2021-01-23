@@ -73,8 +73,8 @@ class LoginController extends MomentumController<LoginModel> {
   ...
 
   void clearSession() {
-    // "dependOn" is the magic here. It is a built in method inside MomentumController base class. I can say this is a game changing feature for this library.
-    var sessionController = dependOn<SessionController>();
+    // "controller" is the magic here. It is a built in method inside MomentumController base class. I can say this is a game changing feature for this library.
+    var sessionController = controller<SessionController>();
     sessionController.clearSession();
 
     // that's it, 1 line of code and you are able to access and manipulate other controller (Bloc) class.
@@ -480,7 +480,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
             /// clears the user session.
             void clearSession() {
-              var sessionController = dependOn<SessionController>();
+              var sessionController = controller<SessionController>();
               sessionController.reset();
             }
 
@@ -571,7 +571,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
 - ✔ `(added on version 1.1.5)` Coming soon: `services` parameter for `Momentum` root widget
   - You can inject any type of non-widget objects here like service class that can be use globally in your app like api wrappers for example.
-  - You can grab a specific service inside your controller only using: `getService<TypeHere>();` (this is the same way you call `dependOn<T>()` method.)
+  - You can grab a specific service inside your controller only using: `service<TypeHere>();` (this is the same way you call `controller<T>()` method.)
   - ✔ Added on `1.1.5` and some ideas were changed during implementation.
 - ✔ I also created a vs code extension for [generating boilerplate code](#boilerplate-codes) but currently it's on my local environment only. I'm gonna upload it soon on the marketplace :)
 - ✔ I'm planning to add a feature for persisting the state using database or shared preference. Like `hydrated_bloc`. Another thing is that aside from state, I also want to persist the navigation state/history. For this, I think I need to create my own navigation/routing system that saves navigation history..._shruugs_. I'm not sure if I will/~~can~~ actually do it or not :)

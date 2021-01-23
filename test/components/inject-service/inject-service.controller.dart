@@ -12,10 +12,10 @@ class InjectServiceController extends MomentumController<InjectServiceModel> {
   }
 
   CalculatorService getServiceWithoutLogs() {
-    return getService<CalculatorService>(alias: CalcAlias.disableLogs);
+    return service<CalculatorService>(alias: CalcAlias.disableLogs);
   }
 
   CalculatorService getServiceWithLogs() {
-    return getService<CalculatorService>(alias: CalcAlias.enableLogs);
+    return service<CalculatorService>(alias: CalcAlias.enableLogs);
   }
 }

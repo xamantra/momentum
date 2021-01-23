@@ -28,8 +28,8 @@
     - [MomentumState](momentum-state.md "MomentumState - For event system | Momentum")
     - [MomentumService](momentum-service.md "MomentumService - Services Dependency Injection | Momentum")
     - [InjectService](inject_service.md "InjectService - Indentical Services Dependency Injection | Momentum")
-    - [Router](router.md "Router - For persistent routing | Momentum")
-    - [RouterMixin](router_mixin.md "Router - Handling route parameters | Momentum")
+    - [MomentumRouter](router.md "MomentumRouter - For persistent routing | Momentum")
+    - [RouterMixin](router_mixin.md "MomentumRouter - Handling route parameters | Momentum")
     - [MomentumTester](momentum-tester.md "MomentumTester - Testing tool | Momentum")
 
 - More
@@ -39,5 +39,5 @@
     - [pub.dev](https://pub.dev/packages/momentum)
     - [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code)
     - [Listify - Advance Example](https://github.com/xamantra/listify)
-    - [Download Latest Version](https://storage.googleapis.com/pub-packages/packages/momentum-1.3.2.tar.gz)
+    - [Download Latest Version](https://storage.googleapis.com/pub-packages/packages/momentum-1.3.3.tar.gz)
     - [Old README](README.old.md "Old Readme Docs | Momentum")

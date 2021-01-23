@@ -36,7 +36,7 @@ class CompanyController extends MomentumController<CompanyModel> {
   // ...
 
   Future<void> bootstrapAsync() async {
-    var apiService = getService<ApiService>();
+    var apiService = service<ApiService>();
     var employeeList = await apiService.getEmployeeList();
     model.update(employeeList: employeeList);
   }

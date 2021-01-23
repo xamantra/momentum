@@ -13,7 +13,7 @@ Momentum routerPageTest() {
     child: MyApp(),
     controllers: [CounterController()],
     services: [
-      momentum.Router([
+      momentum.MomentumRouter([
         RouterPageA(),
         RouterPageB(),
       ]),
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Counter App',
-      home: momentum.Router.getActivePage(context),
+      home: momentum.MomentumRouter.getActivePage(context),
     );
   }
 }
@@ -60,7 +60,7 @@ class RouterPageA extends StatelessWidget {
               FlatButton(
                 key: gotoRouterPageB,
                 onPressed: () {
-                  momentum.Router.goto(context, RouterPageB);
+                  momentum.MomentumRouter.goto(context, RouterPageB);
                 },
                 child: Text('Goto PageB'),
               ),
@@ -81,7 +81,7 @@ class RouterPageB extends StatelessWidget {
   Widget build(BuildContext context) {
     return RouterPage(
       onWillPop: () async {
-        momentum.Router.pop(context);
+        momentum.MomentumRouter.pop(context);
         return false;
       },
       child: Scaffold(
@@ -91,7 +91,7 @@ class RouterPageB extends StatelessWidget {
               FlatButton(
                 key: gotoRouterPopKey,
                 onPressed: () {
-                  momentum.Router.pop(context);
+                  momentum.MomentumRouter.pop(context);
                 },
                 child: Text('Pop'),
               ),

@@ -1,12 +1,13 @@
 ![logo](https://i.imgur.com/atDeptO.png)
 
-# momentum <small>1.3.2</small>
+# momentum <small>1.3.3</small>
 
-> Full-featured flutter state management library.
+> MVC pattern for flutter.
 
-- Very flexible dependency injection.
-- Persistence Support for states and routing.
-- No dependencies.
+- State management.
+- Dependency Injection.
+- Service Locator.
+- and much more...
 
 [GitHub](https://github.com/xamantra/momentum)
 [Overview](/?id=features)
