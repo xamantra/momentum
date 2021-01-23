@@ -1,3 +1,14 @@
+## 1.3.3
+- Deprecated `Momentum.of<T>(...)`. Use `Momentum.controller<T>(...)` instead.
+- Deprecated `Momentum.getService<T>(...)`. Use `Momentum.service<T>(...)` instead.
+- Deprecated `Router`. Use `MomentumRouter` instead.
+- Deprecated `dependOn<T>()`. Use `controller<T>()` instead.
+- Deprecated `getService<T>()`. Use `service<T>()` instead.
+
+**Note:** Existing projects that still uses deprecated features will still work fine but they will be removed in the future and existing projects will break.
+
+<hr>
+
 ## 1.3.2
 - Fixed [Global lazy strategy not being applied to controllers #27](https://github.com/xamantra/momentum/issues/27)
 - Added `MomentumTester` tool for unit testing.

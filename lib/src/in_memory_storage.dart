@@ -15,6 +15,7 @@ class InMemoryStorage extends MomentumService {
     } else {
       InMemoryStorage inMemoryStorage;
       if (context != null) {
+        // ignore: deprecated_member_use_from_same_package
         inMemoryStorage = Momentum.getService<InMemoryStorage>(context);
       } else {
         inMemoryStorage = InMemoryStorage();

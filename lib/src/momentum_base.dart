@@ -8,7 +8,6 @@ import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
-import 'momentum_router.dart' as momentum_router;
 import 'momentum_types.dart';
 
 Type _getType<T>() => T;
@@ -83,15 +82,15 @@ class _MomentumListener<M> {
 /// handle route changes from momentum's built-in routing system.
 mixin RouterMixin on _ControllerBase {
   /// Get the current route parameters specified using
-  /// the `params` parameter in `Router.goto(...)` method.
+  /// the `params` parameter in `MomentumRouter.goto(...)` method.
   ///
   /// ### Example:
   /// ```dart
   /// // setting the route params.
-  /// Router.goto(context, DashboardPage, params: DashboardParams(...));
+  /// MomentumRouter.goto(context, DashboardPage, params: DashboardParams(...));
   ///
   /// // accessing the route params inside widgets.
-  /// var params = Router.getParam<DashboardParams>(context);
+  /// var params = MomentumRouter.getParam<DashboardParams>(context);
   ///
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
@@ -104,16 +103,17 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print(
+            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
-    var result = momentum_router.Router.getParam<T>(_mRootContext);
+    var result = MomentumRouter.getParam<T>(_mRootContext);
     return result;
   }
 
-  /// A callback whenever [momentum_router.Router.goto]
-  /// or [momentum_router.Router.pop] is called.
+  /// A callback whenever [momentum_router.MomentumRouter.goto]
+  /// or [momentum_router.MomentumRouter.pop] is called.
   /// The [RouterParam] is also provided.
   void onRouteChanged(RouterParam param) {}
 }
@@ -166,6 +166,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// Dependency injection method for getting other controllers.
   /// Useful for accessing other controllers' function
   /// and model properties without dragging the widget context around.
+  @Deprecated('Use "controller<T>()" instead')
   T dependOn<T extends MomentumController>() {
     var type = _getType<T>();
     if (runtimeType == type) {
@@ -189,9 +190,18 @@ abstract class MomentumController<M> with _ControllerBase {
     return result;
   }
 
+  /// Dependency injection method for getting other controllers.
+  /// Useful for accessing other controllers' function
+  /// and model properties without dragging the widget context around.
+  T controller<T extends MomentumController>() {
+    // ignore: deprecated_member_use_from_same_package
+    return dependOn<T>();
+  }
+
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
+  @Deprecated('Use "service<T>()" instead')
   T getService<T extends MomentumService>({dynamic alias}) {
     try {
       if (_mRootContext == null && _tester != null) {
@@ -209,6 +219,14 @@ abstract class MomentumController<M> with _ControllerBase {
           'root widget implementation if the service "$T" '
           'was instantiated there.'));
     }
+  }
+
+  /// A method for getting a service marked with
+  /// [MomentumService] that are injected into
+  /// [Momentum] root widget.
+  T service<T extends MomentumService>({dynamic alias}) {
+    // ignore: deprecated_member_use_from_same_package
+    return getService<T>(alias: alias);
   }
 
   bool _booted = false;
@@ -813,12 +831,21 @@ abstract class MomentumService {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
+  @Deprecated('Use "service<T>()" instead')
   T getService<T extends MomentumService>({dynamic alias}) {
     if (_context == null && _tester != null) {
       return _tester.service<T>(alias: alias);
     }
     var momentum = Momentum._getMomentumInstance(_context);
     return momentum._getService<T>(alias: alias);
+  }
+
+  /// A method for getting a service marked with
+  /// [MomentumService] that are injected into
+  /// [Momentum] root widget.
+  T service<T extends MomentumService>({dynamic alias}) {
+    // ignore: deprecated_member_use_from_same_package
+    return getService<T>(alias: alias);
   }
 }
 
@@ -1169,7 +1196,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
     for (var service in services) {
       if (service != null) {
         service._context = context;
-        if (service is momentum_router.Router) {
+        if (service is MomentumRouter) {
           _momentumEvent.on().listen((event) {
             for (var controller in widget.controllers) {
               if (controller is RouterMixin) {
@@ -1438,7 +1465,7 @@ class Momentum extends InheritedWidget {
     return result;
   }
 
-  /// Method for testing controllers.
+  /// Get a specific controller for testing.
   T getController<T extends MomentumController>() {
     return _getController<T>(true);
   }
@@ -1570,8 +1597,8 @@ class Momentum extends InheritedWidget {
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   ///
-  /// **NOTE:** Please use `Momentum.controller<T>` for consistency.
-  /// `Momentum.of<T>` will be deprecated in the future.
+  /// **NOTE:** This will be removed in the future.
+  @Deprecated('Use `Momentum.controller<T>(context)` instead')
   static T of<T extends MomentumController>(BuildContext context) {
     var controller = _getMomentumInstance(context)._getController<T>();
     var lazyFirstCall = controller.strategy == BootstrapStrategy.lazyFirstCall;
@@ -1586,6 +1613,7 @@ class Momentum extends InheritedWidget {
   /// It uses deprecated method `inheritFromWidgetOfExactType`
   /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {
+    // ignore: deprecated_member_use_from_same_package
     return Momentum.of<T>(context);
   }
 
@@ -1593,8 +1621,8 @@ class Momentum extends InheritedWidget {
   /// The service must be marked with [MomentumService] and
   /// injected into [Momentum] root widget.
   ///
-  /// **NOTE:** Please use `Momentum.service<T>` for consistency.
-  /// `Momentum.getService<T>` will be deprecated in the future.
+  /// **NOTE:** This will be removed in the future.
+  @Deprecated('Use `Momentum.service<T>(context)` instead')
   static T getService<T extends MomentumService>(BuildContext context) {
     return _getMomentumInstance(context)._getService<T>();
   }
@@ -1765,8 +1793,8 @@ class MomentumTester {
     return result;
   }
 
-  momentum_router.Router _getRouterIfPresent() {
-    var result = trycatch(() => service<momentum_router.Router>());
+  MomentumRouter _getRouterIfPresent() {
+    var result = trycatch(() => service<MomentumRouter>());
     return result;
   }
 
@@ -1782,7 +1810,7 @@ class MomentumTester {
 
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
-    service<momentum_router.Router>().mockParam(param);
+    service<MomentumRouter>().mockParam(param);
     print('Mock params has been set (${param.runtimeType}): $param');
   }
 }
