@@ -19,11 +19,9 @@
 
 ---
 
-- **MAJOR UPDATE**: **v1.1.7** and up.
 - FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
 - Testing Guide: https://xamdev.gq/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
-- Old README can be <a href="https://xamdev.gq/momentum/#/README.old" target="_blank">found here</a>
 
 ---
 
