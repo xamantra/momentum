@@ -103,8 +103,7 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print(
-            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -1116,6 +1115,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
 }
 
 class _MomentumRoot extends StatefulWidget {
+  final Future<void> Function() initializer;
   final Widget child;
   final Widget appLoader;
   final List<MomentumController> controllers;
@@ -1130,6 +1130,7 @@ class _MomentumRoot extends StatefulWidget {
 
   const _MomentumRoot({
     Key key,
+    @required this.initializer,
     @required this.child,
     @required this.appLoader,
     @required this.controllers,
@@ -1153,6 +1154,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
 
   Future<bool> _init() async {
     try {
+      if (widget.initializer != null) {
+        await widget.initializer();
+      }
+
       _momentumEvent = MomentumEvent<RouterSignal>(this);
       await _initServices(widget.services);
       await _initControllerModel(widget.controllers);
@@ -1332,6 +1337,7 @@ class Momentum extends InheritedWidget {
   /// The parameter `child` is not required for *unit testing*.
   factory Momentum({
     Key key,
+    Future<void> Function() initializer,
     Widget child,
     Widget appLoader,
     @required List<MomentumController> controllers,
@@ -1352,6 +1358,7 @@ class Momentum extends InheritedWidget {
     return Momentum._internal(
       key: key,
       child: _MomentumRoot(
+        initializer: initializer,
         child: child,
         appLoader: appLoader,
         controllers: controllers ?? [],
