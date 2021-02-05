@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:relative_scale/relative_scale.dart';
 
+import '../example-basic-list/index.dart';
 import '../example-rest-api/index.dart';
 import '../example-timer/index.dart';
 import 'index.dart';
@@ -30,6 +31,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   ExampleItem(name: 'Simple Timer Example', page: TimerExamplePage()),
                   ExampleItem(name: 'REST API Example', page: RestApiExamplePage()),
+                  ExampleItem(name: 'Basic List (Undo/Redo) Example', page: BasicListExamplePage()),
                 ],
               ),
             ),
