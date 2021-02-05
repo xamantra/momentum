@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
-import '../../../components/basic-list/index.dart';
+import '../../../components/basic-list-example/index.dart';
 
 class BasicListExamplePage extends StatelessWidget {
   const BasicListExamplePage({Key key}) : super(key: key);
