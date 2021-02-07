@@ -490,7 +490,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
 
     <hr>
 
-- <b id="momentumresetallcontext-method">Momentum.resetAll(context)</b> method - Reset all controllers and their models. This method requires `BuildContext` because internally it calls `inheritFromWidgetOfExactType` method. Good thing is that you can do something before this method gets actually executed like showing confirmation dialog.
+- <b id="momentumresetallcontext-method">Momentum.resetAll(context)</b> method - Reset all controllers and their models. This method requires `BuildContext` because internally it calls `dependOnInheritedWidgetOfExactType` method. Good thing is that you can do something before this method gets actually executed like showing confirmation dialog.
 
   - You can easily call this method: `Momentum.resetAll(context);`
   - The `onResetAll` parameter. Take a look at this example, assuming we have a logout function that resets everything.

@@ -1562,8 +1562,7 @@ class Momentum extends InheritedWidget {
   }
 
   static Momentum _getMomentumInstance(BuildContext context) {
-    // ignore: deprecated_member_use
-    return (context.inheritFromWidgetOfExactType(Momentum) as Momentum);
+    return (context.dependOnInheritedWidgetOfExactType<Momentum>());
   }
 
   static void _resetAll(BuildContext context) {
@@ -1601,8 +1600,6 @@ class Momentum extends InheritedWidget {
   }
 
   /// The static method for getting controllers inside a widget.
-  /// It uses deprecated method `inheritFromWidgetOfExactType`
-  /// to support older versions of flutter.
   ///
   /// **NOTE:** This will be removed in the future.
   @Deprecated('Use `Momentum.controller<T>(context)` instead')
@@ -1617,8 +1614,6 @@ class Momentum extends InheritedWidget {
   }
 
   /// The static method for getting controllers inside a widget.
-  /// It uses deprecated method `inheritFromWidgetOfExactType`
-  /// to support older versions of flutter.
   static T controller<T extends MomentumController>(BuildContext context) {
     // ignore: deprecated_member_use_from_same_package
     return Momentum.of<T>(context);
