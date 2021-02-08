@@ -11,6 +11,7 @@ import 'widgets/counter_restart_callback.dart';
 import 'widgets/error_widget6.dart';
 import 'widgets/error_widget7.dart';
 import 'widgets/error_widget8.dart';
+import 'widgets/initializer.dart';
 import 'widgets/reset_all.dart';
 import 'widgets/reset_all_override.dart';
 
@@ -116,5 +117,12 @@ void main() {
     await tester.pump();
     expect(find.text('1'), findsNothing);
     expect(find.text('2'), findsOneWidget);
+  });
+
+  testWidgets('test initializer', (tester) async {
+    var widget = initializerTest(424897);
+    await launch(tester, widget);
+
+    expect(find.text('424897'), findsOneWidget);
   });
 }
