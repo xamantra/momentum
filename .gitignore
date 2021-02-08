@@ -18,3 +18,4 @@ example/lib/temp.dart
 CODECOV_TOKEN
 sandbox/
 example/android/app/google-services.json
+coverage/lcov.info
