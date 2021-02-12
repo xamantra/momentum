@@ -103,7 +103,8 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print(
+            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }

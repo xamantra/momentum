@@ -19,8 +19,8 @@
 
 ---
 
-- FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
-- Testing Guide: https://xamdev.gq/momentum/#/testing
+- FULL DOCUMENTATION: https://xamantra.dev/momentum/#/
+- Testing Guide: https://xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
 
 ---
@@ -201,6 +201,6 @@ class HomeWidget extends StatelessWidget {
 
 ## Important Links
 
-- FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
-- Testing Guide: https://xamdev.gq/momentum/#/testing
+- FULL DOCUMENTATION: https://xamantra.dev/momentum/#/
+- Testing Guide: https://xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
