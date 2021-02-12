@@ -3,6 +3,7 @@ import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
 import '../../../components/todo-example/index.dart';
+import '../../index.dart';
 import 'index.dart';
 
 class TodoExamplePage extends StatelessWidget {
@@ -35,21 +36,7 @@ class TodoExamplePage extends StatelessWidget {
 
                 return Column(
                   children: [
-                    Container(
-                      margin: EdgeInsets.all(sy(8)),
-                      padding: EdgeInsets.all(sy(6)),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).accentColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        'NOTE: Add some TODOs and try to close then open the app again. Everything will be saved. Including check states. This is one of Momentum\'s capability.',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: sy(9),
-                        ),
-                      ),
-                    ),
+                    Note(note: 'NOTE: Add some TODOs and try to close then open the app again. Everything will be saved. Including check states. This is one of Momentum\'s capability.'),
                     Expanded(
                       child: ListView.builder(
                         physics: BouncingScrollPhysics(),

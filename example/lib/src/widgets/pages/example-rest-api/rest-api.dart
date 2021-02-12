@@ -3,6 +3,7 @@ import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
 import '../../../components/rest-api-example/index.dart';
+import '../../index.dart';
 
 class RestApiExamplePage extends StatefulWidget {
   const RestApiExamplePage({Key key}) : super(key: key);
@@ -50,43 +51,50 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
                 if (timerModel.isLoading) {
                   return CircularProgressIndicator();
                 } else {
-                  return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      var item = list[index];
-                      return InkWell(
-                        onTap: () {},
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ListTile(
-                                    title: Text(
-                                      item.title,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                    dense: true,
-                                  ),
-                                ),
-                                item.completed
-                                    ? Padding(
-                                        padding: EdgeInsets.all(sy(4)),
-                                        child: Icon(
-                                          Icons.check,
-                                          color: Theme.of(context).accentColor,
+                  return Column(
+                    children: [
+                      Note(note: 'NOTE: The data source is from "https://jsonplaceholder.typicode.com/todos". It\'s a dummy data website free for public use.'),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: list.length,
+                          itemBuilder: (context, index) {
+                            var item = list[index];
+                            return InkWell(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Text(
+                                            item.title,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                          dense: true,
                                         ),
-                                      )
-                                    : SizedBox(),
-                              ],
-                            ),
-                            Divider(height: 1),
-                          ],
+                                      ),
+                                      item.completed
+                                          ? Padding(
+                                              padding: EdgeInsets.all(sy(4)),
+                                              child: Icon(
+                                                Icons.check,
+                                                color: Theme.of(context).accentColor,
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                    ],
+                                  ),
+                                  Divider(height: 1),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   );
                 }
               },
