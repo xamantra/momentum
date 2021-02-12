@@ -63,14 +63,23 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
                               children: [
                                 Expanded(
                                   child: ListTile(
-                                    title: Text(item.title),
+                                    title: Text(
+                                      item.title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                     dense: true,
                                   ),
                                 ),
-                                Checkbox(
-                                  value: item.completed, // take note this is only a readonly example. the check states boolean are from jsonplaceholder website.
-                                  onChanged: (_) {},
-                                ),
+                                item.completed
+                                    ? Padding(
+                                        padding: EdgeInsets.all(sy(4)),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: Theme.of(context).accentColor,
+                                        ),
+                                      )
+                                    : SizedBox(),
                               ],
                             ),
                             Divider(height: 1),
