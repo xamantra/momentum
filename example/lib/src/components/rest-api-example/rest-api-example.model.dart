@@ -15,12 +15,12 @@ class RestApiExampleModel extends MomentumModel<RestApiExampleController> {
 
   @override
   void update({
-    TodoList todoList,
+    TodoList todoMap,
     bool isLoading,
   }) {
     RestApiExampleModel(
       controller,
-      todoList: todoList ?? this.todoList,
+      todoList: todoMap ?? this.todoList,
       isLoading: isLoading ?? this.isLoading,
     ).updateMomentum();
   }

@@ -23,7 +23,7 @@ class RestApiExampleController extends MomentumController<RestApiExampleModel> {
     var result = await api.getTodoList();
 
     // Finally, the todo data list has finished loading and it's time to hide the loading indicator widget and show the todo list widgets.
-    model.update(isLoading: false, todoList: result);
+    model.update(isLoading: false, todoMap: result);
   }
 
   void loadTodoList_V2() async {
@@ -44,6 +44,6 @@ class RestApiExampleController extends MomentumController<RestApiExampleModel> {
     var result = await api.getTodoList();
 
     // Finally, the todo data list has finished loading and it's time to hide the loading indicator widget and show the todo list widgets.
-    model.update(isLoading: false, todoList: result);
+    model.update(isLoading: false, todoMap: result);
   }
 }
