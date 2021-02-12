@@ -33,7 +33,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
             title: Text(
-              'Momentum - REST API Example',
+              'REST API Example',
               style: TextStyle(
                 fontSize: sy(11.5),
               ),

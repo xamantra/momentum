@@ -16,7 +16,7 @@ class TimerExamplePage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
             title: Text(
-              'Momentum - Simple Timer Example',
+              'Simple Timer Example',
               style: TextStyle(
                 fontSize: sy(11.5),
               ),

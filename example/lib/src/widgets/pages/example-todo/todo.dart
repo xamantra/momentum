@@ -18,7 +18,7 @@ class TodoExamplePage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
             title: Text(
-              'Momentum - TODO List Example',
+              'TODO List Example',
               style: TextStyle(
                 fontSize: sy(11.5),
               ),
