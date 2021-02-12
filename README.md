@@ -36,7 +36,6 @@
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
   - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
-  - Supports older versions of flutter.
 
 ## Core Concepts
 
@@ -76,7 +75,7 @@ To get started, `flutter create` an app. Name it however you want.
 1. Add this to your package's `pubspec.yaml` file:
     ```yaml
     dependencies:
-      momentum: ^1.3.2
+      momentum: ^1.3.4
     ```
     It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 
@@ -200,10 +199,8 @@ class HomeWidget extends StatelessWidget {
 
 ---
 
-## Please Note
+## Important Links
 
-- **MAJOR UPDATE**: **v1.1.7** and up.
 - FULL DOCUMENTATION: https://xamdev.gq/momentum/#/
 - Testing Guide: https://xamdev.gq/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
-- Old README can be <a href="https://xamdev.gq/momentum/#/README.old" target="_blank">found here</a>
