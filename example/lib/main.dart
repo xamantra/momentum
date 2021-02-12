@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
-import 'src/components/basic-list-example/index.dart';
-import 'src/components/rest-api-example/index.dart';
-import 'src/components/timer-example/index.dart';
-import 'src/services/index.dart';
+import 'src/_config/index.dart';
 import 'src/widgets/pages/home/index.dart';
 
 void main() {
@@ -14,14 +11,8 @@ void main() {
 Momentum momentum() {
   return Momentum(
     child: MyApp(),
-    controllers: [
-      TimerExampleController(),
-      RestApiExampleController(),
-      BasicListExampleController()..config(maxTimeTravelSteps: 100),
-    ],
-    services: [
-      ApiService(),
-    ],
+    controllers: controllers(),
+    services: services(),
   );
 }
 
