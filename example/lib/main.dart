@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:momentum/momentum.dart';
 
 import 'src/_config/index.dart';
+import 'src/_config/persistence/index.dart';
+import 'src/_config/storage/index.dart';
 import 'src/widgets/pages/home/index.dart';
 
 void main() {
@@ -11,8 +13,13 @@ void main() {
 Momentum momentum() {
   return Momentum(
     child: MyApp(),
+    initializer: () async {
+      await initializeSharedPref();
+    },
     controllers: controllers(),
     services: services(),
+    persistSave: persistSave_SharedPref,
+    persistGet: persistGet_SharedPref,
   );
 }
 
