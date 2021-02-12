@@ -2,9 +2,9 @@ name: CI-dev
 
 on:
   push:
-    branches: [ dev-1.3.4 ]
+    branches: [ dev-1.3.5 ]
   pull_request:
-    branches: [ dev-1.3.4 ]
+    branches: [ dev-1.3.5 ]
 
 jobs:
   build:
