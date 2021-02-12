@@ -11,7 +11,7 @@ Here's the correct intialization order for Momentum.
 4. MomentumController.bootstrapAsync()
 
 
-- The services gets initialized first to activate the `getservice<T>()` method. Refer to [docs](/#/momentum-service?id=getservicelttgt).
+- The services gets initialized first to activate the `service<T>()` method. Refer to [docs](/#/momentum-service?id=getservicelttgt).
 - The `init()` method which returns the initial value of a model is initialized before bootstraps to make the default values available for use inside `bootstrap()` and `bootstrapAsync()`.
 - There's no special reason why `bootstrap()` gets called first before `boostrapAsync()`. But consider it as part of momentum's code convention.
 

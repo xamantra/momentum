@@ -6,7 +6,7 @@
 
 <p align="center">
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
-<a href="https://github.com/xamantra/momentum/actions?query=workflow%3ACI" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg?event=push" alt="CI" /></a>
+<a href="https://github.com/xamantra/momentum/actions" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg" alt="Test" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
 <a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=likes&query=likes&url=http://www.pubscore.gq/likes?package=momentum" alt="likes" /></a>
 <a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=health&query=pub_points&url=http://www.pubscore.gq/pub-points?package=momentum" alt="health" /></a>
@@ -36,7 +36,6 @@
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
   - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
-  - Supports older versions of flutter.
 
 ## Core Concepts
 
@@ -76,7 +75,7 @@ To get started, `flutter create` an app. Name it however you want.
 1. Add this to your package's `pubspec.yaml` file:
     ```yaml
     dependencies:
-      momentum: ^1.3.2
+      momentum: ^1.3.4
     ```
     It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 

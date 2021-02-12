@@ -1,3 +1,9 @@
+## 1.3.4
+- Fixed issue [#40](https://github.com/xamantra/momentum/issues/40)
+- Starting from version 1.3.4, momentum no longer supports older versions of flutter.
+
+<hr>
+
 ## 1.3.3
 - Deprecated `Momentum.of<T>(...)`. Use `Momentum.controller<T>(...)` instead.
 - Deprecated `Momentum.getService<T>(...)`. Use `Momentum.service<T>(...)` instead.
