@@ -199,10 +199,8 @@ class HomeWidget extends StatelessWidget {
 
 ---
 
-## Please Note
+## Important Links
 
-- **MAJOR UPDATE**: **v1.1.7** and up.
 - FULL DOCUMENTATION: https://xamantra.dev/momentum/#/
 - Testing Guide: https://xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
-- Old README can be <a href="https://xamantra.dev/momentum/#/README.old" target="_blank">found here</a>
