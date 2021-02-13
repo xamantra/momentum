@@ -21,11 +21,10 @@ void main() {
     expect(controller.model.seconds, 0);
 
     controller.startTimer();
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(milliseconds: 5100));
     var state = controller.model;
     expect(state.started, true);
-    // expected steps: 0, 1, 2, 3, 4 => (5 seconds)
-    expect(state.seconds, 4);
+    expect(state.seconds, 5);
 
     controller.stopTimer();
     expect(controller.model.started, false);
