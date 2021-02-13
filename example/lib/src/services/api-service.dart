@@ -8,9 +8,14 @@ import '../data/index.dart';
 class ApiService extends MomentumService {
   final dio = Dio();
 
-  Future<TodoList> getTodoList() async {
+  Future<TodoList> getTodoList({
+    int timeout = 10000,
+  }) async {
     try {
-      var response = await dio.get('https://jsonplaceholder.typicode.com/todos');
+      var response = await dio.get(
+        'https://jsonplaceholder.typicode.com/todos',
+        options: Options(sendTimeout: timeout, receiveTimeout: timeout),
+      );
       return TodoList.fromJson(response.data);
     } catch (e) {
       print(e);
