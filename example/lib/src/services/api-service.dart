@@ -9,13 +9,10 @@ class ApiService extends MomentumService {
   final dio = Dio();
 
   Future<TodoList> getTodoList({
-    int timeout = 10000,
+    String mockUrl,
   }) async {
     try {
-      var response = await dio.get(
-        'https://jsonplaceholder.typicode.com/todos',
-        options: Options(sendTimeout: timeout, receiveTimeout: timeout),
-      );
+      var response = await dio.get(mockUrl ?? 'https://jsonplaceholder.typicode.com/todos');
       return TodoList.fromJson(response.data);
     } catch (e) {
       print(e);

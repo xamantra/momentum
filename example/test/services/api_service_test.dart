@@ -21,7 +21,7 @@ void main() {
     // test http error
     TodoList errorResult = TodoList(list: const []);
     try {
-      errorResult = await api.getTodoList(timeout: 1);
+      errorResult = await api.getTodoList(mockUrl: '');
     } catch (e) {}
     expect(errorResult.list, const []);
   });
