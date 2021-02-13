@@ -22,7 +22,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
     var controller = Momentum.controller<RestApiExampleController>(context);
 
     // controller.loadTodoList();
-    controller.loadTodoList_V2();
+    controller.loadTodoList();
   }
 
   @override
