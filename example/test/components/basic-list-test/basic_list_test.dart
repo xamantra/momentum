@@ -46,5 +46,9 @@ void main() {
     expect(controller.model.list.any((x) => x == secondItem), true);
     controller.remove(1);
     expect(controller.model.list.any((x) => x == secondItem), false);
+    expect(controller.model.list.length, 5);
+
+    controller.model.update(list: null);
+    expect(controller.model.list.length, 5);
   });
 }

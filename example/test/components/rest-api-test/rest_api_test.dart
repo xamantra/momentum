@@ -29,6 +29,7 @@ void main() {
       expect(controller.model.todoList != null, true);
       expect(controller.model.todoList.list.length, 200);
     });
-    return;
+    controller.model.update(isLoading: null);
+    expect(controller.model.isLoading, false);
   });
 }
