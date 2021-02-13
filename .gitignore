@@ -19,3 +19,4 @@ CODECOV_TOKEN
 sandbox/
 example/android/app/google-services.json
 coverage/lcov.info
+example/coverage/lcov.info
