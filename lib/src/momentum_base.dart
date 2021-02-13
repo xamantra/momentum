@@ -103,8 +103,7 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print(
-            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -1303,6 +1302,7 @@ class Momentum extends InheritedWidget {
   const Momentum._internal({
     Key key,
     @required Widget child,
+    Future<void> Function() initializer,
     List<MomentumController> controllers,
     List<MomentumService> services,
     bool disabledPersistentState,
@@ -1317,7 +1317,8 @@ class Momentum extends InheritedWidget {
     bool testMode,
     String testSessionName,
     void Function() restartCallback,
-  })  : _controllers = controllers ?? const [],
+  })  : _initializer = initializer,
+        _controllers = controllers ?? const [],
         _onResetAll = onResetAll,
         _services = services ?? const [],
         _disabledPersistentState = disabledPersistentState ?? false,
@@ -1372,6 +1373,7 @@ class Momentum extends InheritedWidget {
         testMode: testMode ?? false,
         strategy: strategy,
       ),
+      initializer: initializer,
       controllers: controllers,
       services: services,
       disabledPersistentState: disabledPersistentState,
@@ -1439,6 +1441,8 @@ class Momentum extends InheritedWidget {
     }
     return null;
   }
+
+  final Future<void> Function() _initializer;
 
   final List<MomentumController> _controllers;
 
@@ -1672,6 +1676,9 @@ class MomentumTester {
   /// they are initialized in root widget.
   Future<void> init() async {
     try {
+      if (_momentum._initializer != null) {
+        await _momentum._initializer();
+      }
       _initServices();
       await _initControllerModel();
       _bootstrapControllers();

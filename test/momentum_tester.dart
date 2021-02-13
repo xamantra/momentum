@@ -12,6 +12,22 @@ import 'widgets/inject_service.dart';
 import 'widgets/router_params.dart';
 
 void main() {
+  test('Momentum initializer', () async {
+    var testValue = 0;
+
+    var tester = MomentumTester(
+      Momentum(
+        initializer: () async {
+          testValue = 1;
+        },
+        controllers: [],
+      ),
+    );
+
+    await tester.init();
+    expect(testValue, 1);
+  });
+
   test('Momentum Tester Tool: Counter', () async {
     var tester = MomentumTester(
       Momentum(controllers: [CounterController()]),
