@@ -1,6 +1,11 @@
+## 1.3.6
+- Fixed domain problem in documentation. (Should include `www.`)
+
+<hr>
+
 ## 1.3.5
 - Fixed urls in the docs and readme.
-- New momentum website address: https://xamantra.dev/momentum
+- New momentum website address: https://www.xamantra.dev/momentum
 
 <hr>
 
@@ -48,24 +53,24 @@ Updated changelog.md to follow new pub.dev guidelines.
 
 ## 1.2.8
 - `Router` now supports parameters.
-  - Updated `Router.goto` and `Router.pop` [docs](https://xamantra.dev/momentum/#/router?id=goto).
-  - New `RouterMixin` [docs](https://xamantra.dev/momentum/#/router_mixin).
+  - Updated `Router.goto` and `Router.pop` [docs](https://www.xamantra.dev/momentum/#/router?id=goto).
+  - New `RouterMixin` [docs](https://www.xamantra.dev/momentum/#/router_mixin).
   - Issue reference for this feature: [#16](https://github.com/xamantra/momentum/issues/16).
 - Services now has dependency injection between each other.
-  - New `.getService<T>()` method [docs](https://xamantra.dev/momentum/#/momentum-service?id=getservicelttgt).
+  - New `.getService<T>()` method [docs](https://www.xamantra.dev/momentum/#/momentum-service?id=getservicelttgt).
   - Issue reference for this feature: [#19](https://github.com/xamantra/momentum/issues/19)
-- New `InjectService` [class for services](https://xamantra.dev/momentum/#/inject_service).
+- New `InjectService` [class for services](https://www.xamantra.dev/momentum/#/inject_service).
 - Momentum now initializes services first before anything else.
   - No breaking changes in existing test files.
   - No breaking changes in existing example projects.
-  - Refer to [docs](https://xamantra.dev/momentum/#/initialization_order).
+  - Refer to [docs](https://www.xamantra.dev/momentum/#/initialization_order).
 
 **NOTE:** If you encounter a bug with this update, please file an issue immediately on [GitHub](https://github.com/xamantra/momentum/issues).
 
 <hr>
 
 ## 1.2.7
-- Added testing guide in official docs: https://xamantra.dev/momentum/#/testing
+- Added testing guide in official docs: https://www.xamantra.dev/momentum/#/testing
 
 <hr>
 
@@ -98,7 +103,7 @@ Updated changelog.md to follow new pub.dev guidelines.
 <hr>
 
 ## 1.2.1
-- [Issue #7](https://github.com/xamantra/momentum/issues/7) - Added new capability to globally disable persistent state for all models. Docs [here](https://xamantra.dev/momentum/#/momentum?id=disabledpersistentstate).
+- [Issue #7](https://github.com/xamantra/momentum/issues/7) - Added new capability to globally disable persistent state for all models. Docs [here](https://www.xamantra.dev/momentum/#/momentum?id=disabledpersistentstate).
 - `skipPersist()`, by default now returns null. Not a breaking change because this method is only meant to be used by momentum internally.
 
 <hr>
@@ -114,7 +119,7 @@ Updated changelog.md to follow new pub.dev guidelines.
 **Critical**
 - Fixed [#5](https://github.com/xamantra/momentum/issues/5)
 - Improve types system for dependency injection
-- Fix extending controllers that cause bug for `snapshot<T>()`. Click [here](https://xamantra.dev/momentum/#/extending-controllers) for the docs.
+- Fix extending controllers that cause bug for `snapshot<T>()`. Click [here](https://www.xamantra.dev/momentum/#/extending-controllers) for the docs.
 - Added internal tests.
 
 <hr>
@@ -144,7 +149,7 @@ Major changes:
 - Persistent navigation/routing.
 - Equatable support.
 - `sendEvent<T>(...)` and `.listen<T>(...)`.
-- Official Documentation: https://xamantra.dev/momentum/#/
+- Official Documentation: https://www.xamantra.dev/momentum/#/
 
 Minor changes:
   - `Momentum.controller<T>` is now the recommended way of getting a controller using context instead of `Momentum.of<T>`.
