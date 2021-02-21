@@ -19,8 +19,8 @@
 
 ---
 
-- FULL DOCUMENTATION: https://xamantra.dev/momentum/#/
-- Testing Guide: https://xamantra.dev/momentum/#/testing
+- FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
+- Testing Guide: https://www.xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
 
 ---
@@ -75,7 +75,7 @@ To get started, `flutter create` an app. Name it however you want.
 1. Add this to your package's `pubspec.yaml` file:
     ```yaml
     dependencies:
-      momentum: ^1.3.5
+      momentum: ^1.3.6
     ```
     It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 
@@ -201,6 +201,6 @@ class HomeWidget extends StatelessWidget {
 
 ## Important Links
 
-- FULL DOCUMENTATION: https://xamantra.dev/momentum/#/
-- Testing Guide: https://xamantra.dev/momentum/#/testing
+- FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
+- Testing Guide: https://www.xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>

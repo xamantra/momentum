@@ -163,7 +163,7 @@ var apiService = service<ApiService>(alias: ApiAlias.logsEnabled);
 ```
 `alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
 
-Refer to the full documentation for `InjectService` [here](https://xamantra.dev/momentum/#/inject_service).
+Refer to the full documentation for `InjectService` [here](https://www.xamantra.dev/momentum/#/inject_service).
 
 <hr>
 

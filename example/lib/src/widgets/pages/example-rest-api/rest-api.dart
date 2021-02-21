@@ -3,6 +3,7 @@ import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
 import '../../../components/rest-api-example/index.dart';
+import '../../index.dart';
 
 class RestApiExamplePage extends StatefulWidget {
   const RestApiExamplePage({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
     var controller = Momentum.controller<RestApiExampleController>(context);
 
     // controller.loadTodoList();
-    controller.loadTodoList_V2();
+    controller.loadTodoList();
   }
 
   @override
@@ -33,7 +34,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
             title: Text(
-              'Momentum - REST API Example',
+              'REST API Example',
               style: TextStyle(
                 fontSize: sy(11.5),
               ),
@@ -50,34 +51,50 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
                 if (timerModel.isLoading) {
                   return CircularProgressIndicator();
                 } else {
-                  return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (context, index) {
-                      var item = list[index];
-                      return InkWell(
-                        onTap: () {},
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: ListTile(
-                                    title: Text(item.title),
-                                    dense: true,
+                  return Column(
+                    children: [
+                      Note(note: 'NOTE: The data source is from "https://jsonplaceholder.typicode.com/todos". It\'s a dummy data website free for public use.'),
+                      Expanded(
+                        child: ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: list.length,
+                          itemBuilder: (context, index) {
+                            var item = list[index];
+                            return InkWell(
+                              onTap: () {},
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Text(
+                                            item.title,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
+                                          dense: true,
+                                        ),
+                                      ),
+                                      item.completed
+                                          ? Padding(
+                                              padding: EdgeInsets.all(sy(4)),
+                                              child: Icon(
+                                                Icons.check,
+                                                color: Theme.of(context).accentColor,
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                    ],
                                   ),
-                                ),
-                                Checkbox(
-                                  value: item.completed, // take note this is only a readonly example. the check states boolean are from jsonplaceholder website.
-                                  onChanged: (_) {},
-                                ),
-                              ],
-                            ),
-                            Divider(height: 1),
-                          ],
+                                  Divider(height: 1),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   );
                 }
               },

@@ -28,18 +28,17 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
-  momentum:
-    git:
-      url: https://github.com/xamantra/momentum.git
-      ref: d15ea3fdf6113b9eedd6d2f44414c86a7d4c1514
+  momentum: 1.3.5
   relative_scale: any
   dio: 3.0.10
-  firebase_core: 0.6.0
+  # firebase_core: 0.6.0
   random_words: 1.0.2
+  shared_preferences: 0.5.12+4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  remove_from_coverage: 1.0.7
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

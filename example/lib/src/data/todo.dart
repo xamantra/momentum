@@ -3,8 +3,6 @@
 // https://jsonplaceholder.typicode.com/todos
 // https://app.quicktype.io/
 
-import 'dart:convert';
-
 class TodoList {
   TodoList({
     this.list,
@@ -13,10 +11,10 @@ class TodoList {
   final List<TodoItem> list;
 
   TodoList copyWith({
-    List<TodoItem> todo,
+    List<TodoItem> list,
   }) =>
       TodoList(
-        list: todo ?? this.list,
+        list: list ?? this.list,
       );
 
   factory TodoList.fromJson(dynamic json) => TodoList(
@@ -25,7 +23,7 @@ class TodoList {
 }
 
 class TodoItem {
-  TodoItem({
+  const TodoItem({
     this.userId,
     this.id,
     this.title,
@@ -50,21 +48,10 @@ class TodoItem {
         completed: completed ?? this.completed,
       );
 
-  factory TodoItem.fromRawJson(String str) => TodoItem.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory TodoItem.fromJson(Map<String, dynamic> json) => TodoItem(
         userId: json["userId"] == null ? null : json["userId"],
         id: json["id"] == null ? null : json["id"],
         title: json["title"] == null ? null : json["title"],
         completed: json["completed"] == null ? null : json["completed"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "userId": userId == null ? null : userId,
-        "id": id == null ? null : id,
-        "title": title == null ? null : title,
-        "completed": completed == null ? null : completed,
-      };
 }
