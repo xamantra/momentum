@@ -34,12 +34,15 @@ class ExampleItem extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: sy(12),
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white.withOpacity(0.9),
+                  Expanded(
+                    child: Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: sy(12),
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   SizedBox(width: sy(8)),
