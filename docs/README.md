@@ -75,7 +75,7 @@ To get started, `flutter create` an app. Name it however you want.
 1. Add this to your package's `pubspec.yaml` file:
     ```yaml
     dependencies:
-      momentum: ^1.3.6
+      momentum: ^1.3.7
     ```
     It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
 
