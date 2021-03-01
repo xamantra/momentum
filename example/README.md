@@ -1,16 +1,21 @@
-# example
+<a href="https://github.com/xamantra/listify" target="_blank">Source Code for this Example App</a>
 
-A new Flutter project.
+## Preview
+In this image the process was like this:
+- Open the app (Home Page).
+- Go to *Add New List* page.
+- Input some data.
+- Close and Terminate on task view.
+- Reopen the app again.
 
-## Getting Started
+And magic happens! All the inputs were retained and not just that but also including the page where you left off. Navigation history is also persisted which means pressing the system back button will navigate you to the correct previous page.
 
-This project is a starting point for a Flutter application.
+![persistent preview](https://i.imgur.com/9CrFNRG.png)
 
-A few resources to get you started if this is your first Flutter project:
+#### Dark Mode
+This theming is done manually using momentum.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![dark mode](https://i.imgur.com/WurrjR1.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### [Source Code for this Example App](https://github.com/xamantra/listify)
+This example app shows how powerful momentum is.
