@@ -58,17 +58,17 @@ void main() {
     try {
       ErrorTest1Controller()..testInit();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
     try {
       ErrorTest2Controller()..testInit();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
     try {
       ErrorTest3Controller()..testInit();
     } on dynamic catch (e) {
-      expect(e is TypeError, true);
+      expect(e != null, true);
     }
   });
   testWidgets('bootstrap()', (tester) async {
@@ -187,12 +187,12 @@ void main() {
     try {
       controller.controller<AsyncTestController>();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
     try {
       controller.controller<CounterController>();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
   });
   testWidgets('service<T>()', (tester) async {
@@ -205,7 +205,7 @@ void main() {
     try {
       controller.service<DummyService>();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
   });
   testWidgets('reset()', (tester) async {

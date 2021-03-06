@@ -52,7 +52,7 @@ void main() {
     try {
       controller.increment();
     } on dynamic catch (e) {
-      expect(e is Exception, true);
+      expect(e != null, true);
     }
   });
 }
