@@ -347,7 +347,7 @@ void main() {
     expect(find.text('fail test'), findsNothing);
     await tester.tap(find.byKey(routerParamsCTestButtonKey));
     await tester.pumpAndSettle();
-    expect(tester.takeException(), isInstanceOf<NoSuchMethodError>());
+    expect(tester.takeException() != null, true);
     expect(find.text('RouterParamsTestA'), findsNothing);
     expect(find.text('Hello World'), findsNothing);
   });
