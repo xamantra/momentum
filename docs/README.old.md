@@ -378,7 +378,7 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
       Widget build(BuildContext context) {
         return Scaffold(
           body: Container(
-            child: FlatButton(
+            child: TextButton(
               child: Text('Submit'),
               onPressed: () {
                 loginController.login(); // call any function you defined in your controller.
@@ -520,13 +520,13 @@ Now, you might be asking where the heck `SessionController` is instantiated. The
                               style: TextStyle(fontSize: 24),
                               textAlign: TextAlign.center,
                             ),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 Navigator.pop(context); // exits the dialog
                               },
                               child: Text('No'),
                             ),
-                            RaisedButton(
+                            ElevatedButton(
                               onPressed: () {
                                 resetAll(context); // call the provided resetAll method.
                                 Navigator.pop(context); // exits the dialog

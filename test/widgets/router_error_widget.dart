@@ -51,7 +51,7 @@ class PageErrorTestA extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: errorTestGotoPageBKey,
           onPressed: () {
             momentum.MomentumRouter.goto(context, PageErrorTestB);

@@ -93,7 +93,7 @@ class _TypesTestErrorContent extends StatelessWidget {
         Text('$CTypesTestCtrl.square: ${cTypeTest.square}'),
         Text('$ImplementsABCTypesCtrl.value: ${abcTypeTest.value}'),
         Text('$ImplementsABCTypesCtrl.square: ${abcTypeTest.square}'),
-        FlatButton(
+        TextButton(
           key: keyTypesErrorIncrementButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -102,7 +102,7 @@ class _TypesTestErrorContent extends StatelessWidget {
           },
           child: Text('Increment'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypesErrorDecrementButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -111,7 +111,7 @@ class _TypesTestErrorContent extends StatelessWidget {
           },
           child: Text('Decrement'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypesErrorMultiplyButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -120,7 +120,7 @@ class _TypesTestErrorContent extends StatelessWidget {
           },
           child: Text('Multiply by 2'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypesErrorDivideButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -129,7 +129,7 @@ class _TypesTestErrorContent extends StatelessWidget {
           },
           child: Text('Divide by 2'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeErrorToSquareButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(

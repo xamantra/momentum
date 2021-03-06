@@ -293,7 +293,7 @@ class _ExampleState extends MomentumState<ExampleWidget> {
 
 Time travel method. `Undo` state update. Useful for input pages or reverting dangerous actions like delete. This will rebuild the widgets.
 ```dart
-FlatButton(
+TextButton(
   // ...
   onPressed: () {
     // undo edit on textfields.
@@ -311,7 +311,7 @@ FlatButton(
 
 Time travel method. `Redo` state update. This will rebuild the widgets.
 ```dart
-FlatButton(
+TextButton(
   // ...
   onPressed: () {
     // redo edit on textfields.
@@ -329,7 +329,7 @@ FlatButton(
 
 Reset the state, the `init()` implementation will be used. Example usage might be for clearing all textfield inputs.
 ```dart
-FlatButton(
+TextButton(
   child: Text('Clear All Inputs'),
   onPressed: () {
     loginController.reset();

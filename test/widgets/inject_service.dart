@@ -67,14 +67,14 @@ class CounterApp extends StatelessWidget {
       home: Scaffold(
         body: Column(
           children: <Widget>[
-            FlatButton(
+            TextButton(
               key: errorKey1,
               onPressed: () {
                 Momentum.service<InMemoryStorage>(context);
               },
               child: Text('Error Test 1'),
             ),
-            FlatButton(
+            TextButton(
               key: errorKey2,
               onPressed: () {
                 Momentum.service<InMemoryStorage>(
@@ -84,14 +84,14 @@ class CounterApp extends StatelessWidget {
               },
               child: Text('Error Test 2'),
             ),
-            FlatButton(
+            TextButton(
               key: errorKey3,
               onPressed: () {
                 Momentum.service<InjectService>(context);
               },
               child: Text('Error Test 3'),
             ),
-            FlatButton(
+            TextButton(
               key: errorKey4,
               onPressed: () {
                 Momentum.service<InjectService<dynamic>>(context);

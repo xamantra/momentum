@@ -51,7 +51,7 @@ class PageExitTest extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: routerExitButtonKey,
           onPressed: () {
             momentum.MomentumRouter.pop(context);

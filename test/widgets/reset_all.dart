@@ -32,7 +32,7 @@ class ResetAllApp extends StatelessWidget {
               return Column(
                 children: <Widget>[
                   Text('${counter.value}'),
-                  FlatButton(
+                  TextButton(
                     key: resetAllButtonKey,
                     onPressed: () {
                       Momentum.resetAll(context);

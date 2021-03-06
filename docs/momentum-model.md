@@ -70,7 +70,7 @@ The reference to the controller instance that this model is attached to.
     builder: (context, snapshot) {
       var exampleModel = snapshot<ExampleModel>();
       
-      return FlatButton(
+      return TextButton(
         // ...
         onPressed: () {
           // access the controller property.

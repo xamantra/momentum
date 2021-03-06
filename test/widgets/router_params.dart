@@ -109,7 +109,7 @@ class RouterParamsTestA extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Text('RouterParamsTestA'),
-          FlatButton(
+          TextButton(
             key: routerParamsBTestButtonKey,
             onPressed: () {
               momentum.MomentumRouter.goto(
@@ -120,7 +120,7 @@ class RouterParamsTestA extends StatelessWidget {
             },
             child: Text('Goto B'),
           ),
-          FlatButton(
+          TextButton(
             key: routerParamsCTestButtonKey,
             onPressed: () {
               momentum.MomentumRouter.goto(
@@ -131,7 +131,7 @@ class RouterParamsTestA extends StatelessWidget {
             },
             child: Text('Goto C'),
           ),
-          FlatButton(
+          TextButton(
             key: routerParamsDTestButtonKey,
             onPressed: () {
               momentum.MomentumRouter.goto(
@@ -186,7 +186,7 @@ class RouterParamsTestD extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Text(controller.getParamValue()),
-          FlatButton(
+          TextButton(
             key: routerParamsDErrorButtonKey,
             onPressed: () {
               momentum.MomentumRouter.goto(
@@ -213,7 +213,7 @@ class RouterParamsTestE extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Text(params.value),
-          FlatButton(
+          TextButton(
             key: routerParamsPopButtonKey,
             onPressed: () {
               momentum.MomentumRouter.pop(

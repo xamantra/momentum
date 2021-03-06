@@ -165,7 +165,7 @@ Let's close the stream subscription when the user logout:
 
 ```dart
 /// ...
-FlatButton(
+TextButton(
   // ...
   child: Text('Logout'),
   onPressed: () async {

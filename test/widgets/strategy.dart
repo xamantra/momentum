@@ -41,7 +41,7 @@ class BootstrapStrategyWidget extends StatelessWidget {
                 return Column(
                   children: <Widget>[
                     CircularProgressIndicator(),
-                    FlatButton(
+                    TextButton(
                       onPressed: controller.stopLoading,
                       child: Text("Stop Loading"),
                     ),

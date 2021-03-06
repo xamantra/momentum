@@ -92,7 +92,7 @@ class _TypesTestWidgets extends StatelessWidget {
             );
           },
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeTestIncrementButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -101,7 +101,7 @@ class _TypesTestWidgets extends StatelessWidget {
           },
           child: Text('Increment'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeTestDecrementButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -110,7 +110,7 @@ class _TypesTestWidgets extends StatelessWidget {
           },
           child: Text('Decrement'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeTestMultiplyButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -119,7 +119,7 @@ class _TypesTestWidgets extends StatelessWidget {
           },
           child: Text('Multiply by 2'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeTestDivideButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(
@@ -128,7 +128,7 @@ class _TypesTestWidgets extends StatelessWidget {
           },
           child: Text('Divide by 2'),
         ),
-        FlatButton(
+        TextButton(
           key: keyTypeTestToSquareButton,
           onPressed: () {
             Momentum.controller<ImplementsABCTypesCtrl>(

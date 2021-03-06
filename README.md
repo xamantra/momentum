@@ -8,11 +8,7 @@
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
 <a href="https://github.com/xamantra/momentum/actions" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg" alt="Test" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=likes&query=likes&url=http://www.pubscore.gq/likes?package=momentum" alt="likes" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=health&query=pub_points&url=http://www.pubscore.gq/pub-points?package=momentum" alt="health" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=teal&label=popularity&query=popularity&url=http://www.pubscore.gq/popularity?package=momentum" alt="popularity" /></a>
 <a href="https://github.com/xamantra/momentum/stargazers" target="_blank"><img src="https://img.shields.io/github/stars/xamantra/momentum" alt="GitHub stars" /></a>
-<a href="https://github.com/tenhobi/effective_dart" target="_blank"><img src="https://img.shields.io/badge/style-effective_dart-54C5F8.svg" alt="style: effective dart" /></a>
 <a href="https://github.com/xamantra/momentum/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/xamantra/momentum" alt="GitHub license" /></a>
 <a href="https://github.com/xamantra/momentum/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/xamantra/momentum" alt="GitHub last commit" /></a>
 </p>
@@ -22,6 +18,7 @@
 - FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
 - Testing Guide: https://www.xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
+- **Null-safety**: In order to migrate, the *deprecated* class `Router` inside momentum is removed permanently. Use `MomentumRouter` instead, the methods and parameters are all the same so it shouldn't be that hard to refactor.
 
 ---
 
@@ -35,14 +32,11 @@
   - You can `reset a state` or all of the states.
   - `Skip rebuilds`. Widget specific.
   - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
-  - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
 
 ## Core Concepts
 
   - Momentum only uses `setState(...)` under the hood.
-  - The method `model.update(...)` is the setState of momentum.
   - Modular project structure because of the component system (`MomentumController` + `MomentumModel`).
-  - Everything can be reusable from widgets, services, data, state to logic.
   - Everything is in the widget tree.
 
 ## Preview
@@ -199,8 +193,9 @@ class HomeWidget extends StatelessWidget {
 
 ---
 
-## Important Links
+## Notes
 
 - FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
 - Testing Guide: https://www.xamantra.dev/momentum/#/testing
 - Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
+- **Null-safety**: In order to migrate, the *deprecated* class `Router` inside momentum is removed permanently. Use `MomentumRouter` instead, the methods and parameters are all the same so it shouldn't be that hard to refactor.

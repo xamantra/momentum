@@ -64,14 +64,14 @@ class PageA extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            FlatButton(
+            TextButton(
               key: gotoPageBKey,
               onPressed: () {
                 momentum.MomentumRouter.goto(context, PageB);
               },
               child: Text('Goto PageB'),
             ),
-            FlatButton(
+            TextButton(
               key: resetHistoryButton,
               onPressed: () {
                 momentum.MomentumRouter.resetWithContext<PageB>(context);
@@ -92,7 +92,7 @@ class PageB extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: gotoPageCKey,
           onPressed: () {
             momentum.MomentumRouter.goto(context, PageC);
@@ -113,14 +113,14 @@ class PageC extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            FlatButton(
+            TextButton(
               key: fromPageCPop,
               onPressed: () {
                 momentum.MomentumRouter.pop(context);
               },
               child: Text('Pop From PageC'),
             ),
-            FlatButton(
+            TextButton(
               key: clearHistoryButton,
               onPressed: () {
                 momentum.MomentumRouter.clearHistoryWithContext(context);

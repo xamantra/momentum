@@ -154,7 +154,7 @@ With momentum, you can easily access almost everything. Take a look at these cod
     builder: (context, snapshot) {
       var counterModel = snapshot<CounterModel>();
       var counterController = counterModel.controller;
-      return FlatButton(
+      return TextButton(
         onPressed: () {
           counterController.increment();
         },

@@ -29,7 +29,7 @@ class CounterApp extends StatelessWidget {
               return Column(
                 children: <Widget>[
                   Text('${counter.value}'),
-                  FlatButton(
+                  TextButton(
                     key: keyRestartButton,
                     child: Text('Restart'),
                     onPressed: () {

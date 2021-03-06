@@ -57,7 +57,7 @@ class RouterPageA extends StatelessWidget {
         body: Center(
           child: Column(
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 key: gotoRouterPageB,
                 onPressed: () {
                   momentum.MomentumRouter.goto(context, RouterPageB);
@@ -88,7 +88,7 @@ class RouterPageB extends StatelessWidget {
         body: Center(
           child: Column(
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 key: gotoRouterPopKey,
                 onPressed: () {
                   momentum.MomentumRouter.pop(context);

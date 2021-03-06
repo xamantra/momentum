@@ -475,12 +475,12 @@ void main() {
         await Future.delayed(Duration(milliseconds: 1000));
         await tester.pump();
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
-        expect(find.byType(FlatButton), findsOneWidget);
-        await tester.tap(find.byType(FlatButton));
+        expect(find.byType(TextButton), findsOneWidget);
+        await tester.tap(find.byType(TextButton));
         await Future.delayed(Duration(milliseconds: 1000));
         await tester.pump();
         expect(find.byType(CircularProgressIndicator), findsNothing);
-        expect(find.byType(FlatButton), findsNothing);
+        expect(find.byType(TextButton), findsNothing);
       });
     });
     testWidgets('lazyFirstCall - inline config', (tester) async {
@@ -490,12 +490,12 @@ void main() {
         await Future.delayed(Duration(milliseconds: 1000));
         await tester.pump();
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
-        expect(find.byType(FlatButton), findsOneWidget);
-        await tester.tap(find.byType(FlatButton));
+        expect(find.byType(TextButton), findsOneWidget);
+        await tester.tap(find.byType(TextButton));
         await Future.delayed(Duration(milliseconds: 1000));
         await tester.pump();
         expect(find.byType(CircularProgressIndicator), findsNothing);
-        expect(find.byType(FlatButton), findsNothing);
+        expect(find.byType(TextButton), findsNothing);
       });
     });
   });

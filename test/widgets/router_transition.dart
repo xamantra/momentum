@@ -55,7 +55,7 @@ class TransitionPageA extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: transitionToBKey,
           onPressed: () {
             momentum.MomentumRouter.goto(
@@ -80,7 +80,7 @@ class TransitionPageB extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: transitionToCKey,
           onPressed: () {
             momentum.MomentumRouter.goto(
@@ -105,7 +105,7 @@ class TransitionPageC extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlatButton(
+        child: TextButton(
           key: transitionCPop,
           onPressed: () {
             momentum.MomentumRouter.pop(context, transition: (context, page) {

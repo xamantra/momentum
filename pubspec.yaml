@@ -12,5 +12,3 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  effective_dart: 1.2.4
-  remove_from_coverage: 1.0.7
