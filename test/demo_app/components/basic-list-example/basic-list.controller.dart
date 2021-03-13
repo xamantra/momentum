@@ -1,5 +1,4 @@
 import 'package:momentum/momentum.dart';
-import 'package:random_words/random_words.dart';
 
 import '../../services/index.dart';
 import '../../widgets/pages/example-basic-list-routed/index.dart';
@@ -41,10 +40,10 @@ class BasicListExampleController extends MomentumController<BasicListExampleMode
   }
 
   void addNewRandom() {
-    var random = generateNoun().take(1).first;
+    var random = (['blue', 'green', 'red', 'yello', 'orange']..shuffle()).first;
     var list = List<String>.from(model.list); // proper way to manipulate a list.
     // var list = model.list; // wrong way to manipulate a list. undo/redo doesn't work properly.
-    list.add(random.word);
+    list.add('$random#${list.length}');
     model.update(list: list);
   }
 
