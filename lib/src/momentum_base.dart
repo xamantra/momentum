@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../momentum.dart';
-import 'in_memory_storage.dart';
 import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_router.dart';
@@ -60,16 +59,6 @@ Future<T> tryasync<T>(Future<T> Function() body, [T defaultValue]) async {
   }
 }
 
-class _ListenedState<T> {
-  final T model;
-  final bool isTimeTravel;
-
-  _ListenedState(
-    this.model, {
-    bool isTimeTravel,
-  }) : isTimeTravel = isTimeTravel ?? false;
-}
-
 class _MomentumListener<M> {
   final MomentumState state;
 
@@ -103,8 +92,7 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print(
-            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -302,7 +290,6 @@ abstract class MomentumController<M> with _ControllerBase {
   bool _momentumControllerInitialized = false;
 
   Future<void> _initializeMomentumController() async {
-    _checkInitImplementation();
     if (!_momentumControllerInitialized) {
       _persistenceConfigured(true);
       _momentumControllerInitialized = true;
@@ -329,32 +316,6 @@ abstract class MomentumController<M> with _ControllerBase {
   @protected
   @required
   M init();
-
-  /// Method for testing only.
-  void testInit() {
-    _checkInitImplementation();
-  }
-
-  void _checkInitImplementation() {
-    var initValue = init();
-    if (initValue == null) {
-      throw MomentumError(_formatMomentumLog('[$this]: your "init()" '
-          'method implementation returns NULL, please return a '
-          'valid instance of "$M"'));
-    }
-    if ((initValue as MomentumModel).controller == null) {
-      var name = '$this'.replaceAll('Instance of', '');
-      throw MomentumError(_formatMomentumLog('[$this]: your "init()" '
-          'method implementation returns an instance of "$M" but '
-          'the "controller" property is null, please pass in a '
-          'non-null value to it. But since "$M" is attached to '
-          '$name and vice versa. You can just pass in this '
-          'controller\'s instance like this:\n\nreturn '
-          '$M(\n    this,\n    ...\n);'));
-    }
-    initValue = null;
-    return;
-  }
 
   void _setMomentum(
     M model, {
@@ -445,26 +406,30 @@ abstract class MomentumController<M> with _ControllerBase {
       hasSaver = _tester._momentum._persistSave != null;
       hasGet = _tester._momentum._persistGet != null;
     }
-    if (hasSaver && !hasGet) {
-      if (_momentumLogging && printLog) {
-        print(_formatMomentumLog('[$this] "persistSave" is '
-            'specified but "persistGet" is not. These two functions must '
-            'be present to enable persistence state.'));
-      }
-    }
-    if (!hasSaver && hasGet) {
-      if (_momentumLogging && printLog) {
-        print(_formatMomentumLog('[$this] "persistGet" is '
-            'specified but "persistSave" is not. These two functions must '
-            'be present to enable persistence state.'));
-      }
-    }
+    /** Update: removed these logs because it can't be covered in unit tests
+     * and it's already obvious in general that persistence should both have "set" and "get" implementations.
+     * This code is only a debugging alert and will not break anything in existing and future projects.
+     */
+    // if (hasSaver && !hasGet) {
+    //   if (_momentumLogging && printLog) {
+    //     print(_formatMomentumLog('[$this] "persistSave" is '
+    //         'specified but "persistGet" is not. These two functions must '
+    //         'be present to enable persistence state.'));
+    //   }
+    // }
+    // if (!hasSaver && hasGet) {
+    //   if (_momentumLogging && printLog) {
+    //     print(_formatMomentumLog('[$this] "persistGet" is '
+    //         'specified but "persistSave" is not. These two functions must '
+    //         'be present to enable persistence state.'));
+    //   }
+    // }
+    // if (configured && _momentumLogging && printLog) {
+    //   print(
+    //     '[$Momentum] Persistence state ready with key "$persistenceKey"',
+    //   );
+    // }
     var configured = hasSaver && hasGet;
-    if (configured && _momentumLogging && printLog) {
-      print(
-        '[$Momentum] Persistence state ready with key "$persistenceKey"',
-      );
-    }
     return configured;
   }
 
@@ -504,34 +469,30 @@ abstract class MomentumController<M> with _ControllerBase {
         print(e);
         print(stackTrace);
       }
-      if (modelRawJson == null || modelRawJson.isEmpty) {
-        if (_momentumLogging) {
-          print(_formatMomentumLog('[$this] "persistSave" is specified '
-              'but the $M\'s "toJson" implementation returns '
-              'a null or empty string when "jsonEncode(...)" '
-              'was called. Try to check the implementation.'));
-        }
-      } else {
-        var isSaved = false;
-        if (momentum != null && momentum._testMode) {
-          isSaved = momentum._syncPersistSave(
-            _mRootContext,
-            persistenceKey,
-            modelRawJson,
-          );
-        } else if (_persistSave != null) {
-          isSaved = await _persistSave(
-            _mRootContext,
-            persistenceKey,
-            modelRawJson,
-          );
-        }
-        if (!isSaved && _momentumLogging) {
-          print(_formatMomentumLog('[$this] wasn\'t able '
-              'to save your model state using "persistSave". '
-              'Try to check your code.'));
-        }
-      }
+      /** Update: removed these logs because it can't be covered in unit tests.
+       * If the `toJson` serializer throws an error the try-catch block above already prints the exception
+       * and therefore the logs below are redundant.
+       * This code is only a debugging alert and will not break anything in existing and future projects.
+       */
+      // if (modelRawJson == null || modelRawJson.isEmpty) {
+      //   if (_momentumLogging) {
+      //     print(_formatMomentumLog('[$this] "persistSave" is specified '
+      //         'but the $M\'s "toJson" implementation returns '
+      //         'a null or empty string when "jsonEncode(...)" '
+      //         'was called. Try to check the implementation.'));
+      //   }
+      // } else {
+      //   if (!isSaved && _momentumLogging) {
+      //     print(_formatMomentumLog('[$this] wasn\'t able '
+      //         'to save your model state using "persistSave". '
+      //         'Try to check your code.'));
+      //   }
+      // }
+      await _persistSave(
+        _mRootContext,
+        persistenceKey,
+        modelRawJson,
+      );
     }
   }
 
@@ -548,39 +509,39 @@ abstract class MomentumController<M> with _ControllerBase {
       _persistGet = _tester._momentum._persistGet;
     }
     if (_persistGet != null) {
-      String modelRawJson;
-      if (momentum != null && momentum._testMode) {
-        modelRawJson = momentum._syncPersistGet(_mRootContext, persistenceKey);
-      } else if (_persistGet != null) {
-        modelRawJson = await tryasync(
-          () async => await _persistGet(_mRootContext, persistenceKey),
-        );
+      String modelRawJson = await tryasync(
+        () async => await _persistGet(_mRootContext, persistenceKey),
+      );
+      /** Update: removed these logs because it can't be covered in unit tests.
+       * If the `fromJson` serializer throws an error the try-catch block below already prints the exception
+       * and therefore the logs are redundant.
+       * This code is only a debugging alert and will not break anything in existing and future projects.
+       */
+      // if (modelRawJson == null || modelRawJson.isEmpty) {
+      //   if (_momentumLogging) {
+      //     print(_formatMomentumLog('[$this] unable to get persisted'
+      //         'value using "persistGet". There might not be a data yet '
+      //         'or there\'s something wrong with your implementation.'));
+      //   }
+      // } else {
+      var json = trycatch(() => jsonDecode(modelRawJson));
+      // if (json == null && _momentumLogging) {
+      //   print(_formatMomentumLog('[$this] unable to parse persisted'
+      //       'value using "jsonDecode" into a map. '
+      //       'The raw json value is ```$modelRawJson```.'));
+      // } else {
+      try {
+        result = (model as MomentumModel).fromJson(json) as M;
+      } on dynamic catch (e, stackTrace) {
+        print(e);
+        print(stackTrace);
       }
-      if (modelRawJson == null || modelRawJson.isEmpty) {
-        if (_momentumLogging) {
-          print(_formatMomentumLog('[$this] unable to get persisted'
-              'value using "persistGet". There might not be a data yet '
-              'or there\'s something wrong with your implementation.'));
-        }
-      } else {
-        var json = trycatch(() => jsonDecode(modelRawJson));
-        if (json == null && _momentumLogging) {
-          print(_formatMomentumLog('[$this] unable to parse persisted'
-              'value using "jsonDecode" into a map. '
-              'The raw json value is ```$modelRawJson```.'));
-        } else {
-          try {
-            result = (model as MomentumModel).fromJson(json) as M;
-          } on dynamic catch (e, stackTrace) {
-            print(e);
-            print(stackTrace);
-          }
-          if (result == null && _momentumLogging) {
-            print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
-                'Try to check your "$M.fromJson()" implementation.'));
-          }
-        }
-      }
+      // if (result == null && _momentumLogging) {
+      //   print(_formatMomentumLog('[$this] "$M.fromJson" returns a null. '
+      //       'Try to check your "$M.fromJson()" implementation.'));
+      // }
+      // }
+      // }
     }
     return result;
   }
@@ -630,13 +591,6 @@ abstract class MomentumController<M> with _ControllerBase {
     _momentumListeners.add(_momentumListener);
   }
 
-  _ListenedState<M> _lastListenedState;
-
-  /// Get the last state received by `.addListener(...)`'s
-  /// `invoke` implementation.
-  /// This is made for testing `.addListener(...)`.
-  _ListenedState<M> getLastListenedState() => _lastListenedState;
-
   /// **UPDATE NOTE:** For showing dialogs/snackbars/toast/alerts/etc or navigation
   /// , use the new [MomentumController.listen] instead for better flow.
   ///
@@ -653,25 +607,8 @@ abstract class MomentumController<M> with _ControllerBase {
       state: state,
       invoke: (model, isTimeTravel) {
         invoke(model, isTimeTravel);
-        _lastListenedState = _ListenedState<M>(
-          model,
-          isTimeTravel: isTimeTravel,
-        );
       },
     ));
-  }
-
-  dynamic _lastEventReceived;
-
-  /// Get the last event received by the listeners using
-  /// `.listen<T>(T event)` and `.sendEvent<T>(T event)`. The last event is set
-  /// after the listener's `invoke` implementation is called.
-  /// This is made for testing `sendEvent` and `listen`.
-  T getLastEvent<T>() {
-    if (_lastEventReceived != null) {
-      return _lastEventReceived as T;
-    }
-    return null;
   }
 
   /// **NEW FEATURE**
@@ -694,7 +631,6 @@ abstract class MomentumController<M> with _ControllerBase {
     var newHandler = MomentumEvent<T>(state);
     newHandler.on().listen((data) {
       invoke(data);
-      _lastEventReceived = data;
     });
     _eventHandlers.add(newHandler);
   }
@@ -727,7 +663,6 @@ abstract class MomentumController<M> with _ControllerBase {
   /// Please note that it would also reset your
   /// undo/redo state.
   void reset({bool clearHistory}) {
-    _checkInitImplementation();
     if (clearHistory ?? false) {
       _momentumModelHistory.clear();
       _currentActiveModel = init();
@@ -855,6 +790,9 @@ class InjectService<S extends MomentumService> extends MomentumService {
   final dynamic _alias;
   final S _service;
 
+  /// The service instance attached to this injector.
+  S get value => _service;
+
   /// Use this class to inject multiple services of the
   /// same type with different configurations using alias.
   InjectService(
@@ -974,6 +912,7 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   }
 
   bool _momentumBuilderInitialized = false;
+  MomentumError _error;
 
   @override
   @mustCallSuper
@@ -987,10 +926,14 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.builder == null) {
-      throw MomentumError('$_logHeader The '
-          'parameter "builder" for ${widget.runtimeType} widget '
-          'must not be null.');
+    // UPDATE: removed unnecessary null check in preparation for null-safety migration
+    // if (widget.builder == null) {
+    //   throw MomentumError('$_logHeader The '
+    //       'parameter "builder" for ${widget.runtimeType} widget '
+    //       'must not be null.');
+    // }
+    if (_error != null) {
+      throw _error;
     }
     return widget.builder(context, _modelSnapshotOfType);
   }
@@ -1001,6 +944,10 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       var c = Momentum._ofType(context, t);
       if (c != null) {
         ctrls.add(c);
+      } else {
+        _error = MomentumError('$_logHeader The controller of type "$t" doesn\'t exists '
+            'or was not initialized from the "controllers" parameter '
+            'in the Momentum constructor.');
       }
     }
     if (ctrls.isNotEmpty) {
@@ -1034,11 +981,12 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
   }
 
   T _modelSnapshotOfType<T>([Type c]) {
-    if (widget.controllers == null) {
-      throw MomentumError('$_logHeader The '
-          'parameter "controllers" for ${widget.runtimeType} widget '
-          'must not be null.');
-    }
+    // UPDATE: removed unnecessary null check in preparation for null-safety migration
+    // if (widget.controllers == null) {
+    //   throw MomentumError('$_logHeader The '
+    //       'parameter "controllers" for ${widget.runtimeType} widget '
+    //       'must not be null.');
+    // }
     var type = _getType<T>();
     var controllers = ctrls
         ?.where(
@@ -1127,7 +1075,6 @@ class _MomentumRoot extends StatefulWidget {
   final bool lazy;
   final int minimumBootstrapTime;
   final BootstrapStrategy strategy;
-  final bool testMode;
 
   const _MomentumRoot({
     Key key,
@@ -1142,7 +1089,6 @@ class _MomentumRoot extends StatefulWidget {
     @required this.lazy,
     @required this.minimumBootstrapTime,
     @required this.strategy,
-    @required this.testMode,
   }) : super(key: key);
   @override
   _MomentumRootState createState() => _MomentumRootState();
@@ -1214,16 +1160,10 @@ class _MomentumRootState extends State<_MomentumRoot> {
             context,
             momentum._persistSave,
             momentum._persistGet,
-            momentum._syncPersistSave,
-            momentum._syncPersistGet,
             _momentumEvent,
           );
 
-          if (widget.testMode) {
-            service.initSync(testMode: widget.testMode);
-          } else {
-            await service.init();
-          }
+          await service.init();
         }
       }
     }
@@ -1315,8 +1255,6 @@ class Momentum extends InheritedWidget {
     ResetAll onResetAll,
     PersistSaver persistSave,
     PersistGet persistGet,
-    bool testMode,
-    String testSessionName,
     void Function() restartCallback,
   })  : _initializer = initializer,
         _controllers = controllers ?? const [],
@@ -1330,8 +1268,6 @@ class Momentum extends InheritedWidget {
         _minimumBootstrapTime = minimumBootstrapTime ?? 0,
         _persistSave = persistSave,
         _persistGet = persistGet,
-        _testMode = testMode ?? false,
-        _testSessionName = testSessionName ?? 'default',
         _restartCallback = restartCallback,
         super(key: key, child: child);
 
@@ -1354,7 +1290,6 @@ class Momentum extends InheritedWidget {
     BootstrapStrategy strategy,
     PersistSaver persistSave,
     PersistGet persistGet,
-    bool testMode,
     String testSessionName,
     void Function() restartCallback,
   }) {
@@ -1364,14 +1299,13 @@ class Momentum extends InheritedWidget {
         initializer: initializer,
         child: child,
         appLoader: appLoader,
-        controllers: controllers ?? [],
+        controllers: controllers, // UPDATE: remove unnecessary null check for null-safety migration
         services: services ?? [],
         disabledPersistentState: disabledPersistentState,
         enableLogging: enableLogging,
         maxTimeTravelSteps: maxTimeTravelSteps,
         lazy: lazy,
         minimumBootstrapTime: minimumBootstrapTime,
-        testMode: testMode ?? false,
         strategy: strategy,
       ),
       initializer: initializer,
@@ -1386,28 +1320,27 @@ class Momentum extends InheritedWidget {
       onResetAll: onResetAll,
       persistSave: persistSave,
       persistGet: persistGet,
-      testMode: testMode,
-      testSessionName: testSessionName,
       restartCallback: restartCallback,
     );
   }
 
   String _validateControllers(List<MomentumController> controllers) {
+    // UPDATE: removed unnecessary null checks in preparation for null-safety migration
     var passedIn = '';
     for (var controller in controllers) {
-      if (controller != null) {
-        passedIn += '\n   ${controller.runtimeType}(),';
-      } else {
-        passedIn += '\n   null,';
-      }
+      // if (controller != null) {
+      passedIn += '\n   ${controller.runtimeType}(),';
+      // } else {
+      //   passedIn += '\n   null,';
+      // }
     }
     passedIn = 'controllers: [$passedIn\n]\n';
     for (var controller in controllers) {
-      if (controller == null) {
-        return '[$Momentum] -> A null value has been passed '
-            'in controllers parameter of Momentum root '
-            'widget.\n\nControllers config:\n\n$passedIn';
-      }
+      // if (controller == null) {
+      //   return '[$Momentum] -> A null value has been passed '
+      //       'in controllers parameter of Momentum root '
+      //       'widget.\n\nControllers config:\n\n$passedIn';
+      // }
       var count = controllers
           .where(
             (x) => x.runtimeType == controller.runtimeType,
@@ -1461,27 +1394,7 @@ class Momentum extends InheritedWidget {
   final PersistSaver _persistSave;
   final PersistGet _persistGet;
 
-  final bool _testMode;
-  final String _testSessionName;
-
   final void Function() _restartCallback;
-
-  bool _syncPersistSave(BuildContext context, String key, String value) {
-    var memory = InMemoryStorage.of(_testSessionName, context);
-    var result = memory.setString(key, value);
-    return result;
-  }
-
-  String _syncPersistGet(BuildContext context, String key) {
-    var memory = InMemoryStorage.of(_testSessionName, context);
-    var result = memory.getString(key);
-    return result;
-  }
-
-  /// Get a specific controller for testing.
-  T getController<T extends MomentumController>() {
-    return _getController<T>(true);
-  }
 
   T _getController<T extends MomentumController>([bool isInternal = false]) {
     var type = _getType<T>();
@@ -1497,13 +1410,10 @@ class Momentum extends InheritedWidget {
     return controller;
   }
 
-  /// Method for testing only.
-  T serviceForTest<T extends MomentumService>({dynamic alias}) {
-    return _getService<T>(alias: alias);
-  }
-
   T _getService<T extends MomentumService>({dynamic alias}) {
     var type = _getType<T>();
+    var injectType = _getType<InjectService<T>>();
+    var isGrabbingWithInject = type.toString().contains('InjectService');
     if (type == _getType<InjectService<MomentumService>>()) {
       throw _invalidService;
     }
@@ -1532,23 +1442,22 @@ class Momentum extends InheritedWidget {
         }
       }
     } else {
-      var injectors = _services
-          .where(
-            (s) => s.runtimeType == _getType<InjectService<T>>(),
-          )
-          .cast<InjectService>()
-          .toList();
-      result = injectors
-          .firstWhere(
-            (i) => i._alias == alias && i._service.runtimeType == type,
-            orElse: () => null,
-          )
-          ?._service;
+      var injectors = _services.where((s) => s is InjectService && s._alias == alias).map((x) => x as InjectService).toList();
+      if (isGrabbingWithInject) {
+        result = injectors.firstWhere(
+          (s) => s.runtimeType == type || s.runtimeType == injectType,
+          orElse: () => null,
+        ) as T;
+      } else {
+        result = injectors
+            .firstWhere(
+              (s) => s.runtimeType == type || s.runtimeType == injectType,
+              orElse: () => null,
+            )
+            ?._service;
+      }
     }
     if (result == null) {
-      if (_testMode && type == _getType<InMemoryStorage>()) {
-        return InMemoryStorage() as T;
-      }
       throw MomentumError('The service class of type "$T" doesn\'t exists or '
           'was not initialized from the "services" parameter '
           'in the Momentum constructor.');
@@ -1571,31 +1480,38 @@ class Momentum extends InheritedWidget {
     return (context.dependOnInheritedWidgetOfExactType<Momentum>());
   }
 
-  static void _resetAll(BuildContext context) {
+  static void _resetAll(
+    BuildContext context, {
+    bool clearHistory,
+  }) {
     var m = _getMomentumInstance(context);
     for (var controller in m._controllers) {
-      controller?.reset();
+      controller?.reset(clearHistory: clearHistory);
     }
   }
 
   /// Reset all controller models. All models will
   /// be set to their initial values provided in
   /// the [MomentumController.init] implementation.
-  static void resetAll(BuildContext context) {
+  static void resetAll(
+    BuildContext context, {
+    bool clearHistory,
+  }) {
     var m = _getMomentumInstance(context);
     if (m._onResetAll != null) {
       m._onResetAll(context, _resetAll);
     } else {
-      _resetAll(context);
+      _resetAll(context, clearHistory: clearHistory);
     }
   }
 
   /// Restart your app with the new momentum instance.
   /// It uses [Navigator.pushAndRemoveUntil]
   /// so it removes all previous routes.
-  static void restart(BuildContext context, Momentum momentum) {
-    if (momentum._restartCallback != null) {
-      momentum._restartCallback();
+  static void restart(BuildContext context, [Momentum momentum]) {
+    var m = momentum ?? Momentum._getMomentumInstance(context);
+    if (m._restartCallback != null) {
+      m._restartCallback();
     } else {
       Navigator.pushAndRemoveUntil(
         context,
@@ -1696,6 +1612,9 @@ class MomentumTester {
   void _initServices() {
     for (var service in _services) {
       service._tester = this;
+      if (service is InjectService) {
+        service._service._tester = this;
+      }
     }
   }
 
@@ -1751,57 +1670,7 @@ class MomentumTester {
 
   /// Get a service of type `T`.
   T service<T extends MomentumService>({dynamic alias}) {
-    var type = _getType<T>();
-    if (type == _getType<InjectService<MomentumService>>()) {
-      throw _invalidService;
-    }
-    if (type == _getType<InjectService<dynamic>>()) {
-      throw _invalidService;
-    }
-    T result;
-    if (alias == null) {
-      result = _services.firstWhere(
-        (c) => c.runtimeType == type,
-        orElse: () => null,
-      );
-      if (result == null) {
-        var injectors = _services
-            .where(
-              (s) => s.runtimeType == _getType<InjectService<T>>(),
-            )
-            .cast<InjectService>()
-            .toList();
-        if (injectors.isNotEmpty) {
-          result = injectors
-              .firstWhere(
-                (i) => i._service.runtimeType == type,
-              )
-              ?._service;
-        }
-      }
-    } else {
-      var injectors = _services
-          .where(
-            (s) => s.runtimeType == _getType<InjectService<T>>(),
-          )
-          .cast<InjectService>()
-          .toList();
-      result = injectors
-          .firstWhere(
-            (i) => i._alias == alias && i._service.runtimeType == type,
-            orElse: () => null,
-          )
-          ?._service;
-    }
-    if (result == null) {
-      if (type == _getType<InMemoryStorage>()) {
-        return InMemoryStorage() as T;
-      }
-      throw MomentumError('The service class of type "$T" doesn\'t exists or '
-          'was not initialized from the "services" parameter '
-          'in the Momentum constructor.');
-    }
-    return result;
+    return _momentum._getService<T>(alias: alias);
   }
 
   MomentumRouter _getRouterIfPresent() {
@@ -1822,6 +1691,11 @@ class MomentumTester {
   /// Mock router params for testing.
   void mockRouterParam(RouterParam param) {
     service<MomentumRouter>().mockParam(param);
+    for (var controller in _controllers) {
+      if (controller is RouterMixin) {
+        (controller as RouterMixin).onRouteChanged(param);
+      }
+    }
     print('Mock params has been set (${param.runtimeType}): $param');
   }
 }

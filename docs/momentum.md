@@ -339,6 +339,9 @@ Reset all controllers and their models. This will set all the models back to the
           ...
             onPressed: () {
               Momentum.resetAll(context);
+
+              // you can also do this to clear all undo/redo history for controllers.
+              Momentum.resetAll(context, clearHistory: true);
             },
       );
     }

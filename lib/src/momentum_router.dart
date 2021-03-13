@@ -27,12 +27,14 @@ class MomentumRouter extends MomentumService {
   BuildContext _rootContext;
   PersistSaver _persistSaver;
   PersistGet _persistGet;
-
-  PersistSaverSync _persistSaverSync;
-  PersistGetSync _persistGetSync;
-  bool _testMode;
+  bool _exited = false;
 
   bool get _canPersist => _persistSaver != null && _persistGet != null;
+
+  /// Returns `true` if the `.pop()` method is called while the router history is empty.
+  ///
+  /// Internally, this will be set to `true` when `SystemChannels.platform.invokeMethod('SystemNavigator.pop')` is called by `MomentumRouter`. It closes the app when there's no more previous route to show.
+  bool get exited => _exited;
 
   MomentumEvent _momentumEvent;
 
@@ -49,15 +51,11 @@ class MomentumRouter extends MomentumService {
     BuildContext context,
     PersistSaver persistSaver,
     PersistGet persistGet,
-    PersistSaverSync persistSaverSync,
-    PersistGetSync persistGetSync,
     MomentumEvent momentumEvent,
   ) {
     _rootContext = context;
     _persistSaver = persistSaver;
     _persistGet = persistGet;
-    _persistSaverSync = persistSaverSync;
-    _persistGetSync = persistGetSync;
     _momentumEvent = momentumEvent;
   }
 
@@ -83,19 +81,11 @@ class MomentumRouter extends MomentumService {
       );
       _history.add(indexOfWidgetOfType);
       if (_canPersist && _enablePersistence) {
-        if (_testMode) {
-          _persistSaverSync(
-            _rootContext,
-            'MOMENTUM_ROUTER_HISTORY',
-            jsonEncode(_history),
-          );
-        } else {
-          _persistSaver(
-            _rootContext,
-            'MOMENTUM_ROUTER_HISTORY',
-            jsonEncode(_history),
-          );
-        }
+        _persistSaver(
+          _rootContext,
+          'MOMENTUM_ROUTER_HISTORY',
+          jsonEncode(_history),
+        );
       }
       Route r;
       if (transition != null) {
@@ -119,22 +109,15 @@ class MomentumRouter extends MomentumService {
   }) async {
     trycatch(() => _history.removeLast());
     if (_canPersist && _enablePersistence) {
-      if (_testMode) {
-        _persistSaverSync(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      } else {
-        _persistSaver(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      }
+      _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
     }
     if (_history.isEmpty) {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      _exited = true;
     } else {
       var activePage = getActive();
       Route r;
@@ -153,7 +136,6 @@ class MomentumRouter extends MomentumService {
   /// This is automatically called by the
   /// library.
   Future<void> init() async {
-    _testMode = false;
     String historyJson;
     historyJson = await tryasync(
       () => _persistGet(_rootContext, 'MOMENTUM_ROUTER_HISTORY'),
@@ -165,32 +147,6 @@ class MomentumRouter extends MomentumService {
             () => jsonDecode(historyJson),
             '[]',
           );
-    _history = (result as List).map<int>((e) => e as int).toList();
-    if (_history.isEmpty) {
-      _history.add(0);
-    }
-    return;
-  }
-
-  /// You don't have to call this method.
-  /// This is automatically called by the
-  /// library.
-  void initSync({bool testMode = false}) {
-    _testMode = testMode ?? false;
-    String historyJson;
-    if (_testMode) {
-      historyJson = _persistGetSync(
-        _rootContext,
-        'MOMENTUM_ROUTER_HISTORY',
-      );
-    }
-    if (historyJson == null) {
-      if (_history.isEmpty) {
-        _history.add(0);
-      }
-      return;
-    }
-    var result = trycatch(() => jsonDecode(historyJson), '[]');
     _history = (result as List).map<int>((e) => e as int).toList();
     if (_history.isEmpty) {
       _history.add(0);
@@ -212,19 +168,11 @@ class MomentumRouter extends MomentumService {
     _history.clear();
     _history = [];
     if (_canPersist && _enablePersistence) {
-      if (_testMode) {
-        _persistSaverSync(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      } else {
-        await _persistSaver(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      }
+      await _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
     }
   }
 
@@ -233,19 +181,11 @@ class MomentumRouter extends MomentumService {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
     if (_canPersist && _enablePersistence) {
-      if (_testMode) {
-        _persistSaverSync(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      } else {
-        await _persistSaver(
-          _rootContext,
-          'MOMENTUM_ROUTER_HISTORY',
-          jsonEncode(_history),
-        );
-      }
+      await _persistSaver(
+        _rootContext,
+        'MOMENTUM_ROUTER_HISTORY',
+        jsonEncode(_history),
+      );
     }
   }
 
@@ -287,8 +227,7 @@ class MomentumRouter extends MomentumService {
     if (_currentRouteParam.runtimeType == _getType<T>()) {
       return _currentRouteParam as T;
     }
-    print(
-        'getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+    print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
     return null;
   }
 
