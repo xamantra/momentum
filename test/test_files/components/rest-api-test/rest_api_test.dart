@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../../../demo_app/src/components/rest-api-example/index.dart';
-import '../../../demo_app/src/services/index.dart';
+import '../../../demo_app/components/rest-api-example/index.dart';
+import '../../../demo_app/services/index.dart';
 import '../../utils.dart';
 
 void main() {

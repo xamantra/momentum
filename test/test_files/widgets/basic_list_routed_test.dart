@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../../demo_app/src/_config/index.dart';
-import '../../demo_app/src/components/basic-list-example/index.dart';
-import '../../demo_app/src/widgets/pages/home/index.dart';
+import '../../demo_app/_config/index.dart';
+import '../../demo_app/components/basic-list-example/index.dart';
+import '../../demo_app/widgets/pages/home/index.dart';
 
 void main() {
   testWidgets('basic list page route param test', (tester) async {

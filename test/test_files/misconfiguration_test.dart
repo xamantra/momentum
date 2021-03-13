@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../demo_app/src/components/dummy/index.dart';
+import '../demo_app/components/dummy/index.dart';
 
 void main() {
   testWidgets('misconfigured json serializers.', (tester) async {

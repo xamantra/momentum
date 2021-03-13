@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../demo_app/src/_config/index.dart';
+import '../../demo_app/_config/index.dart';
 
 void main() {
   test('Services config test', () {

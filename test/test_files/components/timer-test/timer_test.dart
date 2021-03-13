@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../../../demo_app/src/components/timer-example/index.dart';
+import '../../../demo_app/components/timer-example/index.dart';
 import '../../utils.dart';
 
 void main() {

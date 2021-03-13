@@ -3,7 +3,7 @@ import 'package:momentum/momentum.dart';
 import 'package:momentum/src/momentum_base.dart';
 import 'package:momentum/src/momentum_error.dart';
 
-import '../../demo_app/src/services/index.dart';
+import '../../demo_app/services/index.dart';
 
 void main() {
   test('<MomentumService> test', () async {

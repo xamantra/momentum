@@ -3,11 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 import 'package:momentum/src/momentum_error.dart';
 
-import '../demo_app/src/components/basic-list-example/index.dart';
-import '../demo_app/src/components/rest-api-example/index.dart';
-import '../demo_app/src/components/todo-example/index.dart';
-import '../demo_app/src/services/api-service.dart';
-import '../demo_app/src/services/dummy-service.dart';
+import '../demo_app/components/basic-list-example/index.dart';
+import '../demo_app/components/rest-api-example/index.dart';
+import '../demo_app/components/todo-example/index.dart';
+import '../demo_app/services/api-service.dart';
+import '../demo_app/services/dummy-service.dart';
 
 void main() {
   testWidgets('test `persistentStateDisabled`', (tester) async {

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../../demo_app/src/data/index.dart';
-import '../../demo_app/src/services/index.dart';
+import '../../demo_app/data/index.dart';
+import '../../demo_app/services/index.dart';
 
 void main() {
   test('<ApiService> test', () async {

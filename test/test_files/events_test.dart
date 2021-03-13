@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../demo_app/src/components/basic-list-example/index.dart';
-import '../demo_app/src/components/todo-example/index.dart';
-import '../demo_app/src/widgets/pages/example-basic-list/index.dart';
+import '../demo_app/components/basic-list-example/index.dart';
+import '../demo_app/components/todo-example/index.dart';
+import '../demo_app/widgets/pages/example-basic-list/index.dart';
 
 void main() {
   group('event system', () {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
-import '../../../demo_app/src/components/basic-list-example/index.dart';
-import '../../../demo_app/src/widgets/pages/example-basic-list-routed/index.dart';
+import '../../../demo_app/components/basic-list-example/index.dart';
+import '../../../demo_app/widgets/pages/example-basic-list-routed/index.dart';
 import '../../utils.dart';
 
 void main() {
