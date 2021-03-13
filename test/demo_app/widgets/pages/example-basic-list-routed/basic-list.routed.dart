@@ -11,7 +11,7 @@ const resetRouterButton = Key('resetRouterButton');
 
 class BasicListRoutedPage extends StatelessWidget {
   const BasicListRoutedPage({
-    Key key,
+    Key? key,
     this.withTransition = false,
   }) : super(key: key);
 
@@ -64,7 +64,7 @@ class BasicListRoutedPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   var listModel = snapshot<BasicListExampleModel>();
 
-                  var list = listModel.list;
+                  var list = listModel.list!;
 
                   return Column(
                     children: [

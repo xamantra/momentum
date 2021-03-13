@@ -3,8 +3,8 @@ import 'package:relative_scale/relative_scale.dart';
 
 class Note extends StatelessWidget {
   const Note({
-    Key key,
-    @required this.note,
+    Key? key,
+    required this.note,
   }) : super(key: key);
 
   final String note;

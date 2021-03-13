@@ -6,13 +6,13 @@ import '../../../components/calculator-example/index.dart';
 
 class CalculatorButton extends StatelessWidget {
   const CalculatorButton({
-    Key key,
-    @required this.exp,
+    Key? key,
+    required this.exp,
     this.callback,
   }) : super(key: key);
 
   final String exp;
-  final void Function(CalculatorExampleController) callback;
+  final void Function(CalculatorExampleController)? callback;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CalculatorButton extends StatelessWidget {
             onPressed: () {
               var controller = Momentum.controller<CalculatorExampleController>(context);
               if (callback != null) {
-                callback(controller);
+                callback!(controller);
               } else {
                 controller.appendExpression(exp);
                 controller.calculateResult();

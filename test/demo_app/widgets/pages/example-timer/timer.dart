@@ -5,7 +5,7 @@ import 'package:relative_scale/relative_scale.dart';
 import '../../../components/timer-example/index.dart';
 
 class TimerExamplePage extends StatelessWidget {
-  const TimerExamplePage({Key key}) : super(key: key);
+  const TimerExamplePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TimerExamplePage extends StatelessWidget {
               builder: (context, snapshot) {
                 var timerModel = snapshot<TimerExampleModel>();
 
-                if (timerModel.started) {
+                if (timerModel.started!) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

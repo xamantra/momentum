@@ -20,23 +20,12 @@ typedef BuildSkipper = bool Function(
 );
 
 typedef PersistSaver = Future<bool> Function(
-  BuildContext context,
+  BuildContext? context,
   String key,
-  String value,
+  String? value,
 );
 
-typedef PersistGet = Future<String> Function(
-  BuildContext context,
-  String key,
-);
-
-typedef PersistSaverSync = bool Function(
-  BuildContext context,
-  String key,
-  String value,
-);
-
-typedef PersistGetSync = String Function(
-  BuildContext context,
+typedef PersistGet = Future<String?> Function(
+  BuildContext? context,
   String key,
 );

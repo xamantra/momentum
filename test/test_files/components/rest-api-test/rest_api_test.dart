@@ -15,7 +15,7 @@ void main() {
     );
     await tester.init();
 
-    var controller = tester.controller<RestApiExampleController>();
+    var controller = tester.controller<RestApiExampleController>()!;
     isControllerValid<RestApiExampleController>(controller);
     isModelValid<RestApiExampleModel>(controller.model);
 
@@ -27,7 +27,7 @@ void main() {
     await future.whenComplete(() {
       expect(controller.model.isLoading, false);
       expect(controller.model.todoList != null, true);
-      expect(controller.model.todoList.list.length, 200);
+      expect(controller.model.todoList!.list!.length, 200);
     });
     controller.model.update(isLoading: null);
     expect(controller.model.isLoading, false);

@@ -13,7 +13,7 @@ class RestApiExampleController extends MomentumController<RestApiExampleModel> {
   }
 
   Future<void> loadTodoList() async {
-    if (model.isLoading) {
+    if (model.isLoading!) {
       return;
     }
     var api = service<ApiService>();

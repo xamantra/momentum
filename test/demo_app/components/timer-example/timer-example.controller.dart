@@ -17,12 +17,12 @@ class TimerExampleController extends MomentumController<TimerExampleModel> {
   }
 
   // Keep a reference to the timer object.
-  Timer timer;
+  late Timer timer;
 
   void startTimer() {
     model.update(started: true);
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      var current = model.seconds;
+      var current = model.seconds!;
       model.update(seconds: current + 1);
     });
   }

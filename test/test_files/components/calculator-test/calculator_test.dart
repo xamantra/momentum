@@ -15,7 +15,7 @@ void main() {
     );
     await tester.init();
 
-    var controller = tester.controller<CalculatorExampleController>();
+    var controller = tester.controller<CalculatorExampleController>()!;
     isControllerValid<CalculatorExampleController>(controller);
     isModelValid<CalculatorExampleModel>(controller.model);
 

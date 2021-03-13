@@ -16,7 +16,7 @@ const todoListMenuKey = Key('todoListMenuKey');
 
 class HomePage extends StatelessWidget {
   const HomePage({
-    Key key,
+    Key? key,
     this.withTransition = false,
   }) : super(key: key);
 

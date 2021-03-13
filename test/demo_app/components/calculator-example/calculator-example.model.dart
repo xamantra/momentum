@@ -9,13 +9,13 @@ class CalculatorExampleModel extends MomentumModel<CalculatorExampleController> 
     this.result,
   }) : super(controller);
 
-  final String expression;
-  final String result;
+  final String? expression;
+  final String? result;
 
   @override
   void update({
-    String expression,
-    String result,
+    String? expression,
+    String? result,
   }) {
     CalculatorExampleModel(
       controller,

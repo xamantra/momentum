@@ -12,10 +12,10 @@ void main() {
         const TodoItem(userId: 1, id: 1, title: 'Test 1', completed: true),
       ],
     );
-    expect(todoList.list.length, 1);
+    expect(todoList.list!.length, 1);
 
     todoList = todoList.copyWith(list: null);
-    expect(todoList.list.length, 1);
+    expect(todoList.list!.length, 1);
   });
 
   test('<TodoItem> data model test', () {

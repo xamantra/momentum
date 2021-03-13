@@ -9,13 +9,13 @@ class TimerExampleModel extends MomentumModel<TimerExampleController> {
     this.started,
   }) : super(controller);
 
-  final int seconds;
-  final bool started;
+  final int? seconds;
+  final bool? started;
 
   @override
   void update({
-    int seconds,
-    bool started,
+    int? seconds,
+    bool? started,
   }) {
     TimerExampleModel(
       controller,

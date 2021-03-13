@@ -19,11 +19,11 @@ class CalculatorExampleController extends MomentumController<CalculatorExampleMo
   }
 
   void appendExpression(String character) {
-    model.update(expression: model.expression + character);
+    model.update(expression: model.expression! + character);
   }
 
   void backspace() {
-    var exp = model.expression;
+    var exp = model.expression!;
     model.update(expression: exp.substring(0, exp.length - 1));
     calculateResult();
   }
@@ -34,7 +34,7 @@ class CalculatorExampleController extends MomentumController<CalculatorExampleMo
 
   void calculateResult() {
     try {
-      var exp = parser.parse(model.expression);
+      var exp = parser.parse(model.expression!);
       var result = exp.evaluate(EvaluationType.REAL, ContextModel());
       var simplified = _normalizeDecimal(result.toString());
       if (simplified == model.expression) {

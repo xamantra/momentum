@@ -28,11 +28,11 @@ class BasicListExampleController extends MomentumController<BasicListExampleMode
   }
 
   @override
-  void onRouteChanged(RouterParam param) {
+  void onRouteChanged(RouterParam? param) {
     var basicListParam = getParam<BasicListRouteParam>();
     if (basicListParam != null) {
       model.update(list: basicListParam.initialList);
-      latestList = model.list.join(',');
+      latestList = model.list!.join(',');
     }
 
     getParam<DummyRouteParam>();
@@ -41,14 +41,14 @@ class BasicListExampleController extends MomentumController<BasicListExampleMode
 
   void addNewRandom() {
     var random = (['blue', 'green', 'red', 'yello', 'orange']..shuffle()).first;
-    var list = List<String>.from(model.list); // proper way to manipulate a list.
+    var list = List<String>.from(model.list!); // proper way to manipulate a list.
     // var list = model.list; // wrong way to manipulate a list. undo/redo doesn't work properly.
     list.add('$random#${list.length}');
     model.update(list: list);
   }
 
   void add(String name) {
-    var list = List<String>.from(model.list);
+    var list = List<String>.from(model.list!);
     list = list
       ..add(name)
       ..toSet()
@@ -62,14 +62,14 @@ class BasicListExampleController extends MomentumController<BasicListExampleMode
   }
 
   void remove(int index) {
-    var list = List<String>.from(model.list); // proper way to manipulate a list.
+    var list = List<String>.from(model.list!); // proper way to manipulate a list.
     // var list = model.list; // wrong way to manipulate a list. undo/redo doesn't work properly.
     list.removeAt(index);
     model.update(list: list);
   }
 
   void reverseListUpdate() {
-    var list = List<String>.from(model.list); // proper way to manipulate a list.
+    var list = List<String>.from(model.list!); // proper way to manipulate a list.
     model.update(list: list.reversed.toList());
   }
 

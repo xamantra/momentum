@@ -5,14 +5,14 @@ import 'package:relative_scale/relative_scale.dart';
 import '../../../components/basic-list-example/index.dart';
 
 class BasicListExamplePage extends StatefulWidget {
-  const BasicListExamplePage({Key key}) : super(key: key);
+  const BasicListExamplePage({Key? key}) : super(key: key);
 
   @override
   _BasicListExamplePageState createState() => _BasicListExamplePageState();
 }
 
 class _BasicListExamplePageState extends MomentumState<BasicListExamplePage> {
-  BasicListExampleController controller;
+  late BasicListExampleController controller;
 
   @override
   void didChangeDependencies() {
@@ -79,7 +79,7 @@ class _BasicListExamplePageState extends MomentumState<BasicListExamplePage> {
               builder: (context, snapshot) {
                 var listModel = snapshot<BasicListExampleModel>();
 
-                var list = listModel.list;
+                var list = listModel.list!;
 
                 return ListView.builder(
                   physics: BouncingScrollPhysics(),

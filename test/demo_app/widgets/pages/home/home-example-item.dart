@@ -4,8 +4,8 @@ import 'package:relative_scale/relative_scale.dart';
 
 class ExampleItem<T extends RouterParam> extends StatelessWidget {
   const ExampleItem({
-    Key key,
-    @required this.name,
+    Key? key,
+    required this.name,
     this.page,
     this.route,
     this.parameter,
@@ -13,9 +13,9 @@ class ExampleItem<T extends RouterParam> extends StatelessWidget {
   }) : super(key: key);
 
   final String name;
-  final Widget page;
-  final T parameter;
-  final Type route;
+  final Widget? page;
+  final T? parameter;
+  final Type? route;
   final bool withTransition;
 
   @override
@@ -36,7 +36,7 @@ class ExampleItem<T extends RouterParam> extends StatelessWidget {
                 var transition = !withTransition ? null : (_, page) => MaterialPageRoute(builder: (_) => page);
                 MomentumRouter.goto(context, route, params: parameter, transition: transition);
               } else {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => page!));
               }
             },
             child: Container(

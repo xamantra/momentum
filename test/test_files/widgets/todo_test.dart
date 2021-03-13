@@ -36,9 +36,9 @@ void main() {
   });
 }
 
-final _memoryStorage = <String, String>{};
+final _memoryStorage = <String, String?>{};
 
-Momentum _getRoot(TodoExampleController controller, [Key key]) {
+Momentum _getRoot(TodoExampleController controller, [Key? key]) {
   return Momentum(
     key: key,
     child: MaterialApp(
@@ -76,8 +76,8 @@ Future<void> _addTodo(WidgetTester tester, String title) async {
 
   // type the todo title with the keyboard
   await tester.showKeyboard(input);
-  await tester.testTextInput.register();
-  await tester.testTextInput.enterText(title);
+  tester.testTextInput.register();
+  tester.testTextInput.enterText(title);
 
   // tap the `Add` button.
   var button = find.byType(TextButton);

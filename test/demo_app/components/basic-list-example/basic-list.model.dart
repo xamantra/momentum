@@ -8,10 +8,10 @@ class BasicListExampleModel extends MomentumModel<BasicListExampleController> {
     this.list,
   }) : super(controller);
 
-  final List<String> list;
+  final List<String>? list;
 
   @override
-  void update({List<String> list}) {
+  void update({List<String>? list}) {
     BasicListExampleModel(
       controller,
       list: list ?? this.list,

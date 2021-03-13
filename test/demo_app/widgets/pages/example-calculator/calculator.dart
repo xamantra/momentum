@@ -6,7 +6,7 @@ import '../../../components/calculator-example/index.dart';
 import 'index.dart';
 
 class CalculatorExamplePage extends StatelessWidget {
-  const CalculatorExamplePage({Key key}) : super(key: key);
+  const CalculatorExamplePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class CalculatorExamplePage extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  calculatorModel.expression,
+                                  calculatorModel.expression!,
                                   style: TextStyle(
                                     fontSize: sy(16),
                                     color: Colors.white.withOpacity(0.7),
@@ -60,7 +60,7 @@ class CalculatorExamplePage extends StatelessWidget {
                               child: Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  calculatorModel.result,
+                                  calculatorModel.result!,
                                   style: TextStyle(
                                     fontSize: sy(16),
                                   ),

@@ -8,11 +8,11 @@ class TodoExampleModel extends MomentumModel<TodoExampleController> {
     this.todoMap,
   }) : super(controller);
 
-  final Map<String, bool> todoMap;
+  final Map<String, bool>? todoMap;
 
   @override
   void update({
-    Map<String, bool> todoMap,
+    Map<String, bool>? todoMap,
   }) {
     TodoExampleModel(
       controller,
@@ -27,7 +27,7 @@ class TodoExampleModel extends MomentumModel<TodoExampleController> {
     };
   }
 
-  TodoExampleModel fromJson(Map<String, dynamic> json) {
+  TodoExampleModel? fromJson(Map<String, dynamic>? json) {
     super.fromJson(json); // for testing only (codecov)
     if (json == null) return null;
 

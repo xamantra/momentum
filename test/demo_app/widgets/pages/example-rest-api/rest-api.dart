@@ -6,7 +6,7 @@ import '../../../components/rest-api-example/index.dart';
 import '../../index.dart';
 
 class RestApiExamplePage extends StatefulWidget {
-  const RestApiExamplePage({Key key}) : super(key: key);
+  const RestApiExamplePage({Key? key}) : super(key: key);
 
   @override
   _RestApiExamplePageState createState() => _RestApiExamplePageState();
@@ -48,7 +48,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
 
                 var list = timerModel.todoList?.list ?? [];
 
-                if (timerModel.isLoading) {
+                if (timerModel.isLoading!) {
                   return CircularProgressIndicator();
                 } else {
                   return Column(
@@ -69,14 +69,14 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
                                       Expanded(
                                         child: ListTile(
                                           title: Text(
-                                            item.title,
+                                            item.title!,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
                                           dense: true,
                                         ),
                                       ),
-                                      item.completed
+                                      item.completed!
                                           ? Padding(
                                               padding: EdgeInsets.all(sy(4)),
                                               child: Icon(

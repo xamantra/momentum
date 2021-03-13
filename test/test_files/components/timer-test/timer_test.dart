@@ -13,7 +13,7 @@ void main() {
     );
     await tester.init();
 
-    var controller = tester.controller<TimerExampleController>();
+    var controller = tester.controller<TimerExampleController>()!;
     isControllerValid<TimerExampleController>(controller);
     isModelValid<TimerExampleModel>(controller.model);
 

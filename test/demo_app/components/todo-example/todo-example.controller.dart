@@ -15,7 +15,7 @@ class TodoExampleController extends MomentumController<TodoExampleModel> {
   String eventTodoName = '';
 
   void addTodo(String title) {
-    var todoList = Map<String, bool>.from(model.todoMap);
+    var todoList = Map<String, bool>.from(model.todoMap!);
     todoList.putIfAbsent(title, () => false);
     model.update(todoMap: todoList);
   }
@@ -25,13 +25,13 @@ class TodoExampleController extends MomentumController<TodoExampleModel> {
   }
 
   void removeTodo(String title) {
-    var todoList = Map<String, bool>.from(model.todoMap);
+    var todoList = Map<String, bool>.from(model.todoMap!);
     todoList.remove(title);
     model.update(todoMap: todoList);
   }
 
   void toggleTodo(String title, bool value) {
-    var todoList = Map<String, bool>.from(model.todoMap);
+    var todoList = Map<String, bool>.from(model.todoMap!);
     todoList[title] = value;
     model.update(todoMap: todoList);
   }

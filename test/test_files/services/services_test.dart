@@ -20,27 +20,22 @@ void main() {
     await tester.init();
 
     var api = tester.service<ApiService>(alias: 'A');
-    expect(api != null, true);
     expect(api, isInstanceOf<ApiService>());
     expect(api.id, 'A');
 
     var dummy = tester.service<DummyService>(alias: 'B');
-    expect(dummy != null, true);
     expect(dummy, isInstanceOf<DummyService>());
 
     InjectService<ApiService> injected;
     injected = tester.service<InjectService<ApiService>>();
-    expect(injected != null, true);
     expect(injected.value.id, 'A'); // If alias isn't provided, the first occurence gets returned.
 
     InjectService<ApiService> injectedC;
     injectedC = tester.service<InjectService<ApiService>>(alias: 'C');
-    expect(injectedC != null, true);
     expect(injectedC.value.id, 'C');
 
     ApiService injectedWithAlias;
     injectedWithAlias = tester.service<ApiService>(alias: 'C');
-    expect(injectedWithAlias != null, true);
     expect(injectedWithAlias.id, 'C');
   });
 
@@ -56,25 +51,25 @@ void main() {
     );
     await tester.init();
 
-    ApiService api;
+    ApiService? api;
     trycatch(() {
       api = tester.service<ApiService>(alias: 'B');
     });
     expect(api == null, true);
 
-    DummyService dummy;
+    DummyService? dummy;
     trycatch(() {
       dummy = tester.service<DummyService>(alias: 'A');
     });
     expect(dummy == null, true);
 
-    InjectService<ApiService> injected;
+    InjectService<ApiService>? injected;
     trycatch(() {
-      injected = tester.service<InjectService>();
+      injected = tester.service<InjectService>() as InjectService<ApiService>?;
     });
     expect(injected == null, true);
 
-    InjectService<dynamic> injectedDynamic;
+    InjectService<dynamic>? injectedDynamic;
     trycatch(() {
       injectedDynamic = tester.service<InjectService<dynamic>>();
     });
@@ -133,8 +128,8 @@ void main() {
       var apiService = tester.service<ApiService>();
       var dummyService = tester.service<DummyService>();
 
-      expect(apiService != null, true);
-      expect(dummyService != null, true);
+      expect(apiService, isInstanceOf<ApiService>());
+      expect(dummyService, isInstanceOf<DummyService>());
     });
 
     test('test inject service error (targeted type)', () async {
@@ -150,7 +145,7 @@ void main() {
       await tester.init();
 
       var dummyService = tester.service<DummyService>();
-      expect(dummyService != null, true);
+      expect(dummyService, isInstanceOf<DummyService>());
 
       try {
         tester.service<InjectService<ApiService>>(alias: 'srv1');

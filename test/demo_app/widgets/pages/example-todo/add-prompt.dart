@@ -4,7 +4,7 @@ import 'package:relative_scale/relative_scale.dart';
 
 import '../../../components/todo-example/index.dart';
 
-Future<String> showTodoPrompt(BuildContext context) async {
+Future<String?> showTodoPrompt(BuildContext context) async {
   var result = await showDialog<String>(
     context: context,
     builder: (_) => AddTodoPrompt(),
@@ -13,7 +13,7 @@ Future<String> showTodoPrompt(BuildContext context) async {
 }
 
 class AddTodoPrompt extends StatelessWidget {
-  AddTodoPrompt({Key key}) : super(key: key);
+  AddTodoPrompt({Key? key}) : super(key: key);
 
   final TextEditingController controller = TextEditingController();
 

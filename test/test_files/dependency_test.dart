@@ -18,7 +18,7 @@ void main() {
     ]));
     await tester.init();
 
-    var basicListController = tester.controller<BasicListExampleController>();
+    var basicListController = tester.controller<BasicListExampleController>()!;
     isControllerValid<BasicListExampleController>(basicListController);
     isModelValid<BasicListExampleModel>(basicListController.model);
 
@@ -52,17 +52,17 @@ void main() {
     await tester.pumpAndSettle();
 
     todoCtrl.addOnBasicList('Item 1');
-    expect(basicListCtrl.model.list.last, 'Item 1');
+    expect(basicListCtrl.model.list!.last, 'Item 1');
 
     todoCtrl.addOnBasicList('Item 5');
-    expect(basicListCtrl.model.list.last, 'Item 5');
+    expect(basicListCtrl.model.list!.last, 'Item 5');
 
     basicListCtrl.backward(); // undo
-    expect(basicListCtrl.model.list.last, 'Item 1'); // current
-    expect(basicListCtrl.prevModel.list, const []); // previous
-    expect(basicListCtrl.nextModel.list.last, 'Item 5'); // next -> controller.forward()
+    expect(basicListCtrl.model.list!.last, 'Item 1'); // current
+    expect(basicListCtrl.prevModel!.list, const []); // previous
+    expect(basicListCtrl.nextModel!.list!.last, 'Item 5'); // next -> controller.forward()
     basicListCtrl.forward(); // redo
-    expect(basicListCtrl.model.list.last, 'Item 5');
+    expect(basicListCtrl.model.list!.last, 'Item 5');
   });
 
   testWidgets('test services depedency from a controller', (tester) async {
@@ -77,10 +77,10 @@ void main() {
     await tester.pumpAndSettle();
 
     basicListCtrl.addFromService('Jane', '21');
-    expect(basicListCtrl.model.list.last, 'Jane - 21');
+    expect(basicListCtrl.model.list!.last, 'Jane - 21');
 
     basicListCtrl.addFromService('John', '00');
-    expect(basicListCtrl.model.list.last, 'John - 00');
+    expect(basicListCtrl.model.list!.last, 'John - 00');
   });
 
   test('test controllers->services depedency', () async {
@@ -96,7 +96,7 @@ void main() {
     );
     await tester.init();
 
-    var basicListController = tester.controller<BasicListExampleController>();
+    var basicListController = tester.controller<BasicListExampleController>()!;
     isControllerValid<BasicListExampleController>(basicListController);
     isModelValid<BasicListExampleModel>(basicListController.model);
 

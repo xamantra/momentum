@@ -8,11 +8,11 @@ class DummyModel extends MomentumModel<DummyController> {
     this.value,
   }) : super(controller);
 
-  final int value;
+  final int? value;
 
   @override
   void update({
-    int value,
+    int? value,
   }) {
     DummyModel(
       controller,
@@ -26,7 +26,7 @@ class DummyModel extends MomentumModel<DummyController> {
     };
   }
 
-  DummyModel fromJson(Map<String, dynamic> json) {
+  DummyModel? fromJson(Map<String, dynamic>? json) {
     if (json == null) return null;
 
     return DummyModel(

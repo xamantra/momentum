@@ -9,14 +9,14 @@ import 'index.dart';
 const backButtonKey = Key('TodoExamplePage#BackButton');
 
 class TodoExamplePage extends StatefulWidget {
-  const TodoExamplePage({Key key}) : super(key: key);
+  const TodoExamplePage({Key? key}) : super(key: key);
 
   @override
   _TodoExamplePageState createState() => _TodoExamplePageState();
 }
 
 class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
-  TodoExampleController todoController;
+  late TodoExampleController todoController;
   @override
   void initMomentumState() {
     super.initMomentumState();
@@ -26,14 +26,14 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     todoController = Momentum.controller<TodoExampleController>(context);
-    var initial = todoController.model.todoMap.keys;
+    var initial = todoController.model.todoMap!.keys;
     if (initial.isNotEmpty) {
       todoController.eventTodoName = initial.last;
     }
     todoController.addListener(
       state: this,
       invoke: (state, _) {
-        todoController.eventTodoName = state.todoMap.keys.last;
+        todoController.eventTodoName = state.todoMap!.keys.last;
       },
     );
   }
@@ -61,7 +61,7 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
                 builder: (context, snapshot) {
                   var todoModel = snapshot<TodoExampleModel>();
 
-                  var map = todoModel.todoMap;
+                  var map = todoModel.todoMap!;
                   var titles = map.keys.toList();
 
                   return Column(
@@ -73,7 +73,7 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
                           itemCount: titles.length,
                           itemBuilder: (context, index) {
                             var title = titles[index];
-                            var checked = map[title];
+                            var checked = map[title]!;
                             return InkWell(
                               onTap: () {
                                 todoModel.controller.toggleTodo(title, !checked);
@@ -107,7 +107,7 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
                                         value: checked,
                                         activeColor: Theme.of(context).accentColor,
                                         onChanged: (value) {
-                                          todoModel.controller.toggleTodo(title, value);
+                                          todoModel.controller.toggleTodo(title, value ?? false);
                                         },
                                       ),
                                     ],

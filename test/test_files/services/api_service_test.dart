@@ -12,12 +12,11 @@ void main() {
     await tester.init();
 
     var api = tester.service<ApiService>();
-    expect(api != null, true);
     expect(api, isInstanceOf<ApiService>());
 
     var response = await api.getTodoList();
-    expect(response.list.isNotEmpty, true);
-    expect(response.list.length, 200);
+    expect(response.list!.isNotEmpty, true);
+    expect(response.list!.length, 200);
 
     // test http error
     TodoList errorResult = TodoList(list: const []);

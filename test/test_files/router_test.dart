@@ -58,7 +58,7 @@ void main() {
   });
 
   group('Test persisted routing', () {
-    var inMemoryStorage = <String, String>{};
+    var inMemoryStorage = <String?, String?>{};
     Momentum root() {
       return Momentum(
         key: UniqueKey(),
@@ -119,14 +119,14 @@ void main() {
 
       expect(find.text('TODO List Example'), findsOneWidget);
 
-      await tester.tap(find.byKey(backButtonKey));
+      await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       expect(find.text('Momentum Flutter Demo'), findsOneWidget);
     });
   });
 
   group('Test routing management (clear and reset)', () {
-    var inMemoryStorage = <String, String>{};
+    var inMemoryStorage = <String, String?>{};
     var momentumRouter = MomentumRouter([
       HomePage(),
       BasicListRoutedPage(),

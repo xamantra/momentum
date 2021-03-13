@@ -4,8 +4,8 @@ import 'index.dart';
 
 class CalculatorButtonRow extends StatelessWidget {
   const CalculatorButtonRow({
-    Key key,
-    @required this.exps,
+    Key? key,
+    required this.exps,
   }) : super(key: key);
 
   final List<String> exps;

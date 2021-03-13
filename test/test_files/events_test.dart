@@ -27,18 +27,18 @@ void main() {
       _basicListCtrl.add('item 1');
       _basicListCtrl.add('item 2');
       _basicListCtrl.add('item 3');
-      expect(_basicListCtrl.model.list.length, 3);
+      expect(_basicListCtrl.model.list!.length, 3);
 
-      expect(_basicListCtrl.model.list.first, 'item 1');
-      expect(_basicListCtrl.model.list.last, 'item 3');
+      expect(_basicListCtrl.model.list!.first, 'item 1');
+      expect(_basicListCtrl.model.list!.last, 'item 3');
       _basicListCtrl.sendEvent(BasicListEvent.reverseList);
       await tester.pumpAndSettle();
-      expect(_basicListCtrl.model.list.first, 'item 3');
-      expect(_basicListCtrl.model.list.last, 'item 1');
+      expect(_basicListCtrl.model.list!.first, 'item 3');
+      expect(_basicListCtrl.model.list!.last, 'item 1');
 
       _basicListCtrl.sendEvent(BasicListEvent.clearList);
       await tester.pumpAndSettle();
-      expect(_basicListCtrl.model.list.length, 0);
+      expect(_basicListCtrl.model.list!.length, 0);
     });
 
     testWidgets('resetAll(context)->widget event system', (tester) async {
@@ -48,25 +48,25 @@ void main() {
       _basicListCtrl.add('item 1');
       _basicListCtrl.add('item 2');
       _basicListCtrl.add('item 3');
-      expect(_basicListCtrl.model.list.length, 3);
-      expect(_basicListCtrl.model.list.first, 'item 1');
-      expect(_basicListCtrl.model.list.last, 'item 3');
+      expect(_basicListCtrl.model.list!.length, 3);
+      expect(_basicListCtrl.model.list!.first, 'item 1');
+      expect(_basicListCtrl.model.list!.last, 'item 3');
 
       _basicListCtrl.sendEvent(BasicListEvent.resetAll);
       await tester.pumpAndSettle();
-      expect(_basicListCtrl.model.list.length, 0);
-      expect(_basicListCtrl.prevModel.list.length, 3);
+      expect(_basicListCtrl.model.list!.length, 0);
+      expect(_basicListCtrl.prevModel!.list!.length, 3);
 
       _basicListCtrl.add('item 1');
       _basicListCtrl.add('item 2');
       _basicListCtrl.add('item 3');
-      expect(_basicListCtrl.model.list.length, 3);
-      expect(_basicListCtrl.model.list.first, 'item 1');
-      expect(_basicListCtrl.model.list.last, 'item 3');
+      expect(_basicListCtrl.model.list!.length, 3);
+      expect(_basicListCtrl.model.list!.first, 'item 1');
+      expect(_basicListCtrl.model.list!.last, 'item 3');
 
       _basicListCtrl.sendEvent(BasicListEvent.resetAllClearHistory);
       await tester.pumpAndSettle();
-      expect(_basicListCtrl.model.list.length, 0);
+      expect(_basicListCtrl.model.list!.length, 0);
       expect(_basicListCtrl.prevModel, null);
       expect(_basicListCtrl.nextModel, null);
     });
@@ -75,7 +75,7 @@ void main() {
   group('restart system', () {
     testWidgets('resetAll(context)-> onResetAll Callback', (tester) async {
       var basicCtrl = BasicListExampleController();
-      TodoExampleController todoCtrl;
+      TodoExampleController? todoCtrl;
       var value = 0;
 
       await tester.pumpWidget(
@@ -97,11 +97,11 @@ void main() {
 
       basicCtrl.add('item 1');
       await tester.pumpAndSettle();
-      expect(basicCtrl.model.list.length, 1);
+      expect(basicCtrl.model.list!.length, 1);
 
       basicCtrl.sendEvent(BasicListEvent.resetAll);
       await tester.pumpAndSettle();
-      expect(basicCtrl.model.list.length, 0);
+      expect(basicCtrl.model.list!.length, 0);
       expect(todoCtrl != null, true);
 
       basicCtrl.sendEvent(BasicListEvent.restart);
@@ -127,22 +127,22 @@ void main() {
 
       basicCtrl.add('item 1');
       await tester.pumpAndSettle();
-      expect(basicCtrl.model.list.length, 1);
+      expect(basicCtrl.model.list!.length, 1);
       var item1 = find.byKey(Key('BasicItem-#0'));
       expect(item1, findsOneWidget);
 
       basicCtrl.add('item 2');
       await tester.pumpAndSettle();
-      expect(basicCtrl.model.list.length, 2);
+      expect(basicCtrl.model.list!.length, 2);
       var item2 = find.byKey(Key('BasicItem-#1'));
       expect(item2, findsOneWidget);
 
-      basicCtrl.sendEvent(RestartEvent(_rootWithRestart()));
+      basicCtrl.sendEvent(RestartEvent(_rootWithRestart() as Momentum));
       await tester.pumpAndSettle();
 
       todoCtrl.addTodo('item 1');
       await tester.pumpAndSettle();
-      expect(todoCtrl.model.todoMap.length, 1);
+      expect(todoCtrl.model.todoMap!.length, 1);
     });
   });
 }

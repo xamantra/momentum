@@ -210,8 +210,8 @@ void main() {
   });
 
   testWidgets('test inject service with context (targeted type)', (tester) async {
-    ApiService apiService;
-    DummyService dummyService;
+    ApiService? apiService;
+    DummyService? dummyService;
     await tester.pumpWidget(
       Momentum(
         child: MaterialApp(
@@ -240,7 +240,7 @@ void main() {
   });
 
   testWidgets('test inject service with context and alias (target type)', (tester) async {
-    DummyService dummyService;
+    DummyService? dummyService;
     await tester.pumpWidget(
       Momentum(
         child: MaterialApp(
@@ -264,11 +264,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), null);
     expect(dummyService != null, true);
-    expect(dummyService.value, 77);
+    expect(dummyService!.value, 77);
   });
 
   testWidgets('test missing service with context', (tester) async {
-    DummyService dummyService;
+    DummyService? dummyService;
     await tester.pumpWidget(
       Momentum(
         child: MaterialApp(
@@ -291,7 +291,7 @@ void main() {
   });
 
   testWidgets('test missing service with context and alias', (tester) async {
-    DummyService dummyService;
+    DummyService? dummyService;
     await tester.pumpWidget(
       Momentum(
         child: MaterialApp(
@@ -369,7 +369,7 @@ void main() {
 
     await tester.mockLazyBootstrap<BasicListExampleController>();
 
-    var controller = tester.controller<BasicListExampleController>();
+    var controller = tester.controller<BasicListExampleController>()!;
     expect(controller.value, 99);
     expect(controller.value2, 88);
   });
@@ -382,7 +382,7 @@ void main() {
     );
     await tester.init();
 
-    var controller = tester.controller<BasicListExampleController>();
+    var controller = tester.controller<BasicListExampleController>()!;
     expect(controller.value, 99);
     expect(controller.value2, 88);
   });

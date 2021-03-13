@@ -4,7 +4,6 @@ import '../../demo_app/_config/index.dart';
 
 void main() {
   test('Controllers config test', () {
-    expect(controllers() != null, true);
     expect(controllers().isNotEmpty, true);
   });
 }

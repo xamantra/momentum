@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,16 +18,16 @@ class MomentumRouter extends MomentumService {
   /// widgets as routes.
   MomentumRouter(
     List<Widget> pages, {
-    bool enablePersistence,
+    bool? enablePersistence,
   })  : _pages = pages,
         _enablePersistence = enablePersistence ?? true;
   final List<Widget> _pages;
   final bool _enablePersistence;
-  RouterParam _currentRouteParam;
+  RouterParam? _currentRouteParam;
 
-  BuildContext _rootContext;
-  PersistSaver _persistSaver;
-  PersistGet _persistGet;
+  BuildContext? _rootContext;
+  PersistSaver? _persistSaver;
+  PersistGet? _persistGet;
   bool _exited = false;
 
   bool get _canPersist => _persistSaver != null && _persistGet != null;
@@ -36,7 +37,7 @@ class MomentumRouter extends MomentumService {
   /// Internally, this will be set to `true` when `SystemChannels.platform.invokeMethod('SystemNavigator.pop')` is called by `MomentumRouter`. It closes the app when there's no more previous route to show.
   bool get exited => _exited;
 
-  MomentumEvent _momentumEvent;
+  MomentumEvent? _momentumEvent;
 
   // ignore: use_setters_to_change_properties
   /// For testing only.
@@ -49,9 +50,9 @@ class MomentumRouter extends MomentumService {
   /// library.
   void setFunctions(
     BuildContext context,
-    PersistSaver persistSaver,
-    PersistGet persistGet,
-    MomentumEvent momentumEvent,
+    PersistSaver? persistSaver,
+    PersistGet? persistGet,
+    MomentumEvent? momentumEvent,
   ) {
     _rootContext = context;
     _persistSaver = persistSaver;
@@ -67,13 +68,12 @@ class MomentumRouter extends MomentumService {
 
   Future<void> _goto(
     BuildContext context,
-    Type route, {
-    Route Function(BuildContext, Widget) transition,
-    RouterParam params,
+    Type? route, {
+    Route Function(BuildContext, Widget)? transition,
+    RouterParam? params,
   }) async {
-    var findWidgetOfType = _pages.firstWhere(
+    var findWidgetOfType = _pages.firstWhereOrNull(
       (e) => e.runtimeType == route,
-      orElse: () => null,
     );
     if (findWidgetOfType != null) {
       var indexOfWidgetOfType = _pages.indexWhere(
@@ -81,7 +81,7 @@ class MomentumRouter extends MomentumService {
       );
       _history.add(indexOfWidgetOfType);
       if (_canPersist && _enablePersistence) {
-        _persistSaver(
+        _persistSaver!(
           _rootContext,
           'MOMENTUM_ROUTER_HISTORY',
           jsonEncode(_history),
@@ -94,7 +94,7 @@ class MomentumRouter extends MomentumService {
         r = MaterialPageRoute(builder: (_) => findWidgetOfType);
       }
       _currentRouteParam = params;
-      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
+      _momentumEvent!.trigger(RouterSignal(_currentRouteParam));
       Navigator.pushAndRemoveUntil(context, r, (r) => false);
     } else {
       print('[$MomentumService -> $MomentumRouter]: Unable to '
@@ -104,12 +104,12 @@ class MomentumRouter extends MomentumService {
 
   void _pop(
     BuildContext context, {
-    Route Function(BuildContext, Widget) transition,
-    RouterParam result,
+    Route Function(BuildContext, Widget)? transition,
+    RouterParam? result,
   }) async {
     trycatch(() => _history.removeLast());
     if (_canPersist && _enablePersistence) {
-      _persistSaver(
+      _persistSaver!(
         _rootContext,
         'MOMENTUM_ROUTER_HISTORY',
         jsonEncode(_history),
@@ -127,7 +127,7 @@ class MomentumRouter extends MomentumService {
         r = MaterialPageRoute(builder: (_) => activePage);
       }
       _currentRouteParam = result;
-      _momentumEvent.trigger(RouterSignal(_currentRouteParam));
+      _momentumEvent!.trigger(RouterSignal(_currentRouteParam));
       await Navigator.pushAndRemoveUntil(context, r, (r) => false);
     }
   }
@@ -136,15 +136,16 @@ class MomentumRouter extends MomentumService {
   /// This is automatically called by the
   /// library.
   Future<void> init() async {
-    String historyJson;
+    String? historyJson;
     historyJson = await tryasync(
-      () => _persistGet(_rootContext, 'MOMENTUM_ROUTER_HISTORY'),
+      // ignore: unnecessary_cast
+      (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY') as Future<String>) as Future<String> Function(),
       '[]',
     );
     var result = historyJson == null
         ? '[]'
         : trycatch(
-            () => jsonDecode(historyJson),
+            () => jsonDecode(historyJson!),
             '[]',
           );
     _history = (result as List).map<int>((e) => e as int).toList();
@@ -168,7 +169,7 @@ class MomentumRouter extends MomentumService {
     _history.clear();
     _history = [];
     if (_canPersist && _enablePersistence) {
-      await _persistSaver(
+      await _persistSaver!(
         _rootContext,
         'MOMENTUM_ROUTER_HISTORY',
         jsonEncode(_history),
@@ -181,7 +182,7 @@ class MomentumRouter extends MomentumService {
     var i = _pages.indexWhere((e) => e is T);
     _history = [i == -1 ? 0 : i];
     if (_canPersist && _enablePersistence) {
-      await _persistSaver(
+      await _persistSaver!(
         _rootContext,
         'MOMENTUM_ROUTER_HISTORY',
         jsonEncode(_history),
@@ -194,9 +195,9 @@ class MomentumRouter extends MomentumService {
   /// NOT a string route name or a [MaterialPageRoute].
   static void goto(
     BuildContext context,
-    Type route, {
-    Route Function(BuildContext, Widget) transition,
-    RouterParam params,
+    Type? route, {
+    Route Function(BuildContext, Widget)? transition,
+    RouterParam? params,
   }) {
     var service = Momentum.service<MomentumRouter>(context);
     service._goto(
@@ -210,8 +211,8 @@ class MomentumRouter extends MomentumService {
   /// Works like [Navigation.pop].
   static void pop(
     BuildContext context, {
-    Route Function(BuildContext, Widget) transition,
-    RouterParam result,
+    Route Function(BuildContext, Widget)? transition,
+    RouterParam? result,
   }) {
     var service = Momentum.service<MomentumRouter>(context);
     var routeResult = service._pop(
@@ -223,9 +224,9 @@ class MomentumRouter extends MomentumService {
   }
 
   /// Get the current route param without using context.
-  T getCurrentParam<T extends RouterParam>() {
+  T? getCurrentParam<T extends RouterParam?>() {
     if (_currentRouteParam.runtimeType == _getType<T>()) {
-      return _currentRouteParam as T;
+      return _currentRouteParam as T?;
     }
     print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
     return null;
@@ -245,7 +246,7 @@ class MomentumRouter extends MomentumService {
   /// // accessing the route params inside controllers.
   /// var params = getParam<DashboardParams>();
   /// ```
-  static T getParam<T extends RouterParam>(BuildContext context) {
+  static T? getParam<T extends RouterParam>(BuildContext context) {
     var service = Momentum.service<MomentumRouter>(context);
     var result = service.getCurrentParam<T>();
     return result;
@@ -286,14 +287,14 @@ class RouterPage extends StatelessWidget {
   /// Just like [WillPopScope], you can
   /// also override the popping behavior
   /// for system back button.
-  final Future<bool> Function() onWillPop;
+  final Future<bool> Function()? onWillPop;
 
   /// Wrap your screen widget with this
   /// to properly implement popping
   /// with system back button.
   const RouterPage({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.onWillPop,
   }) : super(key: key);
 
@@ -319,7 +320,7 @@ abstract class RouterParam {}
 /// of any router parameter changes.
 class RouterSignal {
   /// The parameter that is provided while navigating to pages.
-  final RouterParam param;
+  final RouterParam? param;
 
   /// An class used by momentum for notifying RouterMixin
   /// of any router parameter changes.

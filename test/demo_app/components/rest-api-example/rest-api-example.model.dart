@@ -10,13 +10,13 @@ class RestApiExampleModel extends MomentumModel<RestApiExampleController> {
     this.isLoading,
   }) : super(controller);
 
-  final TodoList todoList;
-  final bool isLoading; // Used to display loading widget.
+  final TodoList? todoList;
+  final bool? isLoading; // Used to display loading widget.
 
   @override
   void update({
-    TodoList todoMap,
-    bool isLoading,
+    TodoList? todoMap,
+    bool? isLoading,
   }) {
     RestApiExampleModel(
       controller,

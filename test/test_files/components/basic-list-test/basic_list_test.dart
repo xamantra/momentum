@@ -17,41 +17,41 @@ void main() {
     );
     await tester.init();
 
-    var controller = tester.controller<BasicListExampleController>();
+    var controller = tester.controller<BasicListExampleController>()!;
     isControllerValid<BasicListExampleController>(controller);
     isModelValid<BasicListExampleModel>(controller.model);
 
     expect(controller.model.list, []);
 
     controller.addNewRandom();
-    expect(controller.model.list.length, 1);
+    expect(controller.model.list!.length, 1);
     controller.addNewRandom();
-    expect(controller.model.list.length, 2);
-    controller.addNewRandom();
-    controller.addNewRandom();
+    expect(controller.model.list!.length, 2);
     controller.addNewRandom();
     controller.addNewRandom();
-    expect(controller.model.list.length, 6);
+    controller.addNewRandom();
+    controller.addNewRandom();
+    expect(controller.model.list!.length, 6);
 
     // undo/redo tests
     controller.undo();
-    expect(controller.model.list.length, 5);
+    expect(controller.model.list!.length, 5);
     controller.undo();
-    expect(controller.model.list.length, 4);
+    expect(controller.model.list!.length, 4);
     controller.redo();
-    expect(controller.model.list.length, 5);
+    expect(controller.model.list!.length, 5);
     controller.redo();
-    expect(controller.model.list.length, 6);
+    expect(controller.model.list!.length, 6);
 
     // remove item test
-    var secondItem = controller.model.list[1];
-    expect(controller.model.list.any((x) => x == secondItem), true);
+    var secondItem = controller.model.list![1];
+    expect(controller.model.list!.any((x) => x == secondItem), true);
     controller.remove(1);
-    expect(controller.model.list.any((x) => x == secondItem), false);
-    expect(controller.model.list.length, 5);
+    expect(controller.model.list!.any((x) => x == secondItem), false);
+    expect(controller.model.list!.length, 5);
 
     controller.model.update(list: null);
-    expect(controller.model.list.length, 5);
+    expect(controller.model.list!.length, 5);
   });
 
   test('<BasicListExampleController> router param test', () async {

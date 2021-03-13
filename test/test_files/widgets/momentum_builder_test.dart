@@ -21,7 +21,7 @@ void main() {
               ],
               builder: (context, snapshot) {
                 var basicModel = snapshot<BasicListExampleModel>();
-                return Text(basicModel.list.length.toString());
+                return Text(basicModel.list!.length.toString());
               },
             ),
           ),
@@ -48,7 +48,7 @@ void main() {
               ],
               builder: (context, snapshot) {
                 var basicModel = snapshot<BasicListExampleModel>(BasicListExampleController);
-                return Text(basicModel.list.length.toString());
+                return Text(basicModel.list!.length.toString());
               },
             ),
           ),
@@ -74,7 +74,7 @@ void main() {
               controllers: [],
               builder: (context, snapshot) {
                 var basicModel = snapshot<BasicListExampleModel>();
-                return Text(basicModel.list.length.toString());
+                return Text(basicModel.list!.length.toString());
               },
             ),
           ),

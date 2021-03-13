@@ -8,10 +8,10 @@ class TodoList {
     this.list,
   });
 
-  final List<TodoItem> list;
+  final List<TodoItem>? list;
 
   TodoList copyWith({
-    List<TodoItem> list,
+    List<TodoItem>? list,
   }) =>
       TodoList(
         list: list ?? this.list,
@@ -30,16 +30,16 @@ class TodoItem {
     this.completed,
   });
 
-  final int userId;
-  final int id;
-  final String title;
-  final bool completed;
+  final int? userId;
+  final int? id;
+  final String? title;
+  final bool? completed;
 
   TodoItem copyWith({
-    int userId,
-    int id,
-    String title,
-    bool completed,
+    int? userId,
+    int? id,
+    String? title,
+    bool? completed,
   }) =>
       TodoItem(
         userId: userId ?? this.userId,
