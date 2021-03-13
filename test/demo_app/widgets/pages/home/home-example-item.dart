@@ -30,9 +30,7 @@ class ExampleItem<T extends RouterParam> extends StatelessWidget {
             color: Color(0xff333333),
             borderRadius: BorderRadius.circular(5),
           ),
-          child: FlatButton(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            padding: EdgeInsets.zero,
+          child: TextButton(
             onPressed: () {
               if (route != null) {
                 var transition = !withTransition ? null : (_, page) => MaterialPageRoute(builder: (_) => page);

@@ -39,7 +39,7 @@ class TimerExamplePage extends StatelessWidget {
                           fontSize: sy(15),
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
                         onPressed: () {
                           timerModel.controller.stopTimer();
                         },
@@ -54,7 +54,7 @@ class TimerExamplePage extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return FlatButton(
+                  return TextButton(
                     onPressed: () {
                       // You can access the `controller` from the `model`. And vice-versa.
                       timerModel.controller.startTimer();

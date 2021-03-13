@@ -21,10 +21,7 @@ class CalculatorButton extends StatelessWidget {
         return Container(
           height: height,
           width: width,
-          child: FlatButton(
-            padding: EdgeInsets.zero,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+          child: TextButton(
             onPressed: () {
               var controller = Momentum.controller<CalculatorExampleController>(context);
               if (callback != null) {
