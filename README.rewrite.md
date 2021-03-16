@@ -219,4 +219,4 @@ Visit the [official webpage](https://www.xamantra.dev/momentum/#/) of momentum t
 
 <hr>
 
-Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file and [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.
+Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file on [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.
