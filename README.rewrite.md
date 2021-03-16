@@ -198,7 +198,6 @@ void main() {
 - **Routing** - Navigation system that supports persistence. The app will open the page where the user left off.
 - **Event System** - For showing dialogs, prompts, navigation, alerts.
 - **Persistence State** - Restore state when the app opens again.
-- **Immutable** - States in momentum are immutable and there's only one way to update the states.
 - **Testing** - Tests your widgets and logic. Built-in helper class for unit testing.
 
 Momentum leverages the power of `setState(..)` and *StatefulWidget* behind the scenes. The feature `Event System` uses *Stream*.
