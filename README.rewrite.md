@@ -1,94 +1,223 @@
-# Momentum
-`MVC` pattern for flutter. Works as *state management*, *dependency injection* and *service locator*.
+<p align="center">
+  <img src="https://i.imgur.com/DAFGeAd.png">
+</p>
 
-### Other Features
-- Routing. *(persistence support)*
-- Event system. *(alerts, dialogs, navigations, etc.)*
-- Persistence state. *(configurable)*
-- Immutable. *(only one way to update values)*
-- Modular code.
-- Highly testable.
+<p align="center"><strong>MVC</strong> pattern for flutter. Works as <i>state management</i>, <i>dependency injection</i> and <i>service locator</i>.</p>
 
-This library has a lot of features but it actually only uses `setState(...)` *under the hood* except for `Event System` which uses Stream.
+<p align="center">
+<a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
+<a href="https://github.com/xamantra/momentum/actions" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg" alt="Test" /></a>
+<a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
+<a href="https://github.com/xamantra/momentum/stargazers" target="_blank"><img src="https://img.shields.io/github/stars/xamantra/momentum" alt="GitHub stars" /></a>
+<a href="https://github.com/xamantra/momentum/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/xamantra/momentum" alt="GitHub license" /></a>
+<a href="https://github.com/xamantra/momentum/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/xamantra/momentum" alt="GitHub last commit" /></a>
+</p>
 
-<br>
+---
+
+
+
+<h1 align="center">Model View Controller</h1>
+<p align="center">
+Here's a <i>diagram</i> describing the flow between the <u>state</u> (<code>model</code>), <u>widget</u> (<code>view</code>) and the <u>logic</u> (<code>controller</code>):
+</p>
+
+<p align="center">
+  <img src="https://i.imgur.com/O17iMbR.png">
+</p>
+
+
+<p align="center">
+Both <code>MomentumController</code> and <code>MomentumModel</code> are abstract classes that needs to be implemented. A pair of model and controller is called a <strong>component</strong>. <code>MomentumBuilder</code> is simply a widget. This is used to listen to controllers for rebuilds and accessing models to display their values.
+</p>
+
+
+# Example
+If you want to see a full code example that runs. Visit the [example](https://pub.dev/packages/momentum/example) tab for more details. Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
+
+
+# Overview
+**MomentumModel** - the data or state.
+```dart
+class ProfileModel extends MomentumModel<ProfileController> {
+  // ...
+
+  final int userId;
+  final String username;
+
+  // ...
+}
+```
+
+
+
+**MomentumBuilder** - the view or widget to display the state.
+```dart
+MomentumBuilder(
+  controllers: [ProfileController], /// injects both `ProfileController` and `ProfileModel`.
+  builder: (context, snapshot) {
+    var profileState = snapshot<ProfileModel>(); /// grab the `ProfileModel` using snapshot.
+    var username = profileState.username;
+    return // some widgets here ...
+  }
+)
+```
+
+
+
+**MomentumController** - the logic to manipulate the model or state.
+```dart
+class ProfileController extends MomentumController<ProfileModel> {
+  // ...
+
+  Future<void> loadProfile() async {
+    var profile = http.get(...);
+    // update the model's properties.
+    model.update(
+      userId: profile.userId,
+      username: profile.username,
+    );
+  }
+
+  // ...
+}
+```
+
+
+
+# FAQs
+## How to *rebuild* the widget?
+Calling `model.update(...)` from inside the controller rebuilds all the `MomentumBuilder`s that are listening to it.
+
 <hr>
-<br>
 
-# Model View Controller
-Here's a *diagram* describing the flow between the data (`m`), widget (`v`) and the logic (`c`):
-<img src="https://i.imgur.com/O17iMbR.png">
+## How to access the *model* object?
+It is automatically provided by `MomentumController` for you to use. Inside a controller class, you can access it directly. It's never null.
 
-Both `MomentumController` and `MomentumModel` are abstract classes that needs to be implemented.
-And `MomentumBuilder` is simply a widget. This is used to listen to controllers for rebuilds and accessing models to display their values. It is similar to *StreamBuilder* but accepts `controllers` type array instead of *stream*.
 
-<br>
 <hr>
-<br>
 
-# Example Code
-This section we are going to take a look at Momentum's MVC pattern with actual flutter codes. This example is a simple *Timer Widget* that starts after a button is clicked.
+## How to *initialize* the model or state?
+By implementing the `T init()` method which is required by *MomentumController*. Like this:
+```dart
+class ShopController extends MomentumController<ShopModel> {
 
-The example codes below produces this [following result](#example-output).
-<br>
-<br>
+  @override
+  ShopModel init() {
+    return ShopModel(
+      this, // required
+      shopList: [],
+      productList: [],
+    );
+  }
+}
+```
 
-## MomentumModel - `TimerModel`
-A model is basically just a list of *final* properties. In this figure we have `seconds (int)` and `started (bool)` properties.
+<hr>
 
-<img height=400px src="https://i.imgur.com/VMdfbuM.png">
+## Can I access the model properties inside my controller?
+Of course. The **model** object is already provided by *MomentumController* meaning you can also directly access its properties like this:
+```dart
+class ShopController extends MomentumController<ShopModel> {
 
-Pay close attention to the *dimmed* part. The dimmed parts are the boilerplate codes for momentum models. The highlighted codes are the actual codes you'll write when developing momentum apps.
+  bool hasProducts() {
+    return model.productList.isNotEmpty;
+  }
+}
+```
 
-Also notice the `TimerController` at the first line of the code. You are going to see the contents of that in a few sections below.
+<hr>
 
-<br>
+## Is there a special *setup* required for Momentum to run?
+Yes, definitely. This is the required setup for *Momentum* in a flutter app:
+```dart
+void main() {
+  runApp(momentum());
+}
 
-## MomentumBuilder
-Now for rendering the model properties into widgets. If you read the code below, you see `timerModel.started` and `timerModel.seconds` being used. We are now using the properties earlier in this widget. If `started (bool)` is `true`, the text widget is displayed. If it is false a button is displayed which calls a function from the controller when it is clicked.
+Momentum momentum() {
+  return Momentum(
+    child: MyApp(),
+    controllers: [
+      ProfileController(),
+      ShopController(),
+    ],
+    // and more optional parameters here.
+  );
+}
+```
 
-<img height=350px src="https://i.imgur.com/SBChTKn.png">
+# Testing
+Momentum is highly testable. This is how a basic **widget testing** for momentum would look like:
+```dart
+void main() {
 
-`controllers: [TimerController]` - injects the *TimerController* into the widget to listen for value updates and rebuilds. Can also inject multiple controllers, hence it's an array.
+  testWidgets('should display username', (tester) async {
+    var profileCtrl = ProfileController();
 
-`timerModel.started` - the property to check to display or hide the `Start Timer` button widget.
+    await tester.pumpWidget(
+      Momentum(
+        child: MyApp(),
+        controllers: [profileCtrl],
+      ),
+    );
+    await tester.pumpAndSettle();
 
-`timerModel.seconds` - the value which gets incremented every second when the timer has started. Displayed in a text widget.
+    profileCtrl.updateUsername("johndoe");
+    await tester.pumpAndSettle(); // ensure rebuilds
 
-`timerModel.controller.startTimer()` - the `Start Timer` button widget calls this function to start the timer and hides itself after (`started` = `true`).
+    expect(profileCtrl.model.username, "johndoe"); // unit check
+    expect(find.text("johndoe"), findsOneWidget); // widget check
+  });
+}
+```
 
-<br>
+Or you might not be a fan of widget testing and only want to test your components:
+```dart
+void main() {
 
-## MomentumController - `TimerController`
-Finally, the last part of our example. The code below shows the logic of the timer. It basically just updates the `model.seconds` value by incrementing it every second.
+  test('should display username', () async {
+    var profileCtrl = ProfileController();
 
+    var tester = MomentumTester(
+      Momentum(
+        controllers: [profileCtrl],
+      ),
+    );
+    await tester.init();
 
-<img height=350px src="https://i.imgur.com/2cNeLGa.png">
-
-`init()` - initial state of the model.
-
-`model.update(...)` - *update* the values and *rebuild* the widgets. Also the *only* way to update the values (immutable). 
-
-`startTimer()` - timer logic. Starts the timer when called and hides the start button.
-
-`MomentumController` has a very short boilerplate code as you can see from the dimmed parts.
-
-## Example Output
-The 3 part example codes above produces the following results:
-
-<img height=420px src="https://i.imgur.com/NxzcF9z.gif">
-
-<br>
-<br>
-
-That wraps the example for Momentum. Pretty simple timer widget but it doesn't mean this library can't do advance types of apps. Momentum can do pretty much anything like asynchronous state management, realtime firebase state, local database (persistence) and much more.
-
-// TODO: http rest (async) example project. (soon)
-
-// TODO: firebase example project. (soon)
+    profileCtrl.updateUsername("johndoe");
+    expect(profileCtrl.model.username, "johndoe"); // unit check
+  });
+}
+```
 
 
-<br>
-<br>
 
-// TODO: Modular Code documentation
+# Other optional features
+- **Routing** - Navigation system that supports persistence. The app will open the page where the user left off.
+- **Event System** - For showing dialogs, prompts, navigation, alerts.
+- **Persistence State** - Restore state when the app opens again.
+- **Immutable** - States in momentum are immutable and there's only one way to update the states.
+- **Testing** - Tests your widgets and logic. Built-in helper class for unit testing.
+
+Momentum leverages the power of `setState(..)` and *StatefulWidget* behind the scenes. The feature `Event System` uses *Stream*.
+
+## Router limitations
+- The router doesn't support named routes yet.
+- The parameter handling for router is slightly verbose. And might be complicated for some. But it works magically.
+- Needs to explicitly implement `RouterPage` widget in order to handle the system's back button.
+
+The router currently has a lot of hiccups but it does work.
+
+**NOTE**: Momentum's Router is a completely optional feature. You don't need to use it and other features will work just fine.
+
+
+
+
+# API Reference
+Visit the [official webpage](https://www.xamantra.dev/momentum/#/) of momentum to browse the full *api reference*, *guides*, and *examples*.
+
+<hr>
+
+Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file and [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.
