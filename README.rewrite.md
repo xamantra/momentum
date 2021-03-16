@@ -37,7 +37,7 @@ If you want to see a full code example that runs. Visit the [example](https://pu
 
 
 # Overview
-**MomentumModel** - the data or state.
+**MomentumModel** - the data or state. Must be *Immutable*.
 ```dart
 class ProfileModel extends MomentumModel<ProfileController> {
   // ...
