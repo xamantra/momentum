@@ -343,7 +343,7 @@ abstract class MomentumController<M> with _ControllerBase {
       _momentumModelHistory ??= [];
       _currentActiveModel = init();
       var persistedModel = await _getPersistedModel();
-      print('$M {${persistedModel}}');
+      print('$M {$persistedModel}');
       if (persistedModel != null) {
         _currentActiveModel = persistedModel;
       }
