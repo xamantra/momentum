@@ -74,6 +74,27 @@ void main() {
     basicListCtrl.clearStateHistory();
     basicListCtrl.backward(); // undo
     expect(basicListCtrl.model.list!.last, 'D');
+
+    // undo/redo should not loop when clearing history
+    todoCtrl.addOnBasicList('F');
+    todoCtrl.addOnBasicList('G');
+    todoCtrl.addOnBasicList('H');
+    todoCtrl.addOnBasicList('I');
+    expect(basicListCtrl.model.list!.last, 'I');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'H');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'G');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'F');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
   });
 
   testWidgets('test services depedency from a controller', (tester) async {
