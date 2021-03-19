@@ -10,6 +10,6 @@
 - and much more...
 
 [GitHub](https://github.com/xamantra/momentum)
-[Overview](/?id=features)
+[Overview](/?id=readme)
 
 ![color](#ffffff)
