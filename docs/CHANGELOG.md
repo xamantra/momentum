@@ -1,5 +1,5 @@
 ## 2.0.0
-- **BREAKING CHANGE:** Officially removed `Router` class. Need to use the `MomentumRouter` now. No api changes, just a simple rename to avoid conflict with flutter's *Router* class.
+- Null-safety migration.
 - Fixed missing controllers in **Momentum** *constructor* not detected by **MomentumBuilder**.
 - Fixed `Momentum.restart(...)` along with `restartCallback` parameter - throws null exception error.
 - Fixed `InjectService` type matching internally.
@@ -9,6 +9,13 @@
     injected = Momentum.service<InjectService<ApiService>>(context);
     injected.value // the actual service is the `value`. this were previously private.
   ```
+
+**BREAKING CHANGE:** Officially removed `Router` class. Need to use the `MomentumRouter` now. No api changes, just a simple rename to avoid conflict with flutter's *Router* class.
+
+**New features**
+- Added abstract callback `onReady()` for **MomentumController**. Read more about it [here](/momentum-controller?id=onready).
+- Added method `clearStateHistory()` for **MomentumController**. Reset the undo/redo state history. Read more about it [here](/momentum-controller?id=clearstatehistory).
+
 
 **Internal updates** 
 - Removed internal test related functions which are poorly written and undocumented.

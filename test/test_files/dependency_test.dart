@@ -63,6 +63,17 @@ void main() {
     expect(basicListCtrl.nextModel!.list!.last, 'Item 5'); // next -> controller.forward()
     basicListCtrl.forward(); // redo
     expect(basicListCtrl.model.list!.last, 'Item 5');
+
+    todoCtrl.addOnBasicList('A');
+    todoCtrl.addOnBasicList('C');
+    todoCtrl.addOnBasicList('D');
+    todoCtrl.addOnBasicList('E');
+    expect(basicListCtrl.model.list!.last, 'E');
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
+    basicListCtrl.clearStateHistory();
+    basicListCtrl.backward(); // undo
+    expect(basicListCtrl.model.list!.last, 'D');
   });
 
   testWidgets('test services depedency from a controller', (tester) async {

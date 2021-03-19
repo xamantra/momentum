@@ -372,6 +372,18 @@ TextButton(
 
 <hr>
 
+## .clearStateHistory()
+- Category: `Method`
+- Return Type: `void`
+
+Reset the undo/redo state history. This does not reset the current state.
+```dart
+// if you want to somehow reset the user's undo/redo input history.
+inputController.clearStateHistory();
+```
+
+<hr>
+
 ## .model
 - Category: `Readonly Property`
 - Type: `MomentumModel`

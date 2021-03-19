@@ -731,6 +731,16 @@ abstract class MomentumController<M> with _ControllerBase {
     }
   }
 
+  /// Added on `v2.0.0`
+  /// 
+  /// Reset the undo/redo state history.
+  /// 
+  /// This does not reset the current state.
+  void clearStateHistory() {
+    _momentumModelHistory!.clear();
+    _momentumModelHistory!.add(_currentActiveModel!);
+  }
+
   bool? _momentumLogging;
   bool? _disablePersistentState;
 
