@@ -16,6 +16,8 @@ class DummyController extends MomentumController<DummyModel> {
 
   @override
   void onReady() {
-    dummyValue = controller<BasicListExampleController>().value;
+    try {
+      dummyValue = controller<BasicListExampleController>().value;
+    } catch (e) {}
   }
 }
