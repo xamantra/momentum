@@ -1,3 +1,7 @@
+## 2.0.1
+- Fixed links in changelog.
+- Follow analyzer suggestion for string interpolation.
+
 ## 2.0.0
 - Null-safety migration.
 - Fixed missing controllers in **Momentum** *constructor* not detected by **MomentumBuilder**.
@@ -13,8 +17,8 @@
 **BREAKING CHANGE:** Officially removed `Router` class. Need to use the `MomentumRouter` now. No api changes, just a simple rename to avoid conflict with flutter's *Router* class.
 
 **New features**
-- Added abstract callback `onReady()` for **MomentumController**. Read more about it [here](/momentum-controller?id=onready).
-- Added method `clearStateHistory()` for **MomentumController**. Reset the undo/redo state history. Read more about it [here](/momentum-controller?id=clearstatehistory).
+- Added abstract callback `onReady()` for **MomentumController**. Read more about it [here](https://www.xamantra.dev/momentum/#/momentum-controller?id=onready).
+- Added method `clearStateHistory()` for **MomentumController**. Reset the undo/redo state history. Read more about it [here](https://www.xamantra.dev/momentum/#/momentum-controller?id=clearstatehistory).
 
 
 **Internal updates** 
