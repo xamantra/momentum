@@ -379,8 +379,8 @@ abstract class MomentumController<M> with _ControllerBase {
       if (_momentumModelHistory!.length == _maxTimeTravelSteps) {
         _momentumModelHistory!.removeAt(0);
         var historyCount = _momentumModelHistory!.length;
-        // ignore: unnecessary_cast
         var firstItem =
+            // ignore: unnecessary_cast
             trycatch((() => _momentumModelHistory![0]!) as M Function());
         _initialMomentumModel = historyCount > 0 ? firstItem : model;
       }
