@@ -94,7 +94,8 @@ mixin RouterMixin on _ControllerBase {
         if (param != null && param.runtimeType == _getType<T>()) {
           return param;
         }
-        print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+        print(
+            'getParam<$T>() ---> Invalid type: The active/current route param is of type "${param.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
       }
       return null;
     }
@@ -378,8 +379,9 @@ abstract class MomentumController<M> with _ControllerBase {
       if (_momentumModelHistory!.length == _maxTimeTravelSteps) {
         _momentumModelHistory!.removeAt(0);
         var historyCount = _momentumModelHistory!.length;
-        // ignore: unnecessary_cast
-        var firstItem = trycatch((() => _momentumModelHistory![0]!) as M Function());
+        var firstItem =
+            // ignore: unnecessary_cast
+            trycatch((() => _momentumModelHistory![0]!) as M Function());
         _initialMomentumModel = historyCount > 0 ? firstItem : model;
       }
 
@@ -390,7 +392,8 @@ abstract class MomentumController<M> with _ControllerBase {
       _nextModel = null;
       _prevModel = trycatch(
         // ignore: unnecessary_cast
-        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M Function(),
+        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M
+            Function(),
       );
     }
 
@@ -604,7 +607,8 @@ abstract class MomentumController<M> with _ControllerBase {
       _momentumModelHistory!.insert(0, latestModel);
       _prevModel = trycatch(
         // ignore: unnecessary_cast
-        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M Function(),
+        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M
+            Function(),
       );
       _setMomentum(null, backward: true);
     }
@@ -626,7 +630,8 @@ abstract class MomentumController<M> with _ControllerBase {
       _momentumModelHistory!.add(firstModel);
       _prevModel = trycatch(
         // ignore: unnecessary_cast
-        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M Function(),
+        (() => _momentumModelHistory![_momentumModelHistory!.length - 2]!) as M
+            Function(),
       );
       // ignore: unnecessary_cast
       _nextModel = trycatch((() => _momentumModelHistory![0]!) as M Function());
@@ -1009,7 +1014,8 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
       if (c != null) {
         ctrls.add(c);
       } else {
-        _error = MomentumError('$_logHeader The controller of type "$t" doesn\'t exists '
+        _error = MomentumError(
+            '$_logHeader The controller of type "$t" doesn\'t exists '
             'or was not initialized from the "controllers" parameter '
             'in the Momentum constructor.');
       }
@@ -1363,7 +1369,8 @@ class Momentum extends InheritedWidget {
         initializer: initializer,
         child: child,
         appLoader: appLoader,
-        controllers: controllers, // UPDATE: remove unnecessary null check for null-safety migration
+        controllers:
+            controllers, // UPDATE: remove unnecessary null check for null-safety migration
         services: services ?? [],
         disabledPersistentState: disabledPersistentState,
         enableLogging: enableLogging,
@@ -1504,7 +1511,10 @@ class Momentum extends InheritedWidget {
         }
       }
     } else {
-      var injectors = _services.where((s) => s is InjectService && s._alias == alias).map((x) => x as InjectService).toList();
+      var injectors = _services
+          .where((s) => s is InjectService && s._alias == alias)
+          .map((x) => x as InjectService)
+          .toList();
       if (isGrabbingWithInject) {
         result = injectors.firstWhereOrNull(
           (s) => s.runtimeType == type || s.runtimeType == injectType,
@@ -1620,7 +1630,8 @@ class Momentum extends InheritedWidget {
     return _getMomentumInstance(context)!._getService<T>(alias: alias);
   }
 
-  static T? _ofType<T extends MomentumController>(BuildContext context, Type t) {
+  static T? _ofType<T extends MomentumController>(
+      BuildContext context, Type t) {
     return _getMomentumInstance(context)!._getControllerOfType<T>(t);
   }
 

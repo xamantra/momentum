@@ -139,7 +139,8 @@ class MomentumRouter extends MomentumService {
     String? historyJson;
     historyJson = await tryasync(
       // ignore: unnecessary_cast
-      (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY') as Future<String>) as Future<String> Function(),
+      (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY')
+          as Future<String>) as Future<String> Function(),
       '[]',
     );
     var result = historyJson == null
@@ -228,7 +229,8 @@ class MomentumRouter extends MomentumService {
     if (_currentRouteParam.runtimeType == _getType<T>()) {
       return _currentRouteParam as T?;
     }
-    print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+    print(
+        'getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
     return null;
   }
 
