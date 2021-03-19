@@ -1,5 +1,4 @@
-/// A super-powerful flutter state management library
-/// inspired with MVC pattern with very flexible dependency injection.
+/// MVC pattern for flutter. Works as state management, dependency injection and service locator.
 library momentum;
 
 export 'src/momentum_base.dart' show Momentum, MomentumModel, MomentumController, BootstrapStrategy, MomentumBuilder, MomentumState, MomentumService, InjectService, MomentumTester, RouterMixin;

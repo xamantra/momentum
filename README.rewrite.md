@@ -33,7 +33,9 @@ Both <code>MomentumController</code> and <code>MomentumModel</code> are abstract
 
 
 # Example
-If you want to see a full code example that runs. Visit the [example](https://pub.dev/packages/momentum/example) tab for more details. Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
+If you want to see a full code example that runs. Visit the [example](https://pub.dev/packages/momentum/example) tab for more details or you can visit the [official webpage](https://www.xamantra.dev/momentum/#/) for full documentation. Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
+
+**Advance Example:** [Listify](https://github.com/xamantra/listify) (clone the repo and run the app, requires Flutter 2.0.0)
 
 
 # Overview

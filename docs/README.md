@@ -2,205 +2,225 @@
   <img src="https://i.imgur.com/DAFGeAd.png">
 </p>
 
-<p align="center">A super-powerful flutter state management library inspired with MVC pattern with very flexible dependency injection.</p>
+<p align="center"><strong>MVC</strong> pattern for flutter. Works as <i>state management</i>, <i>dependency injection</i> and <i>service locator</i>.</p>
 
 <p align="center">
 <a href="https://pub.dev/packages/momentum" target="_blank"><img src="https://img.shields.io/pub/v/momentum" alt="Pub Version" /></a>
 <a href="https://github.com/xamantra/momentum/actions" target="_blank"><img src="https://github.com/xamantra/momentum/workflows/CI/badge.svg" alt="Test" /></a>
 <a href="https://codecov.io/gh/xamantra/momentum"><img src="https://codecov.io/gh/xamantra/momentum/branch/master/graph/badge.svg" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=blue&label=likes&query=likes&url=http://www.pubscore.gq/likes?package=momentum" alt="likes" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=green&label=health&query=pub_points&url=http://www.pubscore.gq/pub-points?package=momentum" alt="health" /></a>
-<a href="https://pub.dev/packages/momentum/score" target="_blank"><img src="https://img.shields.io/badge/dynamic/json?color=teal&label=popularity&query=popularity&url=http://www.pubscore.gq/popularity?package=momentum" alt="popularity" /></a>
 <a href="https://github.com/xamantra/momentum/stargazers" target="_blank"><img src="https://img.shields.io/github/stars/xamantra/momentum" alt="GitHub stars" /></a>
-<a href="https://github.com/tenhobi/effective_dart" target="_blank"><img src="https://img.shields.io/badge/style-effective_dart-54C5F8.svg" alt="style: effective dart" /></a>
 <a href="https://github.com/xamantra/momentum/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/xamantra/momentum" alt="GitHub license" /></a>
 <a href="https://github.com/xamantra/momentum/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/xamantra/momentum" alt="GitHub last commit" /></a>
 </p>
 
 ---
 
-- FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
-- Testing Guide: https://www.xamantra.dev/momentum/#/testing
-- Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
-
----
 
 
-## Features
-  - Very flexible `Dependency Injection` to easily instantiate any dependencies once and reuse multiple times across the app.
-  - `Persistence` support for states and routing. Use any storage provider.
-  - Time travel (`undo/redo`) support in one line of code out of the box.
-  - Optional `Equatable` support. (*Improves time travel*).
-  - `Immutable` states/models. There's only one way to rebuild a widget.
-  - You can `reset a state` or all of the states.
-  - `Skip rebuilds`. Widget specific.
-  - Easy to use `Event System` for sending events to the widgets. *For showing dialogs/snackbars/alerts/navigation/etc.*
-  - Momentum doesn't have any dependencies so it increases compatibility in other platforms.
+<h1 align="center">Model View Controller</h1>
+<p align="center">
+Here's a <i>diagram</i> describing the flow between the <u>state</u> (<code>model</code>), <u>widget</u> (<code>view</code>) and the <u>logic</u> (<code>controller</code>):
+</p>
 
-## Core Concepts
+<p align="center">
+  <img src="https://i.imgur.com/O17iMbR.png">
+</p>
 
-  - Momentum only uses `setState(...)` under the hood.
-  - The method `model.update(...)` is the setState of momentum.
-  - Modular project structure because of the component system (`MomentumController` + `MomentumModel`).
-  - Everything can be reusable from widgets, services, data, state to logic.
-  - Everything is in the widget tree.
 
-## Preview
-In this image the process was like this:
-- Open the app (Home Page).
-- Go to *Add New List* page.
-- Input some data.
-- Close and Terminate on task view.
-- Reopen the app again.
+<p align="center">
+Both <code>MomentumController</code> and <code>MomentumModel</code> are abstract classes that needs to be implemented. A pair of model and controller is called a <strong>component</strong>. <code>MomentumBuilder</code> is simply a widget. This is used to listen to controllers for rebuilds and accessing models to display their values.
+</p>
 
-And magic happens! All the inputs were retained and not just that but also including the page where you left off. Navigation history is also persisted which means pressing the system back button will navigate you to the correct previous page.
 
-![persistent preview](https://i.imgur.com/9CrFNRG.png)
+# Example
+If you want to see a full code example that runs. Visit the [example](https://pub.dev/packages/momentum/example) tab for more details or you can visit the [official webpage](https://www.xamantra.dev/momentum/#/). Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
 
-#### Dark Mode
-This theming is done manually using momentum.
+**Advance Example:** [Listify](https://github.com/xamantra/listify) (clone the repo and run the app, requires Flutter 2.0.0)
 
-![dark mode](https://i.imgur.com/WurrjR1.png)
 
-#### [Source Code for this Example App](https://github.com/xamantra/listify)
-This example app shows how powerful momentum is.
-
-# Quick Start
-You only have to install one package and momentum doesn't have any peer dependencies.
-
-## Create
-To get started, `flutter create` an app. Name it however you want.
-
-## Installing
-1. Add this to your package's `pubspec.yaml` file:
-    ```yaml
-    dependencies:
-      momentum: ^2.0.0
-    ```
-    It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
-
-2. You can install this package from the *command-line*:
-    ```bash
-    flutter pub get
-    ```
-    Alternatively, your editor might support `flutter pub get`.
-
-3. Now in your Dart code, you can use:
-    ```dart
-    import 'package:momentum/momentum.dart';
-    ```
-    You only have to import this one file alone and you'll be able to use all momentum API.
-
-## Counter App Example
-Copy this example counter app code and run it:
-
+# Overview
+**MomentumModel** - the data or state. Must be *Immutable*.
 ```dart
-import 'package:flutter/material.dart';
-import 'package:momentum/momentum.dart';
+class ProfileModel extends MomentumModel<ProfileController> {
+  // ...
 
-void main() {
-  runApp(
-    Momentum(
-      controllers: [CounterController()],
-      child: MyApp(),
-    ),
-  );
+  final int userId;
+  final String username;
+
+  // ...
 }
+```
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Momentum State Management',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomeWidget(),
+
+
+**MomentumBuilder** - the view or widget to display the state.
+```dart
+MomentumBuilder(
+  controllers: [ProfileController], /// injects both `ProfileController` and `ProfileModel`.
+  builder: (context, snapshot) {
+    var profileState = snapshot<ProfileModel>(); /// grab the `ProfileModel` using snapshot.
+    var username = profileState.username;
+    return // some widgets here ...
+  }
+)
+```
+
+
+
+**MomentumController** - the logic to manipulate the model or state.
+```dart
+class ProfileController extends MomentumController<ProfileModel> {
+  // ...
+
+  Future<void> loadProfile() async {
+    var profile = await http.get(...);
+    // update the model's properties.
+    model.update(
+      userId: profile.userId,
+      username: profile.username,
     );
   }
+
+  // ...
 }
+```
 
-class CounterController extends MomentumController<CounterModel> {
-  @override
-  CounterModel init() {
-    return CounterModel(
-      this,
-      value: 0,
-    );
-  }
 
-  void increment() {
-    var value = model.value; // grab the current value
-    model.update(value: value + 1); // update state (rebuild widgets)
-    print(model.value); // new or updated value
-  }
-}
 
-class CounterModel extends MomentumModel<CounterController> {
-  CounterModel(
-    CounterController controller, {
-    this.value,
-  }) : super(controller);
+# FAQs
+## How to *rebuild* the widget?
+Calling `model.update(...)` from inside the controller rebuilds all the `MomentumBuilder`s that are listening to it.
 
-  final int value;
+<hr>
+
+## How to access the *model* object?
+It is automatically provided by `MomentumController` for you to use. Inside a controller class, you can access it directly. It's never null.
+
+
+<hr>
+
+## How to *initialize* the model or state?
+By implementing the `T init()` method which is required by *MomentumController*. Like this:
+```dart
+class ShopController extends MomentumController<ShopModel> {
 
   @override
-  void update({
-    int value,
-  }) {
-    CounterModel(
-      controller,
-      value: value ?? this.value,
-    ).updateMomentum();
-  }
-}
-
-class HomeWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Momentum Counter'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            MomentumBuilder(
-              controllers: [CounterController],
-              builder: (context, snapshot) {
-                var counter = snapshot<CounterModel>();
-                return Text(
-                  '${counter.value}',
-                  style: Theme.of(context).textTheme.headline4,
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      // we don't need to rebuild the increment button, we can skip the MomentumBuilder
-      floatingActionButton: FloatingActionButton(
-        onPressed: Momentum.controller<CounterController>(context).increment,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+  ShopModel init() {
+    return ShopModel(
+      this, // required
+      shopList: [],
+      productList: [],
     );
   }
 }
 ```
 
-- Inside `main()` method `Momentum` is set as the root widget of the app.
-- The `CounterController` is instantiated in `controllers` parameter.
-- Inside the `CounterController` there is an `increment()` method that updates the value. It calls the method `model.update(...)` which will rebuild the widget.
-- The `CounterModel` is where the props are defined and currently has the `value` property.
-- The `HomeWidget` uses `MomentumBuilder` which is used for displaying the model properties to the screen. You can call `model.update(...)` to rebuild this widget.
+<hr>
 
----
+## Can I access the model properties inside my controller?
+Of course. The **model** object is already provided by *MomentumController* meaning you can also directly access its properties like this:
+```dart
+class ShopController extends MomentumController<ShopModel> {
 
-## Important Links
+  bool hasProducts() {
+    return model.productList.isNotEmpty;
+  }
+}
+```
 
-- FULL DOCUMENTATION: https://www.xamantra.dev/momentum/#/
-- Testing Guide: https://www.xamantra.dev/momentum/#/testing
-- Recommended Advance <a href="https://github.com/xamantra/listify" target="_blank">Example App</a>
+<hr>
+
+## Is there a special *setup* required for Momentum to run?
+Yes, definitely. This is the required setup for *Momentum* in a flutter app:
+```dart
+void main() {
+  runApp(momentum());
+}
+
+Momentum momentum() {
+  return Momentum(
+    child: MyApp(),
+    controllers: [
+      ProfileController(),
+      ShopController(),
+    ],
+    // and more optional parameters here.
+  );
+}
+```
+
+# Testing
+Momentum is highly testable. This is how a basic **widget testing** for momentum would look like:
+```dart
+void main() {
+
+  testWidgets('should display username', (tester) async {
+    var profileCtrl = ProfileController();
+
+    await tester.pumpWidget(
+      Momentum(
+        child: MyApp(),
+        controllers: [profileCtrl],
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    profileCtrl.updateUsername("johndoe");
+    await tester.pumpAndSettle(); // ensure rebuilds
+
+    expect(profileCtrl.model.username, "johndoe"); // unit check
+    expect(find.text("johndoe"), findsOneWidget); // widget check
+  });
+}
+```
+
+Or you might not be a fan of widget testing and only want to test your components:
+```dart
+void main() {
+
+  test('should display username', () async {
+    var profileCtrl = ProfileController();
+
+    var tester = MomentumTester(
+      Momentum(
+        controllers: [profileCtrl],
+      ),
+    );
+    await tester.init();
+
+    profileCtrl.updateUsername("johndoe");
+    expect(profileCtrl.model.username, "johndoe"); // unit check
+  });
+}
+```
+
+
+
+# Other optional features
+- **Routing** - Navigation system that supports persistence. The app will open the page where the user left off.
+- **Event System** - For showing dialogs, prompts, navigation, alerts.
+- **Persistence State** - Restore state when the app opens again.
+- **Testing** - Tests your widgets and logic. Built-in helper class for unit testing.
+
+Momentum leverages the power of `setState(..)` and *StatefulWidget* behind the scenes. The feature `Event System` uses *Stream*.
+
+## Router issues
+- The router doesn't support named routes yet.
+- The parameter handling for router is slightly verbose. And might be complicated for some. But it works magically.
+- Needs to explicitly implement `RouterPage` widget in order to handle the system's back button.
+- The router breaks after hot reload. Only a problem during development but it should work in normal execution.
+
+**Things to note for Momentum's Router**
+- The router currently has a lot of hiccups but it does work.
+- Momentum's Router is a completely optional feature. You don't need to use it and other features will work just fine.
+- If you won't get bothered by the problems listed above, it will be fine to use it.
+- The router isn't going to be deprecated. *Persisted routing is one of the best features of Momentum.*
+- Momentum has an active development status. I spent regular amount of time to improve and find fixes.
+
+
+# API Reference
+Visit the [official webpage](https://www.xamantra.dev/momentum/#/) of momentum to browse the full *api reference*, *guides*, and *examples*.
+
+<hr>
+
+Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file on [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.
