@@ -1,3 +1,34 @@
+## 2.0.0
+- Null-safety migration.
+- Fixed missing controllers in **Momentum** *constructor* not detected by **MomentumBuilder**.
+- Fixed `Momentum.restart(...)` along with `restartCallback` parameter - throws null exception error.
+- Fixed `InjectService` type matching internally.
+- Exposed `InjectService`'s service property instance. This is only for grabbing services using `InjectService`.
+  ```dart
+    InjectService<ApiService> injected;
+    injected = Momentum.service<InjectService<ApiService>>(context);
+    injected.value // the actual service is the `value`. this were previously private.
+  ```
+
+**BREAKING CHANGE:** Officially removed `Router` class. Need to use the `MomentumRouter` now. No api changes, just a simple rename to avoid conflict with flutter's *Router* class.
+
+**New features**
+- Added abstract callback `onReady()` for **MomentumController**. Read more about it [here](/momentum-controller?id=onready).
+- Added method `clearStateHistory()` for **MomentumController**. Reset the undo/redo state history. Read more about it [here](/momentum-controller?id=clearstatehistory).
+
+
+**Internal updates** 
+- Removed internal test related functions which are poorly written and undocumented.
+  - `getLastListenedState()`
+  - `getLastEvent<T>()`
+  - These functions are not meant for public or normal usage. But by any chance you actually use this in your projects. You'll need to revise your test files and follow the references below:
+    - `test\test_files\events_test.dart` - test **sendEvent<T>(...)** and **listen<T>(...)**.
+    - `test\test_files\widgets\pages\todo_test.dart` - test **addListener(...)**
+  - `testMode` - removed because the original purpose was to test async methods with (mocked) sync implementations internally. Turns out there's a way to test async without pointlessly mocking sync. This was also undocumented and only meant to be used internally so you probably aren't using this.
+  - `getController<T>()` - completely unnecessary
+  - `serviceForTest<T>` - completely unnecessary
+- Rewrite the entire internal test folder.
+
 ## 1.3.6
 - Fixed domain problem in documentation. (Should include `www.`)
 

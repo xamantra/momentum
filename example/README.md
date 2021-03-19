@@ -1,21 +1,100 @@
-<a href="https://github.com/xamantra/listify" target="_blank">Source Code for this Example App</a>
+**Advance Example:** [Listify](https://github.com/xamantra/listify) (clone the repo and run the app, requires Flutter 2.0.0)
 
-## Preview
-In this image the process was like this:
-- Open the app (Home Page).
-- Go to *Add New List* page.
-- Input some data.
-- Close and Terminate on task view.
-- Reopen the app again.
+## Basic Example
 
-And magic happens! All the inputs were retained and not just that but also including the page where you left off. Navigation history is also persisted which means pressing the system back button will navigate you to the correct previous page.
+```dart
+import 'package:flutter/material.dart';
+import 'package:momentum/momentum.dart';
 
-![persistent preview](https://i.imgur.com/9CrFNRG.png)
+void main() {
+  runApp(
+    Momentum(
+      controllers: [CounterController()],
+      child: MyApp(),
+    ),
+  );
+}
 
-#### Dark Mode
-This theming is done manually using momentum.
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Momentum State Management',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomeWidget(),
+    );
+  }
+}
 
-![dark mode](https://i.imgur.com/WurrjR1.png)
+class CounterController extends MomentumController<CounterModel> {
+  @override
+  CounterModel init() {
+    return CounterModel(
+      this,
+      value: 0,
+    );
+  }
 
-#### [Source Code for this Example App](https://github.com/xamantra/listify)
-This example app shows how powerful momentum is.
+  void increment() {
+    var value = model.value; // grab the current value
+    model.update(value: value + 1); // update state (rebuild widgets)
+    print(model.value); // new or updated value
+  }
+}
+
+class CounterModel extends MomentumModel<CounterController> {
+  CounterModel(
+    CounterController controller, {
+    required this.value,
+  }) : super(controller);
+
+  final int value;
+
+  @override
+  void update({
+    int? value,
+  }) {
+    CounterModel(
+      controller,
+      value: value ?? this.value,
+    ).updateMomentum();
+  }
+}
+
+class HomeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Momentum Counter'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            MomentumBuilder(
+              controllers: [CounterController],
+              builder: (context, snapshot) {
+                var counter = snapshot<CounterModel>();
+                return Text(
+                  '${counter.value}',
+                  style: Theme.of(context).textTheme.headline4,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      // we don't need to rebuild the increment button, we can skip the MomentumBuilder
+      floatingActionButton: FloatingActionButton(
+        onPressed: Momentum.controller<CounterController>(context).increment,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+```

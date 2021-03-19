@@ -1,5 +1,4 @@
-/// A super-powerful flutter state management library
-/// inspired with MVC pattern with very flexible dependency injection.
+/// MVC pattern for flutter. Works as state management, dependency injection and service locator.
 library momentum;
 
 export 'src/momentum_base.dart'
@@ -16,4 +15,4 @@ export 'src/momentum_base.dart'
         RouterMixin;
 export 'src/momentum_router.dart' show MomentumRouter, RouterPage, RouterParam;
 // ignore: deprecated_member_use_from_same_package
-export 'src/momentum_router.old.dart' show Router;
+// export 'src/momentum_router.old.dart' show Router;
