@@ -221,10 +221,20 @@ abstract class MomentumController<M> with _ControllerBase {
 
   bool _booted = false;
   bool _bootedAsync = false;
+  bool _onReadyCalled = false;
 
   /// An optional callback for synchronous initialization.
   /// If lazy loading is disabled this will be called right when
   /// the app starts. Use `bootstrapAsync()` if you want asynchronous.
+  ///
+  /// ### Execution Order:
+  /// When the app runs, this is how Momentum execute all callbacks:
+  /// - Momentum root - `initializer()` (awaited)
+  /// - Initialize all **Services**
+  /// - *All Controllers* - `T init()`
+  /// - *All non-lazy Controllers* - `bootstrap()`
+  /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
+  /// - *All Controllers* - `onReady()`
   void bootstrap() {}
   void _bootstrap() {
     if (!_booted) {
@@ -241,6 +251,15 @@ abstract class MomentumController<M> with _ControllerBase {
   /// If lazy loading is disabled this will be called right when
   /// the app starts and displays a loading widget until the async
   /// operation is finished.
+  ///
+  /// ### Execution Order:
+  /// When the app runs, this is how Momentum execute all callbacks:
+  /// - Momentum root - `initializer()` (awaited)
+  /// - Initialize all **Services**
+  /// - *All Controllers* - `T init()`
+  /// - *All non-lazy Controllers* - `bootstrap()`
+  /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
+  /// - *All Controllers* - `onReady()`
   Future<void> bootstrapAsync() async {}
   Future<void> _bootstrapAsync() async {
     if (!_bootedAsync) {
@@ -256,6 +275,31 @@ abstract class MomentumController<M> with _ControllerBase {
       if (_momentumLogging!) {
         print(_formatMomentumLog('[$this] => bootstrapAsync() '
             'completed! { lazy: $_lazy, took: ${diff}ms }'));
+      }
+    }
+  }
+
+  /// Added on `v2.0.0`
+  ///
+  /// A callback that gets executed when **all** non-lazy controllers' bootstrap
+  /// method gets called.
+  ///
+  /// ### Execution Order:
+  /// When the app runs, this is how Momentum execute all callbacks:
+  /// - Momentum root - `initializer()` (awaited)
+  /// - Initialize all **Services**
+  /// - *All Controllers* - `T init()`
+  /// - *All non-lazy Controllers* - `bootstrap()`
+  /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
+  /// - *All Controllers* - `onReady()`
+  void onReady() {}
+  void _onReady() {
+    if (!_onReadyCalled) {
+      _onReadyCalled = true;
+      onReady();
+      if (_momentumLogging!) {
+        print(_formatMomentumLog('[$this] => onReady() '
+            'called!}'));
       }
     }
   }
@@ -1115,6 +1159,7 @@ class _MomentumRootState extends State<_MomentumRoot> {
       await _initControllerModel(widget.controllers);
       _bootstrapControllers(widget.controllers);
       await _bootstrapControllersAsync(widget.controllers);
+      _onReadyControllers(widget.controllers);
       return true;
     } catch (e, stackTrace) {
       // Print the stacktrace of the caught exception
@@ -1176,6 +1221,12 @@ class _MomentumRootState extends State<_MomentumRoot> {
     });
     for (var nonLazyController in nonLazyControllers) {
       nonLazyController._bootstrap();
+    }
+  }
+
+  void _onReadyControllers(List<MomentumController> controllers) {
+    for (var controller in controllers) {
+      controller._onReady();
     }
   }
 
@@ -1594,6 +1645,7 @@ class MomentumTester {
       await _initControllerModel();
       _bootstrapControllers();
       await _bootstrapControllersAsync();
+      _onReadyControllers();
     } catch (e, stackTrace) {
       print(e.toString());
       print(stackTrace.toString());
@@ -1646,6 +1698,12 @@ class MomentumTester {
     num min = _minimumBootstrapTime.clamp(0, 9999999);
     var waitTime = (min - diff).clamp(0, min);
     await Future.delayed(Duration(milliseconds: waitTime.toInt()));
+  }
+
+  void _onReadyControllers() {
+    for (var controller in _controllers) {
+      controller._onReady();
+    }
   }
 
   /// Get a controller of type `T`.

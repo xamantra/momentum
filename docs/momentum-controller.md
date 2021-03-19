@@ -1,4 +1,3 @@
-# MomentumController
 The class which holds the logic for your app. This is tied with `MomentumModel`. This is abstract and needs to be implemented.
 
 This is the boilerplate code:
@@ -96,7 +95,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
 ## bootstrapAsync()
 - Category: `Virtual Method`
-- Return Type: `void`
+- Return Type: `Future<void>`
 - Required: `NO`
 
 The asynchronous version of `bootstrap()`. You'll probably want to use this more. If `lazy` is `false`, momentum will await this method when the app starts and display a loading widget before your actual `MyApp()` widget gets loaded. If `lazy` is `true`, it has the same behavior with `bootstrap()`.
@@ -114,6 +113,36 @@ class ExampleController extends MomentumController<ExampleModel> {
   // ...
 }
 ```
+
+<hr>
+
+## onReady()
+- Category: `Virtual Method`
+- Return Type: `void`
+- Required: `NO`
+
+A callback that gets executed when **all** non-lazy controllers' bootstrap.
+```dart
+class ExampleController extends MomentumController<ExampleModel> {
+
+  // ...
+
+  @override
+  void onReady() {
+    // your code here when everything is ready ...
+  }
+
+  // ...
+}
+```
+- When the app runs, this is how Momentum execute all callbacks:
+  - Momentum root - `initializer()` (awaited)
+  - Initialize all **Services**
+  - *All Controllers* - `T init()`
+  - *All non-lazy Controllers* - `bootstrap()`
+  - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
+  - *All Controllers* - `onReady()`
+
 
 <hr>
 

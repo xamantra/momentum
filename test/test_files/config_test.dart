@@ -4,6 +4,7 @@ import 'package:momentum/momentum.dart';
 import 'package:momentum/src/momentum_error.dart';
 
 import '../demo_app/components/basic-list-example/index.dart';
+import '../demo_app/components/dummy/index.dart';
 import '../demo_app/components/rest-api-example/index.dart';
 import '../demo_app/components/todo-example/index.dart';
 import '../demo_app/services/api-service.dart';
@@ -377,7 +378,10 @@ void main() {
   test('test non-lazy controllers with MomentumTester', () async {
     var tester = MomentumTester(
       Momentum(
-        controllers: [BasicListExampleController()..config(lazy: false)],
+        controllers: [
+          BasicListExampleController()..config(lazy: false),
+          DummyController(),
+        ],
       ),
     );
     await tester.init();
@@ -385,5 +389,8 @@ void main() {
     var controller = tester.controller<BasicListExampleController>()!;
     expect(controller.value, 99);
     expect(controller.value2, 88);
+
+    var dummy = tester.controller<DummyController>()!;
+    expect(dummy.dummyValue, 99);
   });
 }

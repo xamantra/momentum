@@ -10,6 +10,9 @@
     injected.value // the actual service is the `value`. this were previously private.
   ```
 
+**New features**
+- Added callback `onReady()` for **MomentumController**. Read more about it [here](/momentum-controller?id=onready).
+
 **Internal updates** 
 - Removed internal test related functions which are poorly written and undocumented.
   - `getLastListenedState()`
