@@ -29,6 +29,7 @@ class MomentumRouter extends MomentumService {
   PersistSaver? _persistSaver;
   PersistGet? _persistGet;
   bool _exited = false;
+  bool _initialized = false;
 
   bool get _canPersist => _persistSaver != null && _persistGet != null;
 
@@ -136,22 +137,25 @@ class MomentumRouter extends MomentumService {
   /// This is automatically called by the
   /// library.
   Future<void> init() async {
-    String? historyJson;
-    historyJson = await tryasync(
-      // ignore: unnecessary_cast
-      (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY')
-          as Future<String>) as Future<String> Function(),
-      '[]',
-    );
-    var result = historyJson == null
-        ? '[]'
-        : trycatch(
-            () => jsonDecode(historyJson!),
-            '[]',
-          );
-    _history = (result as List).map<int>((e) => e as int).toList();
-    if (_history.isEmpty) {
-      _history.add(0);
+    if (!_initialized) {
+      _initialized = true;
+      String? historyJson;
+      historyJson = await tryasync(
+        // ignore: unnecessary_cast
+        (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY')
+            as Future<String>) as Future<String> Function(),
+        '[]',
+      );
+      var result = historyJson == null
+          ? '[]'
+          : trycatch(
+              () => jsonDecode(historyJson!),
+              '[]',
+            );
+      _history = (result as List).map<int>((e) => e as int).toList();
+      if (_history.isEmpty) {
+        _history.add(0);
+      }
     }
     return;
   }

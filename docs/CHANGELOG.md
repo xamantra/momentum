@@ -1,3 +1,6 @@
+## 2.1.1
+- Fixed hot reload issue for MomentumRouter.
+
 ## 2.0.1
 - Fixed links in changelog.
 - Follow analyzer suggestion for string interpolation.

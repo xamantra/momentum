@@ -1,6 +1,6 @@
 name: momentum
 description: MVC pattern for flutter. Works as state management, dependency injection and service locator.
-version: 2.0.1
+version: 2.1.1
 homepage: https://github.com/xamantra/momentum
 
 environment:
