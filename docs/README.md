@@ -1,3 +1,4 @@
+<h1 id="readme"></h1>
 <p align="center">
   <img src="https://i.imgur.com/DAFGeAd.png">
 </p>
@@ -208,14 +209,7 @@ Momentum leverages the power of `setState(..)` and *StatefulWidget* behind the s
 - The router doesn't support named routes yet.
 - The parameter handling for router is slightly verbose. And might be complicated for some. But it works magically.
 - Needs to explicitly implement `RouterPage` widget in order to handle the system's back button.
-- The router breaks after hot reload. Only a problem during development but it should work in normal execution.
-
-**Things to note for Momentum's Router**
-- The router currently has a lot of hiccups but it does work.
-- Momentum's Router is a completely optional feature. You don't need to use it and other features will work just fine.
-- If you won't get bothered by the problems listed above, it will be fine to use it.
-- The router isn't going to be deprecated. *Persisted routing is one of the best features of Momentum.*
-- Momentum has an active development status. I spent regular amount of time to improve and find fixes.
+- (**FIXED** ✅) The router breaks after hot reload. Only a problem during development but it should work in normal execution.
 
 
 # API Reference
