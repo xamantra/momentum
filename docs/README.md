@@ -59,8 +59,8 @@ class ProfileModel extends MomentumModel<ProfileController> {
 MomentumBuilder(
   controllers: [ProfileController], /// injects both `ProfileController` and `ProfileModel`.
   builder: (context, snapshot) {
-    var profileState = snapshot<ProfileModel>(); /// grab the `ProfileModel` using snapshot.
-    var username = profileState.username;
+    final profileState = snapshot<ProfileModel>(); /// grab the `ProfileModel` using snapshot.
+    final username = profileState.username;
     return // some widgets here ...
   }
 )
@@ -74,7 +74,7 @@ class ProfileController extends MomentumController<ProfileModel> {
   // ...
 
   Future<void> loadProfile() async {
-    var profile = await http.get(...);
+    final profile = await http.get(...);
     // update the model's properties.
     model.update(
       userId: profile.userId,
@@ -156,7 +156,7 @@ Momentum is highly testable. This is how a basic **widget testing** for momentum
 void main() {
 
   testWidgets('should display username', (tester) async {
-    var profileCtrl = ProfileController();
+    final profileCtrl = ProfileController();
 
     await tester.pumpWidget(
       Momentum(
@@ -180,9 +180,9 @@ Or you might not be a fan of widget testing and only want to test your component
 void main() {
 
   test('should display username', () async {
-    var profileCtrl = ProfileController();
+    final profileCtrl = ProfileController();
 
-    var tester = MomentumTester(
+    final tester = MomentumTester(
       Momentum(
         controllers: [profileCtrl],
       ),

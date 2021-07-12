@@ -9,8 +9,8 @@ You have to specify both `persistSave` and `persistGet` parameter on the `Moment
   Momentum(
     // ...
     persistSave: (context, key, value) async {
-      var sharedPref = await SharedPreferences.getInstance();
-      var result = await sharedPref.setString(key, value);
+      final sharedPref = await SharedPreferences.getInstance();
+      final result = await sharedPref.setString(key, value);
       return result;
     },
     // ...
@@ -22,8 +22,8 @@ You have to specify both `persistSave` and `persistGet` parameter on the `Moment
   Momentum(
     // ...
     persistGet: (context, key) async {
-      var sharedPref = await SharedPreferences.getInstance();
-      var result = sharedPref.getString(key);
+      final sharedPref = await SharedPreferences.getInstance();
+      final result = sharedPref.getString(key);
       return result;
     },
     // ...

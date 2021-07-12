@@ -55,11 +55,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Testing Initialization', (tester) async {
-    var widget = momentum();
+    final widget = momentum();
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
 
-    var counterController = widget.getController<CounterController>();
+    final counterController = widget.getController<CounterController>();
     expect(counterController, isInstanceOf<CounterController>());
     expect(counterController.model.value, 0);
   });
@@ -76,11 +76,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('Testing Functions', (tester) async {
-    var widget = momentum();
+    final widget = momentum();
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
 
-    var counterController = widget.getController<CounterController>();
+    final counterController = widget.getController<CounterController>();
     counterController.increment();
     expect(counterController.model.value, 1);
     counterController.increment();
@@ -105,11 +105,11 @@ The new testing tool for unit testing controllers, models and services.
 ```dart
   test('Momentum Tester Tool: Counter', () async {
     // create tester instance.
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
 
     await tester.init(); // initialize the tester (calls bootstrap methods)
 
-    var counter = tester.controller<CounterController>();
+    final counter = tester.controller<CounterController>();
     expect(counter != null, true);
     expect(counter, isInstanceOf<CounterController>());
     expect(counter.model.value, 0);
@@ -137,12 +137,12 @@ Now we are done with unit testing and confident with our controllers working pro
 #### Testing Widget Initialization
 ```dart
 testWidgets('Testing Widget Initialization', (tester) async {
-  var widget = momentum();
+  final widget = momentum();
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 
-  var valueFinder = find.byKey(keyCounterValue);
-  var incrementFinder = find.byKey(keyIncrementButton);
+  final valueFinder = find.byKey(keyCounterValue);
+  final incrementFinder = find.byKey(keyIncrementButton);
   expect(valueFinder, findsOneWidget);
   expect(incrementFinder, findsOneWidget);
   expect(find.text('0'), findsOneWidget);
@@ -155,7 +155,7 @@ testWidgets('Testing Widget Initialization', (tester) async {
 #### Testing Widget Functions
 ```dart
 testWidgets('Testing Widget Functions', (tester) async {
-  var widget = momentum();
+  final widget = momentum();
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 

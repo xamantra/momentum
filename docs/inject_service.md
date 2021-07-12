@@ -21,7 +21,7 @@ Momentum(
 ## Getting from Widget
 You can get a service with alias using context from your widgets.
 ```dart
-var apiService = Momentum.service<ApiService>(context, alias: ApiAlias.withLogs);
+final apiService = Momentum.service<ApiService>(context, alias: ApiAlias.withLogs);
 ```
 
 <hr>
@@ -29,7 +29,7 @@ var apiService = Momentum.service<ApiService>(context, alias: ApiAlias.withLogs)
 ## Getting from Controller
 You can get a service with alias from your controllers.
 ```dart
-var apiService = service<ApiService>(alias: ApiAlias.withLogs);
+final apiService = service<ApiService>(alias: ApiAlias.withLogs);
 ```
 
 <hr>
@@ -41,8 +41,8 @@ class DownloadService extends MomentumService {
   
   // Assuming you are calling this from your controllers...
   Future<File> download(String url) async {
-    var apiService = service<ApiService>(alias: ApiAlias.withLogs);
-    var file = await apiService.downloadFile(url);
+    final apiService = service<ApiService>(alias: ApiAlias.withLogs);
+    final file = await apiService.downloadFile(url);
     return file;
   }
 }
@@ -51,7 +51,7 @@ class DownloadService extends MomentumService {
 ## Getting Default
 If you accidentally, or forget that you've used `InjectService` to add your services. And then you grabbed a service without an alias like this:
 ```dart
-var apiService = service<ApiService>();
+final apiService = service<ApiService>();
 ```
 It will still work. Momentum will return the first instance from the `services` list in your `Momentum` root config.
 

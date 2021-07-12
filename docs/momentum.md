@@ -172,8 +172,8 @@ A function parameter for saving or persisting state values using any storage pro
       // controllers: [...],
       persistSave: (context, key, value) async {
         // save "key" and "value" somewhere.
-        var sharedPref = SharedPreferences.getInstance();
-        var success = await sharedPref.setString(key, value);
+        final sharedPref = SharedPreferences.getInstance();
+        final success = await sharedPref.setString(key, value);
         return success;
       },
     ),
@@ -194,8 +194,8 @@ A function parameter for getting persisted state values using any storage provid
       // controllers: [...],
       persistGet: (context, key) async {
         // get data using the "key" provided.
-        var sharedPref = SharedPreferences.getInstance();
-        var valueString = sharedPref.getString(key);
+        final sharedPref = SharedPreferences.getInstance();
+        final valueString = sharedPref.getString(key);
         return valueString;
       },
     ),
@@ -215,7 +215,7 @@ A function parameter for overriding `Momentum.resetAll(context)` method. You can
       // child: ...,
       // controllers: [...],
       onResetAll: (context, resetAll) async {
-        var confirmed = await showDialog<bool>(context: context, builder: ...);
+        final confirmed = await showDialog<bool>(context: context, builder: ...);
         if (confirmed) {
           // call the original resetAll method.
           resetAll(context);
@@ -270,7 +270,7 @@ Get a specific controller of type `T`. It requires context so you can only call 
   ```dart
     @override
     Widget build(BuildContext context) {
-      var exampleController = Momentum.controller<ExampleController>(context);
+      final exampleController = Momentum.controller<ExampleController>(context);
       return Scaffold(...);
     }
   ```
@@ -286,7 +286,7 @@ Get a specific service of type `T`. It requires context so you can only call thi
 ```dart
   @override
   Widget build(BuildContext context) {
-    var exampleService = Momentum.service<ExampleService>(context);
+    final exampleService = Momentum.service<ExampleService>(context);
     return Scaffold(...);
   }
 ```
@@ -294,7 +294,7 @@ If you are using the new `InjectService` to add your services. You can also use 
 ```dart
   @override
   Widget build(BuildContext context) {
-    var exampleService = Momentum.service<ExampleService>(context, alias: 'alias1');
+    final exampleService = Momentum.service<ExampleService>(context, alias: 'alias1');
     return Scaffold(...);
   }
 ```

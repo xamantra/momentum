@@ -29,7 +29,7 @@ class CounterController extends MomentumController<CounterModel> {
   // ...
 
   void increment() {
-    var newValue = model.value + 1;
+    final newValue = model.value + 1;
     model.update(value: newValue); // update widgets
   }
 
@@ -44,7 +44,7 @@ class CounterController extends MomentumController<CounterModel> {
 MomentumBuilder(
   controllers: [CounterController],
   builder: (context, snapshot) {
-    var counter = snapshot<CounterModel>();
+    final counter = snapshot<CounterModel>();
     return Text('${counter.value}');
   }
 )
@@ -103,7 +103,7 @@ class ExampleController extends MomentumController<ExampleModel> {
   }
 
   void increment() {
-    var newValue = model.value + 1;
+    final newValue = model.value + 1;
     model.update(value: newValue); // update widgets
   }
 }
@@ -126,7 +126,7 @@ With momentum, you can easily access almost everything. Take a look at these cod
     // ...
 
     void login() {
-      var sessionController = controller<SessionController>();
+      final sessionController = controller<SessionController>();
       // do anything with "sessionController" here.
       // you can access "sessionController.model.propertyName".
       // you can also call functions like "sessionController.createSession()".
@@ -140,7 +140,7 @@ With momentum, you can easily access almost everything. Take a look at these cod
   ```dart
   @override
   Widget build(BuildContext context) {
-    var loginController = Momentum.controller<LoginController>(context);
+    final loginController = Momentum.controller<LoginController>(context);
     // you can also declare this as class wide variable and
     // call Momentum.controller<T> inside build or didChangeDependencies.
     // in the widgets, for example a button's onPressed parameter
@@ -152,8 +152,8 @@ With momentum, you can easily access almost everything. Take a look at these cod
   MomentumBuilder(
     controllers: [CounterController],
     builder: (context, snapshot) {
-      var counterModel = snapshot<CounterModel>();
-      var counterController = counterModel.controller;
+      final counterModel = snapshot<CounterModel>();
+      final counterController = counterModel.controller;
       return TextButton(
         onPressed: () {
           counterController.increment();
@@ -170,8 +170,8 @@ With momentum, you can easily access almost everything. Take a look at these cod
     // ...
 
     void login() async {
-      var apiService = service<ApiService>();
-      var result = await apiService.auth(
+      final apiService = service<ApiService>();
+      final result = await apiService.auth(
         username: model.username,
         password: model.password,
       );
@@ -184,7 +184,7 @@ With momentum, you can easily access almost everything. Take a look at these cod
 - Access a service inside a widget using `Momentum.service<T>(context)`:
   ```dart
   Widget build(BuildContext context) {
-    var someService = Momentum.service<SomeService>(context);
+    final someService = Momentum.service<SomeService>(context);
     // you can also declare this as class wide variable and
     // call Momentum.someService<T> inside build or didChangeDependencies.
     // in the widgets.

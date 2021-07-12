@@ -54,11 +54,11 @@ MomentumRouter.goto(context, HomePage);
 MomentumRouter.goto(context, HomePage, params: HomeParam(title: 'Hello World'));
 
 // access the parameters using context
-var param = MomentumRouter.getParam<HomeParam>(context);
+final param = MomentumRouter.getParam<HomeParam>(context);
 print(param.title); // or display it in a widget ...
 
 // access the parameters inside the controller
-var param = getParam<HomeParam>();
+final param = getParam<HomeParam>();
 print(param.title); // or bind this in your model ...
 
 // with custom animation
@@ -88,11 +88,11 @@ MomentumRouter.pop(context);
 MomentumRouter.pop(context, result: LoginParam(action: 'User had logged out.'));
 
 // access the parameters using context
-var param = MomentumRouter.getParam<LoginParam>(context);
+final param = MomentumRouter.getParam<LoginParam>(context);
 print(param.action); // or display it in a widget ...
 
 // access the parameters inside the controller
-var param = getParam<LoginParam>();
+final param = getParam<LoginParam>();
 print(param.action); // or bind this in your model ...
 
 // with custom animation
@@ -140,7 +140,7 @@ class ExamplePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var param = MomentumRouter.getParam<ExampleParam>(context);
+    final param = MomentumRouter.getParam<ExampleParam>(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -161,7 +161,7 @@ class ExamplePage extends StatelessWidget {
 
 Clear the navigation history. Popping will close the app.
 ```dart
-var router = Momentum.service<MomentumRouter>(context);
+final router = Momentum.service<MomentumRouter>(context);
 await router.clearHistory();
 ```
 
@@ -184,7 +184,7 @@ await MomentumRouter.clearHistoryWithContext(context);
 
 Clear navigation history and set an initial page. The recommended use case for this is when you want to restart your app.
 ```dart
-var router = Momentum.service<MomentumRouter>(context);
+final router = Momentum.service<MomentumRouter>(context);
 // this will not automatically go to the login page.
 await router.reset<LoginPage>();
 // will be restarted in the login page.

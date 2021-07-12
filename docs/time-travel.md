@@ -73,7 +73,7 @@ This will guide you on how to implement undo/redo with text fields. There are tw
     // with time travel methods. This is very IMPORTANT.
     dontRebuildIf: (controller, isTimeTravel) => !isTimeTravel,
     builder: (context, snapshot) {
-      var example = snapshot<ExampleModel>();
+      final example = snapshot<ExampleModel>();
       return TextFormField(
         key: Key(example.username),
         initialValue: example.username,

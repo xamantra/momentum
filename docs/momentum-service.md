@@ -11,14 +11,14 @@ class ApiService extends MomentumService {
   // ...
 
   Future<AuthResponse> auth({String username, String password}) async {
-    var response = await http.post(link, body: {'username': username, 'password': password});
-    var parsed = AuthResponse.fromJson(response.data);
+    final response = await http.post(link, body: {'username': username, 'password': password});
+    final parsed = AuthResponse.fromJson(response.data);
     return parsed;
   }
 
   Future<UserProfile> getProfile({int userId}) async {
-    var response = await http.get(link, body: {'userId': userId});
-    var parsed = UserProfile.fromJson(response.data);
+    final response = await http.get(link, body: {'userId': userId});
+    final parsed = UserProfile.fromJson(response.data);
     return parsed;
   }
 
@@ -32,13 +32,13 @@ class AuthController extends MomentumController<AuthModel> {
   // ...
 
   Future<void> login() async {
-    var apiService = service<ApiService>();
-    var response = await apiService.auth(
+    final apiService = service<ApiService>();
+    final response = await apiService.auth(
       username: model.username, 
       password: model.password
     );
     if (response.success) {
-      var profile = await apiService.getProfile(userId: response.userId);
+      final profile = await apiService.getProfile(userId: response.userId);
       model.update(profile: profile);
     }
   }
@@ -62,7 +62,7 @@ class ServiceA extends MomentumService {
   int increment(int value) => value + 1;
 
   double times2(double value) {
-    var serviceB = service<ServiceB>();
+    final serviceB = service<ServiceB>();
     return serviceB.times2(value);
   }
 }
@@ -74,7 +74,7 @@ class ServiceB extends MomentumService {
 
 If you are using the new `InjectService` to add your services. You can also use the `alias` parameter to get a specific service with matching alias.
 ```dart
-var serviceB = service<ServiceB>(alias: ServiceAlias.noLogs);
+final serviceB = service<ServiceB>(alias: ServiceAlias.noLogs);
 ```
 `alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
 

@@ -19,7 +19,7 @@ The logic inside controller:
 
   Future<void> loadSomeData() async {
     model.update(loadingData: true);
-    var result = await apiService.loadSomeBigData();
+    final result = await apiService.loadSomeBigData();
     model.update(loadingData: false, someData: result);
   }
 
@@ -31,7 +31,7 @@ The UI code to display loading and data/result's widget:
 MomentumBuilder(
   controllers: [ExampleController],
   builder: (context, snapshot) {
-    var exampleModel = snapshot<ExampleModel>();
+    final exampleModel = snapshot<ExampleModel>();
 
     if (exampleModel.loadingData) {
       return CircularProgressIndicator();
@@ -62,7 +62,7 @@ Always remember that `model.update(...)` will rebuild widgets.
     ```
   - Now, the next line inside `loadSomeData()` is an asynchronous code. Imagine this code will take seconds to finish:
     ```dart
-    var result = await apiService.loadSomeBigData();
+    final result = await apiService.loadSomeBigData();
     ```
   - The last line, we set the `loadingData` to `false` after the async code finishes. And also store the result in `someData` property:
     ```dart

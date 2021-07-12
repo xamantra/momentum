@@ -21,7 +21,7 @@ Get the current route parameters specified using the `params` parameter in `Mome
 MomentumRouter.goto(context, DashboardPage, params: ExampleParam(...));
 
 // accessing the route params inside controllers.
-var params = getParam<ExampleParam>();
+final params = getParam<ExampleParam>();
 ```
 
 <hr>
@@ -45,10 +45,10 @@ class ExampleController extends MomentumController<ExampleModel> with RouterMixi
   @override
   void onRouteChanged(RouterParam param) {
     if (param is ExampleParam) {
-      var title = (param as ExampleParam).title;
+      final title = (param as ExampleParam).title;
 
       // You can also use "getParam<T>()" here.
-      // var title = getParam<ExampleParam>().title.
+      // final title = getParam<ExampleParam>().title.
 
       print(title);
     }

@@ -63,7 +63,7 @@ class CounterController extends MomentumController<CounterModel> {
   }
 
   void increment() {
-    var value = model.value; // grab the current value
+    final value = model.value; // grab the current value
     model.update(value: value + 1); // update state (rebuild widgets)
     print(model.value); // new or updated value
   }
@@ -105,7 +105,7 @@ class HomeWidget extends StatelessWidget {
             MomentumBuilder(
               controllers: [CounterController],
               builder: (context, snapshot) {
-                var counter = snapshot<CounterModel>();
+                final counter = snapshot<CounterModel>();
                 return Text(
                   '${counter.value}',
                   style: Theme.of(context).textTheme.headline4,

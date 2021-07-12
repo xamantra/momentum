@@ -49,7 +49,7 @@ The method for updating this model and rebuilding widgets. Like `setState(...)` 
   // ...
 
   void increment() {
-    var newValue = model.value + 1;
+    final newValue = model.value + 1;
     model.update(value: newValue);
   }
 
@@ -68,7 +68,7 @@ The reference to the controller instance that this model is attached to.
   MomentumBuilder(
     controllers: [ExampleController],
     builder: (context, snapshot) {
-      var exampleModel = snapshot<ExampleModel>();
+      final exampleModel = snapshot<ExampleModel>();
       
       return TextButton(
         // ...

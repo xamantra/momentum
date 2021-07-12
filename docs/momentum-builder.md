@@ -6,7 +6,7 @@
   MomentumBuilder(
     controllers: [ExampleController],
     builder: (context, snapshot) {
-      var exampleModel = snapshot<ExampleModel>();
+      final exampleModel = snapshot<ExampleModel>();
       return Text(exampleModel.propertyName);
     }
   )
@@ -16,8 +16,8 @@
   MomentumBuilder(
     controllers: [ExampleControllerA, ExampleControllerB],
     builder: (context, snapshot) {
-      var exampleModelA = snapshot<ExampleModelA>();
-      var exampleModelB = snapshot<ExampleModelB>();
+      final exampleModelA = snapshot<ExampleModelA>();
+      final exampleModelB = snapshot<ExampleModelB>();
       return Text('${exampleModelA.propertyName} - ${exampleModelB.propertyName}');
     }
   )
@@ -49,7 +49,7 @@ The function parameter where you can access your model values and return a widge
   MomentumBuilder(
     // ...,
     builder: (context, snapshot) {
-      var exampleModel = snapshot<ExampleModel>();
+      final exampleModel = snapshot<ExampleModel>();
       return Text(exampleModel.propertyName);
     },
     // ...,
@@ -71,7 +71,7 @@ An optional callback. If provided, this will be called right before the `builder
   MomentumBuilder(
     // ...,
     dontRebuildIf: (controller, isTimeTravel) {
-      var exampleController = controller<ExampleController>();
+      final exampleController = controller<ExampleController>();
       // do something with "exampleController".
       // you can access the model using "exampleController.model".
       return !isTimeTravel; // skip rebuild if update is not undo/redo.

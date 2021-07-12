@@ -263,8 +263,8 @@ Minor changes:
   // *.controller.dart
   void loadUser() async {
     model.update(loadingUser: true);
-    var apiService = getService<ApiService>();
-    var user = await apiService.getUser(); // load data from server. asynchronous
+    final apiService = getService<ApiService>();
+    final user = await apiService.getUser(); // load data from server. asynchronous
     model.update(loadingUser: false, user: user);
   }
   ```
@@ -299,7 +299,7 @@ Minor changes:
       @override
       void bootstrap() async {
         // assuming we are loading some complex and big data here.
-        var appSettings = await apiService.getAppSettings();
+        final appSettings = await apiService.getAppSettings();
         model.update(appSettings: appSettings);
       }
     ```
@@ -326,10 +326,10 @@ Minor changes:
       MomentumBuilder(
         controllers: [TimerController],
         dontRebuildIf: (controller, isTimeTravel) {
-          var timer = controller<TimerController>();
-          var prevMinute = timer.prevModel.dateTime.minute;
-          var currentMinute = timer.model.dateTime.minute;
-          var minuteUnchanged = currentMinute == prevMinute;
+          final timer = controller<TimerController>();
+          final prevMinute = timer.prevModel.dateTime.minute;
+          final currentMinute = timer.model.dateTime.minute;
+          final minuteUnchanged = currentMinute == prevMinute;
           return minuteUnchanged; // don't rebuild the widget if "minute" is unchanged.
         },
         builder: (context, snapshot) {...},

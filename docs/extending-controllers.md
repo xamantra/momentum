@@ -42,7 +42,7 @@ MomentumBuilder(
     LoginController,
   ],
   builder: (context, snapshot) {
-    var authModel = snapshot<AuthModel>();
+    final authModel = snapshot<AuthModel>();
   }
 );
 ```
@@ -58,8 +58,8 @@ MomentumBuilder(
     LoginController,
   ],
   builder: (context, snapshot) {
-    var authModelBase = snapshot<AuthModel>(AuthController);
-    var authModelLogin = snapshot<AuthModel>(LoginController);
+    final authModelBase = snapshot<AuthModel>(AuthController);
+    final authModelLogin = snapshot<AuthModel>(LoginController);
   }
 );
 ```

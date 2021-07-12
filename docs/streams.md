@@ -55,7 +55,7 @@ class ChatController extends MomentumController<ChatModel> {
 
   @override
   void bootstrap() {
-    var roomsSubscription = Firestore.instance.collection('rooms').snapshots().listen((querySnapshot) {
+    final roomsSubscription = Firestore.instance.collection('rooms').snapshots().listen((querySnapshot) {
       // whenever "rooms" is modified in firestore server, the model will be updated
       // and "MomentumBuilder" will react to it.
       model.update(roomsSnapshot: querySnapshot);
@@ -111,15 +111,15 @@ class ChatController extends MomentumController<ChatModel> {
 MomentumBuilder(
   controllers: [ChatController],
   builder: (context, snapshot) {
-    var chatModel = snapshot<ChatModel>();
-    var rooms = chatModel.roomsSnapshot.documents;
+    final chatModel = snapshot<ChatModel>();
+    final rooms = chatModel.roomsSnapshot.documents;
     // do something "rooms"
     // it is of type "List<DocumentSnapshot>"
     // one "DocumentSnapshot" is one room.
     return ListView.builder(
       itemCount: rooms.length,
       builder: (context, index) {
-        var room = rooms[index];
+        final room = rooms[index];
         return RoomWidget(
           // ...
           room: room.data,
@@ -169,7 +169,7 @@ TextButton(
   // ...
   child: Text('Logout'),
   onPressed: () async {
-    var chatController = Momentum.controller<ChatController>(context);
+    final chatController = Momentum.controller<ChatController>(context);
     await chatController.disposeStream();
     // set the router to clear history and assign login page as initial page in the route.
     await MomentumRouter.resetWithContext<LoginPage>(context);
@@ -198,9 +198,9 @@ AppBar(
   title: MomentumBuilder(
     controllers: [ProfileController, ChatController],
     builder: (context, snapshot) {
-      var profileModel = snapshot<ProfileModel>();
-      var chatModel = snapshot<ChatModel>();
-      var roomCount = chatModel.roomsSnapshot.documents.length;
+      final profileModel = snapshot<ProfileModel>();
+      final chatModel = snapshot<ChatModel>();
+      final roomCount = chatModel.roomsSnapshot.documents.length;
       return Text('${profileModel.username} - ($roomCount)');
     }
   ),

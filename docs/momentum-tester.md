@@ -5,11 +5,11 @@ A feature for unit testing. This helps to test controllers, models, and services
 ```dart
   test('Momentum Tester Tool: Counter', () async {
     // create tester instance.
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
 
     await tester.init(); // initialize the tester (calls bootstrap methods)
 
-    var counter = tester.controller<CounterController>();
+    final counter = tester.controller<CounterController>();
     expect(counter != null, true);
     expect(counter, isInstanceOf<CounterController>());
     expect(counter.model.value, 0);
@@ -29,7 +29,7 @@ Initialize a momentum instance with `Momentum Tester` to make all the dependenci
 ```dart
   test('Momentum Tester Tool: Counter', () async {
     // create tester from a momentum instance.
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
 
     await tester.init(); // mock initialization without relying on widgets.
 
@@ -47,10 +47,10 @@ Get a controller from a tester instance to test its functions.
 
 ```dart
   test('Counter', () async {
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
     await tester.init();
 
-    var counter = tester.controller<CounterController>(); // get the controller
+    final counter = tester.controller<CounterController>(); // get the controller
     expect(counter.model.value, 0); // testing initial value if correct.
 
     // ...
@@ -67,11 +67,11 @@ Get service from a tester instance to test its functions.
 
 ```dart
   test('ApiService', () async {
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
     await tester.init();
 
-    var api = tester.service<ApiService>(); // get the service
-    var response = await api.login('username', 'password');
+    final api = tester.service<ApiService>(); // get the service
+    final response = await api.login('username', 'password');
     expect(response.success, true);
 
     // ...
@@ -88,13 +88,13 @@ The bootstrap function of `MomentumController`s depend on the widget. Calling `m
 
 ```dart
   test('ProfileController', () async {
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
     await tester.init();
 
     // 1. calls `bootstrap()`
     // 2. calls `bootstrapAsync()`
     await tester.mockLazyBootstrap<ProfileController>(); // mock bootstrap for `ProfileController`
-    var profile = tester.controller<ProfileController>();
+    final profile = tester.controller<ProfileController>();
     expect(profile.username, 'hello_world'); // assuming the bootstrap function loads the user's profile.
 
     // ...
@@ -111,11 +111,11 @@ In momentum, controllers can also access router params if present. But navigatio
 
 ```dart
   test('RouterController', () async {
-    var tester = MomentumTester(momentum());
+    final tester = MomentumTester(momentum());
     await tester.init();
 
-    var routerCtrl = tester.controller<RouterController>();
-    var response = await tester.service<ApiService>().getProfile();
+    final routerCtrl = tester.controller<RouterController>();
+    final response = await tester.service<ApiService>().getProfile();
     tester.mockRouterParam(ProfileRouteParam(profileData: response.profile)); // mocks router param.
     expect(routerCtrl.model.profileData.username, 'hello_world');
 

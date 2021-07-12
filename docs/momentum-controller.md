@@ -83,7 +83,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   void bootstrap() {
-    var isDarkMode = sharedPreference.getBool('isDarkMode');
+    final isDarkMode = sharedPreference.getBool('isDarkMode');
     model.update(isDarkMode: isDarkMode);
   }
 
@@ -106,7 +106,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   Future<void> bootstrapAsync() async {
-    var someBigData = await apiService.getSomeBigData();
+    final someBigData = await apiService.getSomeBigData();
     model.update(someBigData: someBigData);
   }
 
@@ -178,8 +178,8 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   Future<void> loadProfile() async {
-    var apiService = service<ApiService>(); // or this.service<T>()
-    var profile = await apiService.getProfile();
+    final apiService = service<ApiService>(); // or this.service<T>()
+    final profile = await apiService.getProfile();
     model.update(profile: profile);
   }
 
@@ -188,7 +188,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 ```
 If you are using the new `InjectService` to add your services. You can also use the `alias` parameter to get a specific service with matching alias.
 ```dart
-var apiService = service<ApiService>(alias: ApiAlias.logsEnabled);
+final apiService = service<ApiService>(alias: ApiAlias.logsEnabled);
 ```
 `alias` is dynamic type which means you can use any values here as long as it matches with the one you want to grab. It is highly recommended to use an `enum`.
 
@@ -208,7 +208,7 @@ class ExampleController extends MomentumController<ExampleModel> {
 
   @override
   void logout() {
-    var sessionController = controller<SessionController>(); // or this.controller<T>();
+    final sessionController = controller<SessionController>(); // or this.controller<T>();
     sessionController.destroySession();
     model.updated(loggedOut: true);
   }
@@ -266,7 +266,7 @@ class AuthController extends MomentumController<AuthModel> {
 
   @override
   Future<void> login() async {
-    var response = await apiService.auth(
+    final response = await apiService.auth(
       username: model.username,
       password: model.password,
     );
