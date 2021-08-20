@@ -193,12 +193,12 @@ abstract class MomentumController<M> with _ControllerBase {
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
   @Deprecated('Use "service<T>()" instead')
-  T getService<T extends MomentumService>({dynamic alias}) {
+  T getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
     try {
       if (_mRootContext == null && _tester != null) {
-        return _tester!.service<T>(alias: alias);
+        return _tester!.service<T>(runtimeType: runtimeType, alias: alias);
       }
-      var result = Momentum.service<T>(_mRootContext!, alias: alias);
+      var result = Momentum.service<T>(_mRootContext!, runtimeType: runtimeType, alias: alias);
       return result;
     } catch (e) {
       if (_momentumLogging!) {
@@ -215,9 +215,9 @@ abstract class MomentumController<M> with _ControllerBase {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
-  T service<T extends MomentumService>({dynamic alias}) {
+  T service<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
     // ignore: deprecated_member_use_from_same_package
-    return getService<T>(alias: alias);
+    return getService<T>(runtimeType: runtimeType, alias: alias);
   }
 
   bool _booted = false;

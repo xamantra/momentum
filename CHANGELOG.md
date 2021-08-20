@@ -1,3 +1,6 @@
+## 2.2.1
+- Added missing runtimeType parameter for `service<T>()` method in `MomentumController`.
+
 ## 2.2.0
 - Improved services dependency injection where abstract classes are not recognized.
 
