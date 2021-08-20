@@ -836,12 +836,12 @@ abstract class MomentumService {
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
   @Deprecated('Use "service<T>()" instead')
-  T getService<T extends MomentumService>({dynamic alias}) {
+  T getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
     if (_context == null && _tester != null) {
       return _tester!.service<T>(alias: alias);
     }
     var momentum = Momentum._getMomentumInstance(_context!)!;
-    return momentum._getService<T>(alias: alias);
+    return momentum._getService<T>(runtimeType: runtimeType, alias: alias);
   }
 
   /// A method for getting a service marked with
@@ -1480,51 +1480,55 @@ class Momentum extends InheritedWidget {
     return controller as T?;
   }
 
-  T _getService<T extends MomentumService>({dynamic alias}) {
-    var type = _getType<T>();
-    var injectType = _getType<InjectService<T>>();
-    var isGrabbingWithInject = type.toString().contains('InjectService');
-    if (type == _getType<InjectService<MomentumService>>()) {
-      throw _invalidService;
-    }
-    if (type == _getType<InjectService<dynamic>>()) {
-      throw _invalidService;
-    }
+  T _getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
     T? result;
-    if (alias == null) {
-      result = _services.firstWhereOrNull(
-        (c) => c.runtimeType == type,
-      ) as T?;
-      if (result == null) {
-        var injectors = _services
-            .where(
-              (s) => s.runtimeType == _getType<InjectService<T>>(),
-            )
-            .cast<InjectService>()
-            .toList();
-        if (injectors.isNotEmpty) {
-          result = injectors
-              .firstWhere(
-                (i) => i._service.runtimeType == type,
-              )
-              ._service as T?;
-        }
-      }
+    if (!runtimeType) {
+      result = _services.firstWhereOrNull((s) => s is T) as T?;
     } else {
-      var injectors = _services
-          .where((s) => s is InjectService && s._alias == alias)
-          .map((x) => x as InjectService)
-          .toList();
-      if (isGrabbingWithInject) {
-        result = injectors.firstWhereOrNull(
-          (s) => s.runtimeType == type || s.runtimeType == injectType,
+      var type = _getType<T>();
+      var injectType = _getType<InjectService<T>>();
+      var isGrabbingWithInject = type.toString().contains('InjectService');
+      if (type == _getType<InjectService<MomentumService>>()) {
+        throw _invalidService;
+      }
+      if (type == _getType<InjectService<dynamic>>()) {
+        throw _invalidService;
+      }
+      if (alias == null) {
+        result = _services.firstWhereOrNull(
+          (c) => c.runtimeType == type,
         ) as T?;
+        if (result == null) {
+          var injectors = _services
+              .where(
+                (s) => s.runtimeType == _getType<InjectService<T>>(),
+              )
+              .cast<InjectService>()
+              .toList();
+          if (injectors.isNotEmpty) {
+            result = injectors
+                .firstWhere(
+                  (i) => i._service.runtimeType == type,
+                )
+                ._service as T?;
+          }
+        }
       } else {
-        result = injectors
-            .firstWhereOrNull(
-              (s) => s.runtimeType == type || s.runtimeType == injectType,
-            )
-            ?._service as T?;
+        var injectors = _services
+            .where((s) => s is InjectService && s._alias == alias)
+            .map((x) => x as InjectService)
+            .toList();
+        if (isGrabbingWithInject) {
+          result = injectors.firstWhereOrNull(
+            (s) => s.runtimeType == type || s.runtimeType == injectType,
+          ) as T?;
+        } else {
+          result = injectors
+              .firstWhereOrNull(
+                (s) => s.runtimeType == type || s.runtimeType == injectType,
+              )
+              ?._service as T?;
+        }
       }
     }
     if (result == null) {
@@ -1616,8 +1620,8 @@ class Momentum extends InheritedWidget {
   ///
   /// **NOTE:** This will be removed in the future.
   @Deprecated('Use `Momentum.service<T>(context)` instead')
-  static T getService<T extends MomentumService>(BuildContext context) {
-    return _getMomentumInstance(context)!._getService<T>();
+  static T getService<T extends MomentumService>(BuildContext context,{bool runtimeType = true}) {
+    return _getMomentumInstance(context)!._getService<T>(runtimeType: runtimeType);
   }
 
   /// The static method for getting services inside a widget.
@@ -1625,9 +1629,10 @@ class Momentum extends InheritedWidget {
   /// injected into [Momentum] root widget.
   static T service<T extends MomentumService>(
     BuildContext context, {
+    bool runtimeType = true,
     dynamic alias,
   }) {
-    return _getMomentumInstance(context)!._getService<T>(alias: alias);
+    return _getMomentumInstance(context)!._getService<T>(runtimeType: runtimeType, alias: alias);
   }
 
   static T? _ofType<T extends MomentumController>(
@@ -1740,8 +1745,8 @@ class MomentumTester {
   }
 
   /// Get a service of type `T`.
-  T service<T extends MomentumService>({dynamic alias}) {
-    return _momentum._getService<T>(alias: alias);
+  T service<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+    return _momentum._getService<T>(runtimeType: runtimeType, alias: alias);
   }
 
   MomentumRouter? _getRouterIfPresent() {
