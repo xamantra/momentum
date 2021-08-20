@@ -24,5 +24,8 @@ void main() {
       errorResult = await api.getTodoList(mockUrl: '');
     } catch (e) {}
     expect(errorResult.list, const []);
+
+    api = tester.service(runtimeType: false);
+    expect(api, isInstanceOf<ApiService>());
   });
 }

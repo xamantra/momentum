@@ -1,3 +1,6 @@
+## 2.2.0
+- Improved services dependency injection where abstract classes are not recognized.
+
 ## 2.1.1
 - Fixed hot reload issue for MomentumRouter.
 
@@ -263,8 +266,8 @@ Minor changes:
   // *.controller.dart
   void loadUser() async {
     model.update(loadingUser: true);
-    final apiService = getService<ApiService>();
-    final user = await apiService.getUser(); // load data from server. asynchronous
+    var apiService = getService<ApiService>();
+    var user = await apiService.getUser(); // load data from server. asynchronous
     model.update(loadingUser: false, user: user);
   }
   ```
@@ -299,7 +302,7 @@ Minor changes:
       @override
       void bootstrap() async {
         // assuming we are loading some complex and big data here.
-        final appSettings = await apiService.getAppSettings();
+        var appSettings = await apiService.getAppSettings();
         model.update(appSettings: appSettings);
       }
     ```
@@ -326,10 +329,10 @@ Minor changes:
       MomentumBuilder(
         controllers: [TimerController],
         dontRebuildIf: (controller, isTimeTravel) {
-          final timer = controller<TimerController>();
-          final prevMinute = timer.prevModel.dateTime.minute;
-          final currentMinute = timer.model.dateTime.minute;
-          final minuteUnchanged = currentMinute == prevMinute;
+          var timer = controller<TimerController>();
+          var prevMinute = timer.prevModel.dateTime.minute;
+          var currentMinute = timer.model.dateTime.minute;
+          var minuteUnchanged = currentMinute == prevMinute;
           return minuteUnchanged; // don't rebuild the widget if "minute" is unchanged.
         },
         builder: (context, snapshot) {...},

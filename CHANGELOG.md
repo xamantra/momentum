@@ -1,3 +1,6 @@
+## 2.2.0
+- Improved services dependency injection where abstract classes are not recognized.
+
 ## 2.1.1
 - Fixed hot reload issue for MomentumRouter.
 
