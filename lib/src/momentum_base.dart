@@ -193,12 +193,22 @@ abstract class MomentumController<M> with _ControllerBase {
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
   @Deprecated('Use "service<T>()" instead')
-  T getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+  T getService<T extends MomentumService>({
+    bool runtimeType = true,
+    dynamic alias,
+  }) {
     try {
       if (_mRootContext == null && _tester != null) {
-        return _tester!.service<T>(runtimeType: runtimeType, alias: alias);
+        return _tester!.service<T>(
+          runtimeType: runtimeType,
+          alias: alias,
+        );
       }
-      var result = Momentum.service<T>(_mRootContext!, runtimeType: runtimeType, alias: alias);
+      var result = Momentum.service<T>(
+        _mRootContext!,
+        runtimeType: runtimeType,
+        alias: alias,
+      );
       return result;
     } catch (e) {
       if (_momentumLogging!) {
@@ -215,7 +225,10 @@ abstract class MomentumController<M> with _ControllerBase {
   /// A method for getting a service marked with
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
-  T service<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+  T service<T extends MomentumService>({
+    bool runtimeType = true,
+    dynamic alias,
+  }) {
     // ignore: deprecated_member_use_from_same_package
     return getService<T>(runtimeType: runtimeType, alias: alias);
   }
@@ -237,6 +250,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
   /// - *All Controllers* - `onReady()`
   void bootstrap() {}
+
   void _bootstrap() {
     if (!_booted) {
       _booted = true;
@@ -262,6 +276,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
   /// - *All Controllers* - `onReady()`
   Future<void> bootstrapAsync() async {}
+
   Future<void> _bootstrapAsync() async {
     if (!_bootedAsync) {
       _bootedAsync = true;
@@ -294,6 +309,7 @@ abstract class MomentumController<M> with _ControllerBase {
   /// - *All non-lazy Controllers* - `bootstrapAsync()` (awaited)
   /// - *All Controllers* - `onReady()`
   void onReady() {}
+
   void _onReady() {
     if (!_onReadyCalled) {
       _onReadyCalled = true;
@@ -836,7 +852,10 @@ abstract class MomentumService {
   /// [MomentumService] that are injected into
   /// [Momentum] root widget.
   @Deprecated('Use "service<T>()" instead')
-  T getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+  T getService<T extends MomentumService>({
+    bool runtimeType = true,
+    dynamic alias,
+  }) {
     if (_context == null && _tester != null) {
       return _tester!.service<T>(alias: alias);
     }
@@ -1134,15 +1153,41 @@ class _MomentumBuilderState extends MomentumState<MomentumBuilder> {
 
 class _MomentumRoot extends StatefulWidget {
   final Future<void> Function()? initializer;
+
+  /// The base or main entry widget for the app. This is usuallyMyApp().
   final Widget? child;
+
+  /// Display custom loader widget that is used for awaiting all asynchronous
+  /// initializers in your app before the child gets displayed.
+  /// It's like a splash screen.
   final Widget? appLoader;
+
+  /// This is where you instantiate all MomentumController.
+  /// All controllers listed here will be used down the tree in both widgets
+  /// and other controllers as well.
   final List<MomentumController> controllers;
+
+  /// This is where you instantiate all MomentumServices.
+  /// All services listed here will be used down the tree inside widgets and
+  /// inside controllers as well.
   final List<MomentumService> services;
+
+  /// Globally disable persistent state for all models.
+  /// This is for models only not router.
+  /// This will be also overridden by skipPersist().
   final bool? disabledPersistentState;
   final bool? enableLogging;
+
+  /// Configure time travel feature. If the value is greater than 1,
+  /// the time travel feature will be enabled, otherwise, it is disabled.
+  /// The maximum value is 250 steps.
   final int? maxTimeTravelSteps;
+
+  /// If set to false, all controllers will be bootstrapped when the app starts.
   final bool? lazy;
   final int? minimumBootstrapTime;
+
+  /// Set the bootstrap behavior for all controllers if lazy mode is true.
   final BootstrapStrategy? strategy;
 
   const _MomentumRoot({
@@ -1159,6 +1204,7 @@ class _MomentumRoot extends StatefulWidget {
     required this.minimumBootstrapTime,
     required this.strategy,
   }) : super(key: key);
+
   @override
   _MomentumRootState createState() => _MomentumRootState();
 }
@@ -1344,6 +1390,7 @@ class Momentum extends InheritedWidget {
   /// Configure your app with [Momentum] root widget.
   ///
   /// The parameter `child` is not required for *unit testing*.
+  ///
   factory Momentum({
     Key? key,
     Future<void> Function()? initializer,
@@ -1369,8 +1416,7 @@ class Momentum extends InheritedWidget {
         initializer: initializer,
         child: child,
         appLoader: appLoader,
-        controllers:
-            controllers, // UPDATE: remove unnecessary null check for null-safety migration
+        controllers: controllers,
         services: services ?? [],
         disabledPersistentState: disabledPersistentState,
         enableLogging: enableLogging,
@@ -1396,22 +1442,12 @@ class Momentum extends InheritedWidget {
   }
 
   String? _validateControllers(List<MomentumController> controllers) {
-    // UPDATE: removed unnecessary null checks in preparation for null-safety migration
     var passedIn = '';
     for (var controller in controllers) {
-      // if (controller != null) {
       passedIn += '\n   ${controller.runtimeType}(),';
-      // } else {
-      //   passedIn += '\n   null,';
-      // }
     }
     passedIn = 'controllers: [$passedIn\n]\n';
     for (var controller in controllers) {
-      // if (controller == null) {
-      //   return '[$Momentum] -> A null value has been passed '
-      //       'in controllers parameter of Momentum root '
-      //       'widget.\n\nControllers config:\n\n$passedIn';
-      // }
       var count = controllers
           .where(
             (x) => x.runtimeType == controller.runtimeType,
@@ -1460,9 +1496,33 @@ class Momentum extends InheritedWidget {
   final BootstrapStrategy _strategy;
   final int _minimumBootstrapTime;
 
+  /// A function parameter for overriding Momentum.resetAll(context) method.
+  /// You can use this to execute some logic before actually
+  /// resetting all controllers.
   final ResetAll? _onResetAll;
 
+  /// A function parameter for saving or persisting state values using any
+  /// storage provider. key and value are automatically generated by momentum.
+  ///
+  /// BuildContext is also provided so if your storage provider requires context,
+  /// you can easily use it. This is a Future<bool> but you can use synchronous
+  /// code here, just be sure that you return a bool value indicating whether
+  /// key and value were saved successfully.
+  ///
+  /// value is a JSON representation of your model.
   final PersistSaver? _persistSave;
+
+  /// A function parameter for getting persisted state values using any
+  /// storage provider.
+  ///
+  /// key is automatically generated by momentum.
+  ///
+  /// BuildContext is also provided so if your storage provider requires context,
+  /// you can easily use it. This is a Future<String> but you can use synchronous
+  /// code here.
+  ///
+  /// In the example code below, valueString is a JSON representation of your
+  /// model and momentum will automatically parse it.
   final PersistGet? _persistGet;
 
   final void Function()? _restartCallback;
@@ -1480,7 +1540,10 @@ class Momentum extends InheritedWidget {
     return controller as T?;
   }
 
-  T _getService<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+  T _getService<T extends MomentumService>({
+    bool runtimeType = true,
+    dynamic alias,
+  }) {
     T? result;
     if (!runtimeType) {
       result = _services.firstWhereOrNull((s) => s is T) as T?;
@@ -1620,8 +1683,12 @@ class Momentum extends InheritedWidget {
   ///
   /// **NOTE:** This will be removed in the future.
   @Deprecated('Use `Momentum.service<T>(context)` instead')
-  static T getService<T extends MomentumService>(BuildContext context,{bool runtimeType = true}) {
-    return _getMomentumInstance(context)!._getService<T>(runtimeType: runtimeType);
+  static T getService<T extends MomentumService>(
+    BuildContext context, {
+    bool runtimeType = true,
+  }) {
+    return _getMomentumInstance(context)!
+        ._getService<T>(runtimeType: runtimeType);
   }
 
   /// The static method for getting services inside a widget.
@@ -1632,7 +1699,10 @@ class Momentum extends InheritedWidget {
     bool runtimeType = true,
     dynamic alias,
   }) {
-    return _getMomentumInstance(context)!._getService<T>(runtimeType: runtimeType, alias: alias);
+    return _getMomentumInstance(context)!._getService<T>(
+      runtimeType: runtimeType,
+      alias: alias,
+    );
   }
 
   static T? _ofType<T extends MomentumController>(
@@ -1656,12 +1726,27 @@ class MomentumTester {
   final Momentum _momentum;
 
   List<MomentumController> get _controllers => _momentum._controllers;
+
   List<MomentumService> get _services => _momentum._services;
+
   bool get _disabledPersistentState => _momentum._disabledPersistentState;
+
+  /// Whether to enable or disable logging for all controllers.
   bool get _enableLogging => _momentum._enableLogging;
+
   int get _maxTimeTravelSteps => _momentum._maxTimeTravelSteps;
+
   bool get _lazy => _momentum._lazy;
+
   BootstrapStrategy get _strategy => _momentum._strategy;
+
+  /// Forces the app to have a minimum set of delays before child will
+  /// be displayed.
+  ///
+  /// It will display appLoader until the minimum time specified finishes.
+  ///
+  /// If asynchronous initializers completed longer than specified here,
+  /// this parameter is ignored. This is in milliseconds.
   int get _minimumBootstrapTime => _momentum._minimumBootstrapTime;
 
   /// Initialize the dependencies the same way
@@ -1745,7 +1830,10 @@ class MomentumTester {
   }
 
   /// Get a service of type `T`.
-  T service<T extends MomentumService>({bool runtimeType = true, dynamic alias}) {
+  T service<T extends MomentumService>({
+    bool runtimeType = true,
+    dynamic alias,
+  }) {
     return _momentum._getService<T>(runtimeType: runtimeType, alias: alias);
   }
 
