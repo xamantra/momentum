@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -44,9 +44,9 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
       child: RelativeBuilder(
         builder: (context, height, width, sy, sx) {
           return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 'TODO List Example',
                 style: TextStyle(
@@ -87,7 +87,7 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
                                           title: Text(
                                             title,
                                             style: TextStyle(
-                                              color: Colors.white.withOpacity(checked ? 0.3 : 1),
+                                              color: Colors.white.withValues(alpha: checked ? 0.3 : 1),
                                               decoration: checked ? TextDecoration.lineThrough : TextDecoration.none,
                                             ),
                                           ),
@@ -105,7 +105,9 @@ class _TodoExamplePageState extends MomentumState<TodoExamplePage> {
                                       ),
                                       Checkbox(
                                         value: checked,
-                                        activeColor: Theme.of(context).accentColor,
+                                        fillColor: WidgetStateProperty.resolveWith(
+                                          (states) => Theme.of(context).colorScheme.secondary,
+                                        ),
                                         onChanged: (value) {
                                           todoModel.controller.toggleTodo(title, value ?? false);
                                         },

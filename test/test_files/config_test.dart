@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
-import 'package:momentum/src/momentum_error.dart';
 
 import '../demo_app/components/basic-list-example/index.dart';
 import '../demo_app/components/dummy/index.dart';
@@ -15,6 +14,7 @@ void main() {
     var basicListCtrl = BasicListExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         disabledPersistentState: true,
         controllers: [basicListCtrl],
@@ -26,6 +26,7 @@ void main() {
     var todoCtrl = TodoExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         disabledPersistentState: false,
         controllers: [todoCtrl],
@@ -37,6 +38,7 @@ void main() {
     var restCtrl = RestApiExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         controllers: [restCtrl],
       ),
@@ -49,6 +51,7 @@ void main() {
     var basicListCtrl = BasicListExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         enableLogging: true,
         controllers: [basicListCtrl],
@@ -60,6 +63,7 @@ void main() {
     var todoCtrl = TodoExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         enableLogging: false,
         controllers: [todoCtrl],
@@ -71,6 +75,7 @@ void main() {
     var restCtrl = RestApiExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         controllers: [restCtrl],
       ),
@@ -83,6 +88,7 @@ void main() {
     var basicListCtrl = BasicListExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         maxTimeTravelSteps: 5,
         controllers: [basicListCtrl],
@@ -94,6 +100,7 @@ void main() {
     var todoCtrl = TodoExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         maxTimeTravelSteps: 1,
         controllers: [todoCtrl],
@@ -105,6 +112,7 @@ void main() {
     var restCtrl = RestApiExampleController();
     await tester.pumpWidget(
       Momentum(
+        key: UniqueKey(),
         child: MaterialApp(home: Scaffold()),
         maxTimeTravelSteps: 0, // 1 is the minimum. can't be bypass
         controllers: [restCtrl],
@@ -220,8 +228,7 @@ void main() {
             body: Builder(
               builder: (context) {
                 apiService = Momentum.service<ApiService>(context);
-                // ignore: deprecated_member_use_from_same_package
-                dummyService = Momentum.getService<DummyService>(context);
+                dummyService = Momentum.service<DummyService>(context);
                 return SizedBox();
               },
             ),
@@ -393,4 +400,267 @@ void main() {
     var dummy = tester.controller<DummyController>()!;
     expect(dummy.dummyValue, 99);
   });
+
+  group('controller config() overrides and second config() no-op', () {
+    testWidgets('controller config() overrides all Momentum root parameters in both directions', (tester) async {
+      final overrideCtrl = _ConfigOverrideControllerA()
+        ..config(
+          enableLogging: false,
+          maxTimeTravelSteps: 5,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+        );
+      final inheritCtrl = _ConfigOverrideControllerB();
+
+      await tester.pumpWidget(
+        Momentum(
+          key: UniqueKey(),
+          enableLogging: true,
+          maxTimeTravelSteps: 10,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+          controllers: [overrideCtrl, inheritCtrl],
+          child: const MaterialApp(home: Scaffold()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // overrideCtrl keeps its config() values and eagerly bootstraps because lazy: false.
+      expect(overrideCtrl.loggingEnabled, isFalse);
+      expect(overrideCtrl.maxTimeTravelSteps, 5);
+      expect(overrideCtrl.isLazy, isFalse);
+      expect(overrideCtrl.strategy, BootstrapStrategy.lazyFirstCall);
+      expect(overrideCtrl.bootstrapCount, 1);
+      expect(overrideCtrl.bootstrapAsyncCount, 1);
+
+      // inheritCtrl inherits Momentum root values and remains lazy.
+      expect(inheritCtrl.loggingEnabled, isTrue);
+      expect(inheritCtrl.maxTimeTravelSteps, 10);
+      expect(inheritCtrl.isLazy, isTrue);
+      expect(inheritCtrl.strategy, BootstrapStrategy.lazyFirstBuild);
+      expect(inheritCtrl.bootstrapCount, 0);
+      expect(inheritCtrl.bootstrapAsyncCount, 0);
+
+      // Reverse direction: root lazy: false, controller overrides to lazy: true.
+      final lazyOverrideCtrl = _ConfigOverrideControllerA()
+        ..config(
+          enableLogging: true,
+          maxTimeTravelSteps: 20,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+        );
+      final eagerInheritCtrl = _ConfigOverrideControllerB();
+
+      await tester.pumpWidget(
+        Momentum(
+          key: UniqueKey(),
+          enableLogging: false,
+          maxTimeTravelSteps: 2,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+          controllers: [lazyOverrideCtrl, eagerInheritCtrl],
+          child: const MaterialApp(home: Scaffold()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(lazyOverrideCtrl.loggingEnabled, isTrue);
+      expect(lazyOverrideCtrl.maxTimeTravelSteps, 20);
+      expect(lazyOverrideCtrl.isLazy, isTrue);
+      expect(lazyOverrideCtrl.strategy, BootstrapStrategy.lazyFirstBuild);
+      expect(lazyOverrideCtrl.bootstrapCount, 0);
+      expect(lazyOverrideCtrl.bootstrapAsyncCount, 0);
+
+      expect(eagerInheritCtrl.loggingEnabled, isFalse);
+      expect(eagerInheritCtrl.maxTimeTravelSteps, 2);
+      expect(eagerInheritCtrl.isLazy, isFalse);
+      expect(eagerInheritCtrl.strategy, BootstrapStrategy.lazyFirstCall);
+      expect(eagerInheritCtrl.bootstrapCount, 1);
+      expect(eagerInheritCtrl.bootstrapAsyncCount, 1);
+    });
+
+    testWidgets('partial controller config() overrides only specified options and inherits others', (tester) async {
+      final ctrl = _ConfigOverrideControllerA()..config(maxTimeTravelSteps: 7);
+
+      await tester.pumpWidget(
+        Momentum(
+          key: UniqueKey(),
+          enableLogging: true,
+          maxTimeTravelSteps: 25,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+          controllers: [ctrl],
+          child: const MaterialApp(home: Scaffold()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(ctrl.maxTimeTravelSteps, 7);
+      expect(ctrl.loggingEnabled, isTrue);
+      expect(ctrl.isLazy, isFalse);
+      expect(ctrl.strategy, BootstrapStrategy.lazyFirstCall);
+      expect(ctrl.bootstrapCount, 1);
+    });
+
+    testWidgets('config() and Momentum root clamp maxTimeTravelSteps between 1 and 250', (tester) async {
+      final ctrlLow = _ConfigOverrideControllerA()..config(maxTimeTravelSteps: -5);
+      final ctrlHigh = _ConfigOverrideControllerB()..config(maxTimeTravelSteps: 999);
+      final ctrlRootHigh = _ConfigOverrideControllerC();
+
+      await tester.pumpWidget(
+        Momentum(
+          key: UniqueKey(),
+          maxTimeTravelSteps: 500,
+          controllers: [ctrlLow, ctrlHigh, ctrlRootHigh],
+          child: const MaterialApp(home: Scaffold()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(ctrlLow.maxTimeTravelSteps, 1);
+      expect(ctrlHigh.maxTimeTravelSteps, 250);
+      expect(ctrlRootHigh.maxTimeTravelSteps, 250);
+    });
+
+    testWidgets('second config() call is a no-op before and after initialization (full and partial)', (tester) async {
+      // Case 1: Full first config(), second config() attempts to change all values.
+      final ctrlFull = _ConfigOverrideControllerA()
+        ..config(
+          enableLogging: true,
+          maxTimeTravelSteps: 12,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+        )
+        ..config(
+          enableLogging: false,
+          maxTimeTravelSteps: 99,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+        );
+
+      // Case 2: Partial first config() leaves other fields null; second config() must still be ignored completely.
+      final ctrlPartial = _ConfigOverrideControllerB()
+        ..config(maxTimeTravelSteps: 15)
+        ..config(
+          enableLogging: true,
+          maxTimeTravelSteps: 50,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+        );
+
+      await tester.pumpWidget(
+        Momentum(
+          key: UniqueKey(),
+          enableLogging: false,
+          maxTimeTravelSteps: 3,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+          controllers: [ctrlFull, ctrlPartial],
+          child: const MaterialApp(home: Scaffold()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // ctrlFull retains first config() values.
+      expect(ctrlFull.loggingEnabled, isTrue);
+      expect(ctrlFull.maxTimeTravelSteps, 12);
+      expect(ctrlFull.isLazy, isFalse);
+      expect(ctrlFull.strategy, BootstrapStrategy.lazyFirstCall);
+      expect(ctrlFull.bootstrapCount, 1);
+
+      // Calling config() again after initialization must also be a no-op.
+      ctrlFull.config(
+        enableLogging: false,
+        maxTimeTravelSteps: 1,
+        lazy: true,
+        strategy: BootstrapStrategy.lazyFirstBuild,
+      );
+      expect(ctrlFull.loggingEnabled, isTrue);
+      expect(ctrlFull.maxTimeTravelSteps, 12);
+      expect(ctrlFull.isLazy, isFalse);
+      expect(ctrlFull.strategy, BootstrapStrategy.lazyFirstCall);
+
+      // ctrlPartial retains maxTimeTravelSteps from first config(), and inherits root values for the rest
+      // (proving the second config() call did not populate previously null fields).
+      expect(ctrlPartial.maxTimeTravelSteps, 15);
+      expect(ctrlPartial.loggingEnabled, isFalse);
+      expect(ctrlPartial.isLazy, isTrue);
+      expect(ctrlPartial.strategy, BootstrapStrategy.lazyFirstBuild);
+      expect(ctrlPartial.bootstrapCount, 0);
+    });
+
+    test('controller config() overrides and second config() no-op work with MomentumTester', () async {
+      final ctrl = _ConfigOverrideControllerA()
+        ..config(
+          enableLogging: true,
+          maxTimeTravelSteps: 8,
+          lazy: false,
+          strategy: BootstrapStrategy.lazyFirstCall,
+        )
+        ..config(
+          enableLogging: false,
+          maxTimeTravelSteps: 40,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+        );
+      final inheritCtrl = _ConfigOverrideControllerB();
+
+      final tester = MomentumTester(
+        Momentum(
+          enableLogging: false,
+          maxTimeTravelSteps: 3,
+          lazy: true,
+          strategy: BootstrapStrategy.lazyFirstBuild,
+          controllers: [ctrl, inheritCtrl],
+        ),
+      );
+      await tester.init();
+
+      expect(ctrl.loggingEnabled, isTrue);
+      expect(ctrl.maxTimeTravelSteps, 8);
+      expect(ctrl.isLazy, isFalse);
+      expect(ctrl.strategy, BootstrapStrategy.lazyFirstCall);
+      expect(ctrl.bootstrapCount, 1);
+      expect(ctrl.bootstrapAsyncCount, 1);
+
+      expect(inheritCtrl.loggingEnabled, isFalse);
+      expect(inheritCtrl.maxTimeTravelSteps, 3);
+      expect(inheritCtrl.isLazy, isTrue);
+      expect(inheritCtrl.strategy, BootstrapStrategy.lazyFirstBuild);
+      expect(inheritCtrl.bootstrapCount, 0);
+    });
+  });
 }
+
+class _ConfigOverrideModel extends MomentumModel<_ConfigOverrideControllerBase> {
+  const _ConfigOverrideModel(_ConfigOverrideControllerBase controller) : super(controller);
+
+  @override
+  void update() {
+    _ConfigOverrideModel(controller).updateMomentum();
+  }
+}
+
+abstract class _ConfigOverrideControllerBase extends MomentumController<_ConfigOverrideModel> {
+  int bootstrapCount = 0;
+  int bootstrapAsyncCount = 0;
+
+  @override
+  _ConfigOverrideModel init() => _ConfigOverrideModel(this);
+
+  @override
+  void bootstrap() {
+    bootstrapCount++;
+  }
+
+  @override
+  Future<void> bootstrapAsync() async {
+    bootstrapAsyncCount++;
+  }
+}
+
+class _ConfigOverrideControllerA extends _ConfigOverrideControllerBase {}
+
+class _ConfigOverrideControllerB extends _ConfigOverrideControllerBase {}
+
+class _ConfigOverrideControllerC extends _ConfigOverrideControllerBase {}

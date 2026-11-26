@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -13,9 +13,9 @@ class CalculatorExamplePage extends StatelessWidget {
     return RelativeBuilder(
       builder: (context, height, width, sy, sx) {
         return Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             title: Text(
               'Calculator Example',
               style: TextStyle(
@@ -50,7 +50,7 @@ class CalculatorExamplePage extends StatelessWidget {
                                   calculatorModel.expression!,
                                   style: TextStyle(
                                     fontSize: sy(16),
-                                    color: Colors.white.withOpacity(0.7),
+                                    color: Colors.white.withValues(alpha: 0.7),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),

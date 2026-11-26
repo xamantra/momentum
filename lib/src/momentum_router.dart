@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 import 'momentum_base.dart';
+import 'momentum_error.dart';
 import 'momentum_event.dart';
 import 'momentum_types.dart';
 
@@ -140,20 +141,26 @@ class MomentumRouter extends MomentumService {
     if (!_initialized) {
       _initialized = true;
       String? historyJson;
-      historyJson = await tryasync(
-        // ignore: unnecessary_cast
-        (() => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY')
-            as Future<String>) as Future<String> Function(),
-        '[]',
-      );
+      if (_persistGet != null) {
+        historyJson = await tryasync<String>(
+          () => _persistGet!(_rootContext, 'MOMENTUM_ROUTER_HISTORY'),
+          '[]',
+        );
+      }
       var result = historyJson == null
-          ? '[]'
-          : trycatch(
+          ? const <dynamic>[]
+          : trycatch<dynamic>(
               () => jsonDecode(historyJson!),
-              '[]',
+              const <dynamic>[],
             );
-      _history = (result as List).map<int>((e) => e as int).toList();
-      if (_history.isEmpty) {
+      var historyList = result is List ? result : const <dynamic>[];
+      _history = trycatch<List<int>>(
+            () => historyList.map<int>((e) => e as int).toList(),
+            <int>[],
+          ) ??
+          <int>[];
+      _history.removeWhere((index) => index < 0 || index >= _pages.length);
+      if (_history.isEmpty && _pages.isNotEmpty) {
         _history.add(0);
       }
     }
@@ -164,9 +171,20 @@ class MomentumRouter extends MomentumService {
   /// You may want this to be your initial
   /// widget when your app starts.
   Widget getActive() {
-    var isHistoryEmpty = _history.isEmpty;
-    var findWidgetByIndex = isHistoryEmpty ? _pages[0] : _pages[_history.last];
-    return findWidgetByIndex;
+    if (_pages.isEmpty) {
+      throw MomentumError(
+        '[$MomentumService -> $MomentumRouter]: Cannot get active page '
+        'because "pages" is empty.',
+      );
+    }
+    if (_history.isEmpty) {
+      return _pages[0];
+    }
+    var index = _history.last;
+    if (index < 0 || index >= _pages.length) {
+      return _pages[0];
+    }
+    return _pages[index];
   }
 
   /// Clear navigation history.
@@ -233,8 +251,7 @@ class MomentumRouter extends MomentumService {
     if (_currentRouteParam.runtimeType == _getType<T>()) {
       return _currentRouteParam as T?;
     }
-    print(
-        'getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
+    print('getParam<$T>() ---> Invalid type: The active/current route param is of type "${_currentRouteParam.runtimeType}" while the parameter you want to access is of type "$T". Momentum will return a null instead.');
     return null;
   }
 
@@ -290,7 +307,7 @@ class RouterPage extends StatelessWidget {
   /// a page type widget like Scaffold.
   final Widget child;
 
-  /// Just like [WillPopScope], you can
+  /// Just like [PopScope], you can
   /// also override the popping behavior
   /// for system back button.
   final Future<bool> Function()? onWillPop;
@@ -306,12 +323,23 @@ class RouterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop ??
-          () async {
-            MomentumRouter.pop(context);
-            return false;
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (didPop) return;
+        final future = onWillPop ??
+            () async {
+              MomentumRouter.pop(context);
+              return false;
+            };
+        future().then((shouldPop) {
+          if (!shouldPop || !context.mounted) return;
+          final navigator = Navigator.of(context);
+          if (navigator.canPop()) {
+            navigator.pop(result);
+          }
+        });
+      },
       child: child,
     );
   }

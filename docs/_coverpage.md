@@ -1,6 +1,6 @@
 ![logo](https://i.imgur.com/atDeptO.png)
 
-# momentum <small>2.2.1</small>
+# momentum <small>3.0.0</small>
 
 > MVC pattern for flutter.
 

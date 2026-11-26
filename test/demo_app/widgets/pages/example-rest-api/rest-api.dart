@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -30,9 +30,9 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
     return RelativeBuilder(
       builder: (context, height, width, sy, sx) {
         return Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             title: Text(
               'REST API Example',
               style: TextStyle(
@@ -81,7 +81,7 @@ class _RestApiExamplePageState extends State<RestApiExamplePage> {
                                               padding: EdgeInsets.all(sy(4)),
                                               child: Icon(
                                                 Icons.check,
-                                                color: Theme.of(context).accentColor,
+                                                color: Theme.of(context).colorScheme.secondary,
                                               ),
                                             )
                                           : SizedBox(),

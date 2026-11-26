@@ -63,49 +63,45 @@ void main() {
   });
 
   group('<TodoExampleModel> persistence test', () {
-    final _memoryStorage = <String, String?>{};
-    Momentum _getRoot() {
+    Momentum _getRoot(Map<String, String?> memoryStorage) {
       return Momentum(
         controllers: [TodoExampleController()],
         enableLogging: true,
         persistSave: (context, key, value) async {
-          _memoryStorage.putIfAbsent(key, () => value);
-          _memoryStorage[key] = value;
+          memoryStorage[key] = value;
           return true;
         },
         persistGet: (context, key) async {
-          try {
-            return _memoryStorage[key];
-          } catch (e) {
-            return null;
-          }
+          return memoryStorage[key];
         },
       );
     }
 
-    test('<TodoExampleModel> persistence test (1st run)', () async {
-      var tester = MomentumTester(_getRoot());
-      await tester.init();
+    test('<TodoExampleModel> persistence test (save and restore)', () async {
+      final memoryStorage = <String, String?>{};
 
-      var controller = tester.controller<TodoExampleController>()!;
-      isControllerValid<TodoExampleController>(controller);
-      isModelValid<TodoExampleModel>(controller.model);
+      // 1st run: persist a todo
+      var tester1 = MomentumTester(_getRoot(memoryStorage));
+      await tester1.init();
 
-      expect(controller.model.todoMap, const {});
+      var controller1 = tester1.controller<TodoExampleController>()!;
+      isControllerValid<TodoExampleController>(controller1);
+      isModelValid<TodoExampleModel>(controller1.model);
 
-      controller.addTodo('Test todo 1');
-      expect(controller.model.todoMap, const {'Test todo 1': false});
-    });
+      expect(controller1.model.todoMap, const {});
 
-    test('<TodoExampleModel> persistence test (2nd run)', () async {
-      var tester = MomentumTester(_getRoot());
-      await tester.init();
+      controller1.addTodo('Test todo 1');
+      expect(controller1.model.todoMap, const {'Test todo 1': false});
 
-      var controller = tester.controller<TodoExampleController>()!;
-      isControllerValid<TodoExampleController>(controller);
-      isModelValid<TodoExampleModel>(controller.model);
+      // 2nd run: restore persisted todo in a fresh Momentum instance
+      var tester2 = MomentumTester(_getRoot(memoryStorage));
+      await tester2.init();
 
-      expect(controller.model.todoMap, const {'Test todo 1': false});
+      var controller2 = tester2.controller<TodoExampleController>()!;
+      isControllerValid<TodoExampleController>(controller2);
+      isModelValid<TodoExampleModel>(controller2.model);
+
+      expect(controller2.model.todoMap, const {'Test todo 1': false});
     });
   });
 }

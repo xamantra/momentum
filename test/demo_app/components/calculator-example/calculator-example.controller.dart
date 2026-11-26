@@ -35,7 +35,7 @@ class CalculatorExampleController extends MomentumController<CalculatorExampleMo
   void calculateResult() {
     try {
       var exp = parser.parse(model.expression!);
-      var result = exp.evaluate(EvaluationType.REAL, ContextModel());
+      var result = RealEvaluator(ContextModel()).evaluate(exp);
       var simplified = _normalizeDecimal(result.toString());
       if (simplified == model.expression) {
         model.update(result: '');

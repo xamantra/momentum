@@ -1,3 +1,10 @@
+## 3.0.0
+- Migrated to Dart 3 and Flutter 3.50+.
+- Replaced deprecated `WillPopScope`, `ThemeData.backgroundColor` / `accentColor`, and `@required` metadata.
+- Updated CI to Flutter 3.50.1 and refreshed dev dependencies (`dio` 5.x, `math_expressions` 3.x).
+- Exported `MomentumError` and all public typedefs (`MomentumSnapshot`, `MomentumBuilderFunction`, `ResetAll`, `BuildSkipper`, `PersistSaver`, `PersistGet`) from `package:momentum/momentum.dart`.
+- **BREAKING CHANGE:** Removed v1 deprecated aliases (`Momentum.of`, `Momentum.getService`, `MomentumController.dependOn`, `MomentumController.getService`, and `MomentumService.getService`). Use `Momentum.controller`, `Momentum.service`, `controller`, and `service` instead.
+
 ## 2.2.1
 - Added missing runtimeType parameter for `service<T>()` method in `MomentumController`.
 

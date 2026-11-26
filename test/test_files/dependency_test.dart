@@ -1,12 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
-import 'package:momentum/src/momentum_error.dart';
 
 import '../demo_app/components/basic-list-example/index.dart';
 import '../demo_app/components/calculator-example/index.dart';
 import '../demo_app/components/todo-example/index.dart';
-import '../demo_app/services/api-service.dart';
 import '../demo_app/services/index.dart';
 import 'utils.dart';
 
@@ -27,17 +25,15 @@ void main() {
     isModelValid<TodoExampleModel>(todoController.model);
 
     // test errors
-    try {
-      basicListController.controller<BasicListExampleController>();
-    } catch (e) {
-      expect(e, isInstanceOf<MomentumError>());
-    }
+    expect(
+      () => basicListController.controller<BasicListExampleController>(),
+      throwsA(isA<MomentumError>()),
+    );
 
-    try {
-      basicListController.controller<CalculatorExampleController>();
-    } catch (e) {
-      expect(e, isInstanceOf<MomentumError>());
-    }
+    expect(
+      () => basicListController.controller<CalculatorExampleController>(),
+      throwsA(isA<MomentumError>()),
+    );
   });
 
   testWidgets('test controllers depedency: manage other controllers from other controller', (tester) async {
@@ -136,11 +132,10 @@ void main() {
     expect(api, isInstanceOf<ApiService>());
 
     // test errors
-    try {
-      basicListController.service<DummyService>();
-    } catch (e) {
-      expect(e, isInstanceOf<MomentumError>());
-    }
+    expect(
+      () => basicListController.service<DummyService>(),
+      throwsA(isA<MomentumError>()),
+    );
   });
 
   testWidgets('test services depedency from a another service', (tester) async {

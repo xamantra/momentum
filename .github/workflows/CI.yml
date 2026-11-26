@@ -11,12 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1.4.0
+    - uses: actions/checkout@v4
+    - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '2.0.0'
+        flutter-version: '3.50.1'
+        cache: true
     - name: Install Packages
       run: flutter packages get
+    - name: Analyze Example
+      run: flutter analyze example/lib/main.dart
     - name: Tests
       run: flutter test --no-pub --coverage
     - name: Code Coverage -> Check

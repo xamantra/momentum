@@ -14,6 +14,10 @@
 <a href="https://github.com/xamantra/momentum/commits/master" target="_blank"><img src="https://img.shields.io/github/last-commit/xamantra/momentum" alt="GitHub last commit" /></a>
 </p>
 
+> **Project revival** — Maintenance on *momentum* has resumed after a long pause. **3.0.0** brings the package up to date with current Dart and Flutter toolchains, CI, and dependencies so it can be used and contributed to again. See [CHANGELOG.md](CHANGELOG.md) for the full release history.
+>
+> **Breaking changes (3.0.0)** — Requires **Dart 3** (`sdk: '>=3.0.0 <4.0.0'`) and **Flutter 3.50+** (`flutter: '>=3.50.0'`). Removed v1 deprecated aliases (`Momentum.of`, `Momentum.getService`, `dependOn`, and `getService` — use `Momentum.controller`, `Momentum.service`, `controller`, and `service` instead), and updated internal usage for removed or deprecated Flutter APIs (for example `WillPopScope`, `ThemeData.backgroundColor` / `accentColor`, and `@required`). Upgrade your app’s SDK constraints before bumping to 3.0.0. If you are still on 2.x, review [CHANGELOG.md](CHANGELOG.md) for earlier breaking changes (notably the `Router` → `MomentumRouter` rename in 2.0.0).
+
 ---
 
 
@@ -34,21 +38,32 @@ Both <code>MomentumController</code> and <code>MomentumModel</code> are abstract
 
 
 # Example
-If you want to see a full code example that runs. Visit the [example](https://pub.dev/packages/momentum/example) tab for more details or you can visit the [official webpage](https://www.xamantra.dev/momentum/#/). Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
+If you want to see a full runnable code example for **Momentum 3.0.0** (Dart 3 / Flutter 3.50+), check out [`example/lib/main.dart`](https://github.com/xamantra/momentum/blob/master/example/lib/main.dart) (CI-checked), [`example/README.md`](https://github.com/xamantra/momentum/blob/master/example/README.md), the [Quick Start](quick-start.md) guide, or the [pub.dev example](https://pub.dev/packages/momentum/example) tab. Otherwise, if you only want to see a glimpse of how momentum works, read the [Overview](#overview) and [FAQs](#faqs) below.
 
-**Advance Example:** [Listify](https://github.com/xamantra/listify) (clone the repo and run the app, requires Flutter 2.0.0)
+**Legacy Advanced Example:** [Listify](https://github.com/xamantra/listify) (written for Flutter 2.0.0; kept for historical reference)
 
 
 # Overview
 **MomentumModel** - the data or state. Must be *Immutable*.
 ```dart
 class ProfileModel extends MomentumModel<ProfileController> {
-  // ...
+  const ProfileModel(
+    super.controller, {
+    required this.userId,
+    required this.username,
+  });
 
   final int userId;
   final String username;
 
-  // ...
+  @override
+  void update({int? userId, String? username}) {
+    ProfileModel(
+      controller,
+      userId: userId ?? this.userId,
+      username: username ?? this.username,
+    ).updateMomentum();
+  }
 }
 ```
 
@@ -57,12 +72,12 @@ class ProfileModel extends MomentumModel<ProfileController> {
 **MomentumBuilder** - the view or widget to display the state.
 ```dart
 MomentumBuilder(
-  controllers: [ProfileController], /// injects both `ProfileController` and `ProfileModel`.
+  controllers: const [ProfileController], // injects both `ProfileController` and `ProfileModel`.
   builder: (context, snapshot) {
-    final profileState = snapshot<ProfileModel>(); /// grab the `ProfileModel` using snapshot.
+    final profileState = snapshot<ProfileModel>(); // grab the `ProfileModel` using snapshot.
     final username = profileState.username;
-    return // some widgets here ...
-  }
+    return Text(username);
+  },
 )
 ```
 
@@ -140,7 +155,7 @@ void main() {
 
 Momentum momentum() {
   return Momentum(
-    child: MyApp(),
+    child: const MyApp(),
     controllers: [
       ProfileController(),
       ShopController(),
@@ -154,23 +169,22 @@ Momentum momentum() {
 Momentum is highly testable. This is how a basic **widget testing** for momentum would look like:
 ```dart
 void main() {
-
   testWidgets('should display username', (tester) async {
     final profileCtrl = ProfileController();
 
     await tester.pumpWidget(
       Momentum(
-        child: MyApp(),
+        child: const MyApp(),
         controllers: [profileCtrl],
       ),
     );
     await tester.pumpAndSettle();
 
-    profileCtrl.updateUsername("johndoe");
+    profileCtrl.updateUsername('johndoe');
     await tester.pumpAndSettle(); // ensure rebuilds
 
-    expect(profileCtrl.model.username, "johndoe"); // unit check
-    expect(find.text("johndoe"), findsOneWidget); // widget check
+    expect(profileCtrl.model.username, 'johndoe'); // unit check
+    expect(find.text('johndoe'), findsOneWidget); // widget check
   });
 }
 ```
@@ -178,7 +192,6 @@ void main() {
 Or you might not be a fan of widget testing and only want to test your components:
 ```dart
 void main() {
-
   test('should display username', () async {
     final profileCtrl = ProfileController();
 
@@ -189,8 +202,8 @@ void main() {
     );
     await tester.init();
 
-    profileCtrl.updateUsername("johndoe");
-    expect(profileCtrl.model.username, "johndoe"); // unit check
+    profileCtrl.updateUsername('johndoe');
+    expect(profileCtrl.model.username, 'johndoe'); // unit check
   });
 }
 ```
@@ -208,13 +221,15 @@ Momentum leverages the power of `setState(..)` and *StatefulWidget* behind the s
 ## Router issues
 - The router doesn't support named routes yet.
 - The parameter handling for router is slightly verbose. And might be complicated for some. But it works magically.
-- Needs to explicitly implement `RouterPage` widget in order to handle the system's back button.
+- Needs to explicitly wrap screens with the `RouterPage` widget (which uses `PopScope`) in order to handle the system's back button.
 - (**FIXED** ✅) The router breaks after hot reload. Only a problem during development but it should work in normal execution.
 
 
-# API Reference
-Visit the [official webpage](https://www.xamantra.dev/momentum/#/) of momentum to browse the full *api reference*, *guides*, and *examples*.
+# API Reference & Agent Docs
+- **Canonical 3.0.0 API Quick-Reference (LLMs & Developers):** [`llms.txt`](https://github.com/xamantra/momentum/blob/master/llms.txt)
+- **Repository & Contributor Guide for AI Coding Agents:** [`AGENTS.md`](https://github.com/xamantra/momentum/blob/master/AGENTS.md)
+- **Docs Website:** Browse the sidebar to explore the full *api reference*, *guides*, and *examples*.
 
 <hr>
 
-Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file on [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.
+Thanks for checking out *momentum*. I hope you try it soon and don't hesitate to file an [issue on github](https://github.com/xamantra/momentum/issues). I always check them everyday.

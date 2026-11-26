@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Used internally for sending and receiving events.
 class MomentumEvent<E> {
@@ -17,12 +17,21 @@ class MomentumEvent<E> {
 
   ///
   Stream<E> on() {
-    return streamController.stream.where((event) => event is E).cast<E>();
+    return streamController.stream;
   }
 
   /// Fires a new event on the event bus with the specified [event].
   void trigger(E event) {
-    streamController.add(event);
+    if (!_streamController.isClosed) {
+      streamController.add(event);
+    }
+  }
+
+  /// Fires a new event on the event bus if [event] is assignable to [E].
+  void triggerIfMatch(dynamic event) {
+    if (event is E && !_streamController.isClosed) {
+      streamController.add(event);
+    }
   }
 
   /// Destroy this [MomentumEvent]. This is generally only in a testing context.

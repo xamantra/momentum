@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -28,9 +28,9 @@ class HomePage extends StatelessWidget {
       child: RelativeBuilder(
         builder: (context, height, width, sy, sx) {
           return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               title: Text(
                 'Momentum Flutter Demo',
               ),

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -50,7 +50,7 @@ class ExampleItem<T extends RouterParam> extends StatelessWidget {
                       style: TextStyle(
                         fontSize: sy(12),
                         fontWeight: FontWeight.w400,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),

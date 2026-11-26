@@ -1,0 +1,268 @@
+# Momentum 3.0.0
+
+> Canonical API quick-reference for `momentum` `3.0.0` — an MVC state management, dependency injection, service locator, persistence, time-travel (undo/redo), event bus, and persistent routing library for Flutter (Dart `>=3.0.0 <4.0.0`, Flutter `>=3.50.0`).
+
+Install with `material_ui` (which replaces deprecated `package:flutter/material.dart` in Flutter 3.47+):
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.11.1
+  momentum: ^3.0.0
+```
+
+Single public import:
+
+```dart
+import 'package:momentum/momentum.dart';
+```
+
+## Minimal Complete Example (3.0.0)
+
+```dart
+import 'package:material_ui/material_ui.dart';
+import 'package:momentum/momentum.dart';
+
+void main() => runApp(momentum());
+
+Momentum momentum() => Momentum(
+      controllers: [CounterController()],
+      child: const MyApp(),
+    );
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue)),
+      home: const HomeWidget(),
+    );
+  }
+}
+
+class CounterModel extends MomentumModel<CounterController> {
+  const CounterModel(super.controller, {required this.value});
+  final int value;
+
+  @override
+  void update({int? value}) {
+    CounterModel(controller, value: value ?? this.value).updateMomentum();
+  }
+}
+
+class CounterController extends MomentumController<CounterModel> {
+  @override
+  CounterModel init() => CounterModel(this, value: 0);
+
+  void increment() => model.update(value: model.value + 1);
+}
+
+class HomeWidget extends StatelessWidget {
+  const HomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Momentum Counter')),
+      body: Center(
+        child: MomentumBuilder(
+          controllers: const [CounterController],
+          builder: (context, snapshot) {
+            final counter = snapshot<CounterModel>();
+            return Text('${counter.value}', style: Theme.of(context).textTheme.headlineMedium);
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: Momentum.controller<CounterController>(context).increment,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+```
+
+## Public API Quick-Reference (`package:momentum/momentum.dart`)
+
+### `Momentum` (Root `InheritedWidget`)
+
+```dart
+Momentum({
+  Key? key,
+  Future<void> Function()? initializer,
+  Widget? child,                              // required at runtime; optional for MomentumTester
+  Widget? appLoader,                          // shown during async startup; defaults to centered spinner
+  required List<MomentumController> controllers,
+  List<MomentumService>? services,
+  ResetAll? onResetAll,                       // (BuildContext, void Function(BuildContext) resetAll)
+  bool? disabledPersistentState,              // default: false
+  bool? enableLogging,                        // default: false
+  int? maxTimeTravelSteps,                    // default: 1 (clamped 1..250; >1 enables undo/redo)
+  bool? lazy,                                 // default: true
+  int? minimumBootstrapTime,                  // default: 0 (milliseconds)
+  BootstrapStrategy? strategy,                // default: BootstrapStrategy.lazyFirstBuild
+  PersistSaver? persistSave,                  // Future<bool> Function(BuildContext?, String key, String? value)
+  PersistGet? persistGet,                     // Future<String?> Function(BuildContext?, String key)
+  void Function()? restartCallback,
+})
+```
+
+Static methods:
+- `Momentum.controller<T extends MomentumController>(BuildContext context) -> T` (safe in `initState()` and `build()`; does not subscribe widget to rebuilds)
+- `Momentum.service<T extends MomentumService>(BuildContext context, {bool runtimeType = true, dynamic alias}) -> T`
+- `Momentum.resetAll(BuildContext context, {bool? clearHistory}) -> void`
+- `Momentum.restart(BuildContext context, [Momentum? momentum]) -> void` (uses `restartCallback` if configured; otherwise replaces navigation stack with `momentum`; throws `MomentumError` if both are null)
+
+### `BootstrapStrategy` (Enum)
+- `BootstrapStrategy.lazyFirstBuild` *(default)* — bootstraps lazy controllers on first `MomentumBuilder` mount.
+- `BootstrapStrategy.lazyFirstCall` — bootstraps lazy controllers on first `Momentum.controller<T>(context)` call.
+
+### `MomentumModel<Controller extends MomentumController>` (`@immutable abstract`)
+- Constructor: `const MomentumModel(this.controller)`
+- Properties: `final Controller controller`, `String get controllerName`
+- Required override: `void update(...)` — instantiate a copy with `controller` and call `.updateMomentum()`.
+- Protected helper: `void updateMomentum()` — commits the new model to `controller` (no-op if `newModel == currentModel`, compatible with `equatable`).
+- Optional persistence overrides:
+  - `Map<String, dynamic>? toJson() => null`
+  - `MomentumModel? fromJson(Map<String, dynamic>? json) => null` *(instance method, NOT a factory, so it can pass `controller`)*
+
+### `MomentumController<M extends MomentumModel<dynamic>>` (`abstract`)
+- Required override: `@protected M init()`
+- Lifecycle hooks (execution order on startup):
+  1. `Momentum.initializer()` *(awaited)*
+  2. Services initialized (`MomentumRouter.init()` awaited)
+  3. All controllers: `init()` + restore persisted model
+  4. Non-lazy controllers (`lazy == false`): `bootstrap()`
+  5. Non-lazy controllers: `bootstrapAsync()` *(awaited in parallel via `Future.wait`)*
+  6. All controllers: `onReady()`
+- Per-controller config (cascade once in `Momentum(controllers: [...])`):
+  `controller..config(enableLogging: ..., maxTimeTravelSteps: ..., lazy: ..., strategy: ...)`
+- State & time travel:
+  - `M get model`
+  - `M? get prevModel` / `M? get nextModel` *(non-null only when `maxTimeTravelSteps > 1`)*
+  - `void backward()` *(undo)* / `void forward()` *(redo)*
+  - `void reset({bool? clearHistory})`
+  - `void clearStateHistory()`
+- Dependency injection (no `BuildContext` required):
+  - `T controller<T extends MomentumController>()` *(cannot reference itself)*
+  - `T service<T extends MomentumService>({bool runtimeType = true, dynamic alias})`
+- Events & listeners (register inside `MomentumState.initMomentumState()`):
+  - `void sendEvent<T>(T data)`
+  - `void listen<T>({required MomentumState state, required void Function(T data) invoke})`
+  - `void addListener({required MomentumState state, required void Function(M model, bool isTimeTravel) invoke})`
+- Persistence & metadata:
+  - `Future<bool?> skipPersist() async => null` *(overrides global `disabledPersistentState` when non-null)*
+  - `String get persistenceKey` *(overridable)*
+  - `bool? get persistentStateDisabled`, `bool? get loggingEnabled`, `int? get maxTimeTravelSteps`, `bool? get isLazy`, `BootstrapStrategy? get strategy`
+
+### `MomentumBuilder` (`StatefulWidget`)
+
+```dart
+MomentumBuilder(
+  key: key,
+  owner: this,                        // optional Widget for clearer error logs (`this` or `widget`)
+  controllers: const [MyController],  // List<Type>?; rebuilds when any listed controller updates
+  dontRebuildIf: (controller, isTimeTravel) {
+    final c = controller<MyController>();
+    return false;                     // return true to skip rebuild
+  },
+  builder: (context, snapshot) {
+    final model = snapshot<MyModel>();
+    // Disambiguate when multiple controllers share a model type:
+    // final model = snapshot<SharedModel>(SpecificController);
+    return Text('${model.value}');
+  },
+)
+```
+
+### `MomentumState<T extends StatefulWidget>` (`abstract extends State<T>`)
+- Override `@override void initMomentumState()` — called once in `didChangeDependencies()` before `build()`, safe for `Momentum.controller<T>(context)` and registering `listen<E>(state: this, ...)` / `addListener(state: this, ...)`.
+- Automatically cancels all event subscriptions and removes listeners in `dispose()`.
+- Property: `bool get deactivated`.
+
+### `MomentumService` & `InjectService<S extends MomentumService>`
+- Extend `MomentumService` and register in `Momentum(services: [...])`.
+- Inside a service, resolve sibling services with `service<OtherService>({bool runtimeType = true, dynamic alias})`.
+- Resolve an implementation via an abstract base class using `runtimeType: false`:
+  `service<AuthRepository>(runtimeType: false)` / `Momentum.service<AuthRepository>(context, runtimeType: false)`.
+- Register multiple instances of the same service type with `InjectService`:
+  ```dart
+  services: [
+    InjectService<ApiService>(ApiAlias.prod, ApiService('https://api.example.com')),
+    InjectService<ApiService>(ApiAlias.staging, ApiService('https://staging.example.com')),
+  ]
+  // Lookup:
+  final api = service<ApiService>(alias: ApiAlias.prod);
+  // Or retrieve wrapper:
+  final injected = Momentum.service<InjectService<ApiService>>(context, alias: ApiAlias.prod);
+  final raw = injected.value;
+  ```
+
+### Routing: `MomentumRouter`, `RouterPage`, `RouterParam`, `RouterMixin`
+- Register `MomentumRouter([HomePage(), DetailsPage()], enablePersistence: true)` in `Momentum(services: [...])`.
+- Set `MaterialApp(home: MomentumRouter.getActivePage(context))`.
+- Wrap screens in `RouterPage(child: Scaffold(...), onWillPop: ...)` (uses `PopScope` for system back navigation).
+- Static methods:
+  - `MomentumRouter.goto(context, DetailsPage, params: DetailsParam(...), transition: ...)`
+  - `MomentumRouter.pop(context, result: ..., transition: ...)`
+  - `MomentumRouter.getParam<DetailsParam>(context)` → `DetailsParam?`
+  - `MomentumRouter.getActivePage(context)` → `Widget`
+  - `MomentumRouter.clearHistoryWithContext(context)` → `Future<void>`
+  - `MomentumRouter.resetWithContext<HomePage>(context)` → `Future<void>`
+- Instance methods/getters on `MomentumRouter`: `getActive()`, `getCurrentParam<T>()`, `clearHistory()`, `reset<T>()`, `isRoutesEmpty`, `exited`, `mockParam(RouterParam)`.
+- Extend `@immutable abstract class RouterParam {}` for typed route payloads.
+- Add `with RouterMixin` to a `MomentumController` for `T? getParam<T extends RouterParam>()` and `@override void onRouteChanged(RouterParam? param)`.
+
+### Testing: `MomentumTester`
+- Headless unit testing without pumping widgets:
+  ```dart
+  final tester = MomentumTester(
+    Momentum(
+      controllers: [CounterController()],
+      services: [ApiService()],
+    ),
+  );
+  await tester.init();
+  final ctrl = tester.controller<CounterController>()!;
+  final api = tester.service<ApiService>();
+  await tester.mockLazyBootstrap<CounterController>();
+  tester.mockRouterParam(DetailsParam(id: '1'));
+  ```
+
+### Errors & Exported Typedefs
+- `MomentumError(String? cause)` — thrown for missing/duplicate controllers, services, ancestors, or invalid restart config.
+- `MomentumSnapshot = T Function<T>([Type])`
+- `MomentumBuilderFunction = Widget Function(BuildContext, MomentumSnapshot)`
+- `ResetAll = void Function(BuildContext, void Function(BuildContext) resetAll)`
+- `BuildSkipper = bool Function(T Function<T extends MomentumController>(), bool isTimeTravel)`
+- `PersistSaver = Future<bool> Function(BuildContext? context, String key, String? value)`
+- `PersistGet = Future<String?> Function(BuildContext? context, String key)`
+
+## Breaking Changes & Removed APIs (Do Not Use in 3.0.0)
+
+| Removed / Legacy | 3.0.0 Replacement |
+| --- | --- |
+| `Momentum.of<T>(context)` | `Momentum.controller<T>(context)` |
+| `Momentum.getService<T>(context)` | `Momentum.service<T>(context)` |
+| `dependOn<T>()` (in controller) | `controller<T>()` |
+| `getService<T>()` (in controller/service) | `service<T>()` |
+| `Router` (removed in 2.0.0) | `MomentumRouter` |
+| `package:flutter/material.dart` | `package:material_ui/material_ui.dart` |
+| `WillPopScope` | `PopScope` (`onPopInvokedWithResult`) / `RouterPage` |
+| `Theme.of(context).textTheme.headline4` | `Theme.of(context).textTheme.headlineMedium` |
+
+## Documentation & Source Links
+
+- [README](README.md): Overview, FAQs, testing, and 3.0.0 breaking-change summary
+- [AGENTS.md](AGENTS.md): Repository structure, commands, and architectural invariants for contributors and coding agents
+- [Example App](example/lib/main.dart): Runnable, CI-checked Flutter 3.50+ counter app
+- [Example README](example/README.md): Example walkthrough
+- [Quick Start](docs/quick-start.md): Installation, runnable example, and Dart 3 component boilerplate
+- [Public Exports](lib/momentum.dart): Exact exported API surface
+- [Core Implementation](lib/src/momentum_base.dart): `Momentum`, controllers, models, builders, services, and `MomentumTester`
+- [Router Implementation](lib/src/momentum_router.dart): `MomentumRouter`, `RouterPage`, and `RouterParam`
+- [Changelog](CHANGELOG.md): Full release history

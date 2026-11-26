@@ -1,54 +1,62 @@
 # Quick Start
-You only have to install one package and momentum doesn't have any peer dependencies.
+
+Momentum 3.0.0 requires **Dart 3** (`>=3.0.0 <4.0.0`) and **Flutter 3.50+** (`>=3.50.0`).
 
 ## Create
-To get started, `flutter create` an app. Name it however you want.
+To get started, `flutter create` an app and name it however you want.
 
 ## Installing
-1. Add this to your package's `pubspec.yaml` file:
+1. Add `momentum` (and `material_ui`, which replaces the deprecated `package:flutter/material.dart` in Flutter 3.47+) to your package's `pubspec.yaml`:
     ```yaml
     dependencies:
-      momentum: ^2.2.1
+      flutter:
+        sdk: flutter
+      material_ui: ^1.11.1
+      momentum: ^3.0.0
     ```
-    It is not recommended to use the one from GitHub because the changes there are subject to breaking changes on future pushes to the repository.
+    It is recommended to depend on the published version from pub.dev rather than tracking a git branch directly.
 
-2. You can install this package from the *command-line*:
+2. Install the package from the *command-line*:
     ```bash
     flutter pub get
     ```
-    Alternatively, your editor might support `flutter pub get`.
+    Alternatively, your editor may run `flutter pub get` automatically.
 
-3. Now in your Dart code, you can use:
+3. Import the single barrel file in your Dart code:
     ```dart
     import 'package:momentum/momentum.dart';
     ```
-    You only have to import this one file alone and you'll be able to use all momentum API.
+    All public Momentum APIs (classes, enums, `MomentumError`, and typedefs) are exported from this single entry point.
 
 ## Example
-Copy this example counter app code and run it:
+Copy this runnable counter app code (also kept in sync and CI-checked in [`example/lib/main.dart`](https://github.com/xamantra/momentum/blob/master/example/lib/main.dart)):
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 
 void main() {
-  runApp(
-    Momentum(
-      controllers: [
-        CounterController(),
-      ],
-      child: MyApp(),
-    ),
+  runApp(momentum());
+}
+
+Momentum momentum() {
+  return Momentum(
+    controllers: [CounterController()],
+    child: const MyApp(),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Momentum State Management',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomeWidget(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      ),
+      home: const HomeWidget(),
     );
   }
 }
@@ -63,24 +71,20 @@ class CounterController extends MomentumController<CounterModel> {
   }
 
   void increment() {
-    final value = model.value; // grab the current value
-    model.update(value: value + 1); // update state (rebuild widgets)
-    print(model.value); // new or updated value
+    model.update(value: model.value + 1);
   }
 }
 
 class CounterModel extends MomentumModel<CounterController> {
-  CounterModel(
-    CounterController controller, {
-    this.value,
-  }) : super(controller);
+  const CounterModel(
+    super.controller, {
+    required this.value,
+  });
 
   final int value;
 
   @override
-  void update({
-    int value,
-  }) {
+  void update({int? value}) {
     CounterModel(
       controller,
       value: value ?? this.value,
@@ -89,52 +93,52 @@ class CounterModel extends MomentumModel<CounterController> {
 }
 
 class HomeWidget extends StatelessWidget {
+  const HomeWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Momentum Counter'),
+        title: const Text('Momentum Counter'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+          children: [
+            const Text('You have pushed the button this many times:'),
             MomentumBuilder(
-              controllers: [CounterController],
+              controllers: const [CounterController],
               builder: (context, snapshot) {
                 final counter = snapshot<CounterModel>();
                 return Text(
                   '${counter.value}',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 );
               },
             ),
           ],
         ),
       ),
-      // we don't need to rebuild the increment button, we can skip the MomentumBuilder
+      // We don't need to rebuild the button, so it can live outside MomentumBuilder.
       floatingActionButton: FloatingActionButton(
         onPressed: Momentum.controller<CounterController>(context).increment,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 ```
-- Inside `main()` method `Momentum` is set as the root widget of the app.
-- The `CounterController` is instantiated in `controllers` parameter.
-- Inside the `CounterController` there is an `increment()` method that updates the value. It calls the method `model.update(...)` which will rebuild the widget.
-- The `CounterModel` is where the props are defined and currently has the `value` property.
-- The `HomeWidget` uses `MomentumBuilder` which is used for displaying the model properties to the screen. You can call `model.update(...)` to rebuild this widget.
+- Inside `main()`, `Momentum` is set as the root widget of the app.
+- `CounterController` is registered in the `controllers` list.
+- Inside `CounterController`, `increment()` calls `model.update(...)`, creating a new immutable `CounterModel` and rebuilding all `MomentumBuilder` widgets listening to `CounterController`.
+- `CounterModel` holds immutable `final` state fields (`value`) and implements `update(...)` using nullable optional named parameters.
+- `HomeWidget` uses `MomentumBuilder` to read the latest `CounterModel` snapshot and `Momentum.controller<CounterController>(context)` to invoke controller actions without rebuilding the button.
 
 ## Boilerplate Code
-A pair of `MomentumController` and `MomentumModel` are called components. They both have very short boilerplate codes. The controller is the logic and the Model is the state. A component is not tied to a single widget only, you can use a component in multiple pages/widgets across the app.
+A pair of `MomentumController` and `MomentumModel` is called a **component**. The controller holds the logic and the model holds the immutable state. A component is not tied to a single widget—you can reuse it across multiple pages and widgets.
 
-- This is the boilerplate code for `controller`:
+- Boilerplate for a `controller`:
 
 ```dart
 import 'package:momentum/momentum.dart';
@@ -146,13 +150,13 @@ class ExampleController extends MomentumController<ExampleModel> {
   ExampleModel init() {
     return ExampleModel(
       this,
-      // TODO: specify initial values here...
+      value: 0,
     );
   }
 }
 ```
 
-- This is the boilerplate code for `model`:
+- Boilerplate for a `model`:
 
 ```dart
 import 'package:momentum/momentum.dart';
@@ -160,17 +164,21 @@ import 'package:momentum/momentum.dart';
 import 'index.dart';
 
 class ExampleModel extends MomentumModel<ExampleController> {
-  ExampleModel(ExampleController controller) : super(controller);
+  const ExampleModel(
+    super.controller, {
+    required this.value,
+  });
 
-  // TODO: add your final properties here...
+  final int value;
 
   @override
-  void update() {
+  void update({int? value}) {
     ExampleModel(
       controller,
+      value: value ?? this.value,
     ).updateMomentum();
   }
 }
 ```
 
-There is also a [vs code extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code) for generating these boilerplate codes in few clicks.
+There is also a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=xamantra.momentum-code) for generating component boilerplate.

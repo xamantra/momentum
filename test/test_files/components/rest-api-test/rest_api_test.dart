@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
@@ -5,12 +6,39 @@ import '../../../demo_app/components/rest-api-example/index.dart';
 import '../../../demo_app/services/index.dart';
 import '../../utils.dart';
 
+Dio _createMockDio() {
+  final dio = Dio();
+  dio.interceptors.add(
+    InterceptorsWrapper(
+      onRequest: (options, handler) {
+        final data = List.generate(
+          200,
+          (i) => {
+            'userId': (i ~/ 20) + 1,
+            'id': i + 1,
+            'title': 'Mock todo ${i + 1}',
+            'completed': i.isEven,
+          },
+        );
+        handler.resolve(
+          Response(
+            requestOptions: options,
+            statusCode: 200,
+            data: data,
+          ),
+        );
+      },
+    ),
+  );
+  return dio;
+}
+
 void main() {
   test('<RestApiExampleController> component test', () async {
     var tester = MomentumTester(
       Momentum(
         controllers: [RestApiExampleController()],
-        services: [ApiService()],
+        services: [ApiService(null, _createMockDio())],
       ),
     );
     await tester.init();

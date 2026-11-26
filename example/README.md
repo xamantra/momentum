@@ -1,27 +1,39 @@
-**Advance Example:** [Listify](https://github.com/xamantra/listify) (clone the repo and run the app, requires Flutter 2.0.0)
+# Momentum Example
 
-## Basic Example
+Requires **Dart 3** (`>=3.0.0 <4.0.0`) and **Flutter 3.50+** (`>=3.50.0`).
+
+The full CI-checked source is in [`example/lib/main.dart`](lib/main.dart).
+
+> **Legacy Advanced Example:** [Listify](https://github.com/xamantra/listify) (written for Flutter 2.0.0; kept for historical reference).
+
+## Basic Counter Example
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 
 void main() {
-  runApp(
-    Momentum(
-      controllers: [CounterController()],
-      child: MyApp(),
-    ),
+  runApp(momentum());
+}
+
+Momentum momentum() {
+  return Momentum(
+    controllers: [CounterController()],
+    child: const MyApp(),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Momentum State Management',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: HomeWidget(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+      ),
+      home: const HomeWidget(),
     );
   }
 }
@@ -36,24 +48,20 @@ class CounterController extends MomentumController<CounterModel> {
   }
 
   void increment() {
-    var value = model.value; // grab the current value
-    model.update(value: value + 1); // update state (rebuild widgets)
-    print(model.value); // new or updated value
+    model.update(value: model.value + 1);
   }
 }
 
 class CounterModel extends MomentumModel<CounterController> {
-  CounterModel(
-    CounterController controller, {
+  const CounterModel(
+    super.controller, {
     required this.value,
-  }) : super(controller);
+  });
 
   final int value;
 
   @override
-  void update({
-    int? value,
-  }) {
+  void update({int? value}) {
     CounterModel(
       controller,
       value: value ?? this.value,
@@ -62,37 +70,37 @@ class CounterModel extends MomentumModel<CounterController> {
 }
 
 class HomeWidget extends StatelessWidget {
+  const HomeWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Momentum Counter'),
+        title: const Text('Momentum Counter'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+          children: [
+            const Text('You have pushed the button this many times:'),
             MomentumBuilder(
-              controllers: [CounterController],
+              controllers: const [CounterController],
               builder: (context, snapshot) {
-                var counter = snapshot<CounterModel>();
+                final counter = snapshot<CounterModel>();
                 return Text(
                   '${counter.value}',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 );
               },
             ),
           ],
         ),
       ),
-      // we don't need to rebuild the increment button, we can skip the MomentumBuilder
+      // We don't need to rebuild the button, so it can live outside MomentumBuilder.
       floatingActionButton: FloatingActionButton(
         onPressed: Momentum.controller<CounterController>(context).increment,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

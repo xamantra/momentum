@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:momentum/momentum.dart';
 
@@ -7,9 +7,10 @@ import '../../demo_app/widgets/pages/example-todo/index.dart';
 
 void main() {
   testWidgets('Todo page - state listener test', (tester) async {
+    final memoryStorage = <String, String?>{};
     var controller = TodoExampleController();
 
-    await tester.pumpWidget(_getRoot(controller));
+    await tester.pumpWidget(_getRoot(controller, memoryStorage));
     await tester.pumpAndSettle();
 
     await _addTodo(tester, 'Todo 1');
@@ -24,21 +25,19 @@ void main() {
     // test persistence (restart with new key)
     controller = TodoExampleController();
     var key = UniqueKey();
-    await tester.pumpWidget(_getRoot(controller, key));
+    await tester.pumpWidget(_getRoot(controller, memoryStorage, key));
     await tester.pumpAndSettle();
     expect(controller.eventTodoName, 'hello! world');
 
     // test normal rebuild. shouldn't not change anything.
-    await tester.pumpWidget(_getRoot(controller, key));
+    await tester.pumpWidget(_getRoot(controller, memoryStorage, key));
     await tester.pumpAndSettle();
     // expecting the same values ...
     expect(controller.eventTodoName, 'hello! world');
   });
 }
 
-final _memoryStorage = <String, String?>{};
-
-Momentum _getRoot(TodoExampleController controller, [Key? key]) {
+Momentum _getRoot(TodoExampleController controller, Map<String, String?> memoryStorage, [Key? key]) {
   return Momentum(
     key: key,
     child: MaterialApp(
@@ -47,16 +46,11 @@ Momentum _getRoot(TodoExampleController controller, [Key? key]) {
     controllers: [controller],
     enableLogging: true,
     persistSave: (context, key, value) async {
-      _memoryStorage.putIfAbsent(key, () => value);
-      _memoryStorage[key] = value;
+      memoryStorage[key] = value;
       return true;
     },
     persistGet: (context, key) async {
-      try {
-        return _memoryStorage[key];
-      } catch (e) {
-        return null;
-      }
+      return memoryStorage[key];
     },
   );
 }

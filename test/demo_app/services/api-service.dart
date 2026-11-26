@@ -6,10 +6,10 @@ import '../data/index.dart';
 /// An example of `MomentumService`.
 /// You can access and use a specific service anywhere in the widget or the controllers.
 class ApiService extends MomentumService {
-  ApiService([this.id]);
+  ApiService([this.id, Dio? dio]) : dio = dio ?? Dio();
   final String? id;
 
-  final dio = Dio();
+  final Dio dio;
 
   Future<TodoList> getTodoList({
     String? mockUrl,

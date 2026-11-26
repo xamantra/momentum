@@ -22,3 +22,4 @@ coverage/lcov.info
 example/coverage/lcov.info
 example/*.ignore.txt
 *.ignore.*
+kanban/

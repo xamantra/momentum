@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:momentum/momentum.dart';
 import 'package:relative_scale/relative_scale.dart';
 
@@ -12,9 +12,9 @@ class TimerExamplePage extends StatelessWidget {
     return RelativeBuilder(
       builder: (context, height, width, sy, sx) {
         return Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: AppBar(
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             title: Text(
               'Simple Timer Example',
               style: TextStyle(
@@ -47,7 +47,7 @@ class TimerExamplePage extends StatelessWidget {
                           'Stop Timer',
                           style: TextStyle(
                             fontSize: sy(12),
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                       ),
@@ -63,7 +63,7 @@ class TimerExamplePage extends StatelessWidget {
                       'Start Timer',
                       style: TextStyle(
                         fontSize: sy(12),
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   );
