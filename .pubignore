@@ -1,0 +1,25 @@
+# Files and directories created by pub
+.dart_tool/
+.packages
+pubspec.lock
+
+# Conventional directory for build outputs
+build/
+
+# Documentation site (GitHub Pages / Docsify) and generated dartdoc output
+docs/
+doc/api/
+
+# Tests and coverage
+test/
+coverage/
+
+# Local development and tooling files
+kanban/
+sandbox/
+CODECOV_TOKEN
+example/lib/temp.dart
+example/android/app/google-services.json
+example/coverage/
+example/*.ignore.txt
+*.ignore.*
